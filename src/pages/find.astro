@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+const item = Astro.url.searchParams.get('item') ?? '';
+const address = Astro.url.searchParams.get('address') ?? '';
+const hasAddress = Boolean(address.trim());
+
+
+let mapSrc = 'https://www.openstreetmap.org/export/embed.html';
+
+
+
+if (hasAddress) {
+    try {
+        const searchUrl = new URL('https://nominatim.openstreetmap.org/search');
+        searchUrl.searchParams.set('format', 'json');
+        searchUrl.searchParams.set('limit', '1');
+        searchUrl.searchParams.set('q', address);
+
+
+        const res  =  await  fetch(searchUrl, {
+            headers: {
+                'accept': 'application/json',
+                'user-agent': 'WasteWise/0.0.1'
+            }
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            const first = Array.isArray(data) ? data[0]  : null;
+            const lat = first?.lat ? Number(first.lat) : null;
+            const lon = first?.lon ? Number(first.lon) : null;
+
+                if (typeof lat==='number' && Number.isFinite(lat) && typeof lon === 'number' && Number.isFinite(lon)) {
+
+                    const delta = 0.02;
+
+                    const left = lon - delta;
+                    const right = lon + delta;
+                    const top = lat + delta;
+                    const bottom = lat - delta; // i wrote data 💀
+
+                    const embedUrl = new URL('https://www.openstreetmap.org/export/embed.html');
+
+                    embedUrl.searchParams.set('bbox', `${left},${bottom},${right},${top}`);
+                    embedUrl.searchParams.set('layer', 'mapnik');
+                    embedUrl.searchParams.set('marker', `${lat},${lon}`);
+                        mapSrc=embedUrl.toString();
+
+                }
+
+        }
+    } catch {
+        //oof
+        //do nothing
+    }
+}
+
+
+---
+<BaseLayout title="Find | WasteWise">
+    <section class="simple-section">
+        <h1 class="simple-title">Find</h1>
+        <p class="simple-subtitle">Map here</p>
+
+
+        <div class="map-embed" aria-label="Map">
+            <iframe title="Map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src={mapSrc}></iframe>
+        </div>
+    </section>
+</BaseLayout>

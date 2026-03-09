@@ -1,0 +1,24 @@
+---
+import {ArrowRight, Recycle} from '@lucide/astro';
+type Props = { active?: 'home' | 'find' | 'quiz';
+};
+const {active} = Astro.props;
+---
+
+<header class="appbar" aria-label="WasteWise Top Bar">
+    <div class="topbar">
+        <a class="brand" href="/" aria-label="WasteWise Home">
+            <Recycle class="brand-icon" aria-hidden="true" />
+            <span>WasteWise</span>
+        </a>
+        <nav class="nav" aria-label="Primary">
+            <a href="#" class="nav-link">Contact</a>
+            <a href="#" class="nav-link">About</a>
+            <a href="#" class="nav-link">Articles</a>
+        </nav>
+        <a class="quiz" href="/quiz" aria-label="Take the Quiz">
+            <span>Take the Quiz!</span>
+            <ArrowRight class="icon" aria-hidden="true" />
+        </a>
+    </div>
+</header>
