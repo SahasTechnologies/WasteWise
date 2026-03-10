@@ -40,3 +40,5 @@ export default async function initMap() {
 		console.error('Map init failed:', e);
 	}
 }
+
+initMap();
