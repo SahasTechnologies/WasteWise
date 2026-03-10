@@ -1,65 +1,62 @@
 ---
-
-import {ArrowRight, Triangle} from '@lucide/astro';
+import { ArrowRight, Triangle } from '@lucide/astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import photonAutocompleteUrl from '..scripts/photon-autocomplete.js?url';
+import photonAutocompleteUrl from '../scripts/photon-autocomplete.js?url';
 ---
 
-<BaseLayout  title="WasteWise">
+<BaseLayout title="WasteWise">
 	<Fragment slot="head">
-		<link rel="preload" as="image" href="hero.webp" />
+		<link rel="preload" as="image" href="/hero.webp" />
 		<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 	</Fragment>
 
+	<section class="hero" aria-label="WasteWise Hero">
+		<div class="hero-bg" aria-hidden="true"></div>
+		<div class="hero-scrim" aria-hidden="true"></div>
 
-			<section class="hero" aria-label="WasteWise Hero">
-				<div class="hero-bg" aria-hidden="true"></div>
-				<div class="hero-scrim" aria-hidden="true"></div>
+		<div class="hero-content">
+			<h1 class="headline">
+				<span class="headline-line">Recycling made easy, for</span>
+				<span class="headline-accent">everyone.</span>
+			</h1>
+		</div>
+	</section>
 
-                
-				<div class="hero-content">
-					<h1 class="headline">
-						<span class="headline-line">Recycling made easy, for</span>
-						<span class="headline-accent">everyone.</span> <!--idk i need a better tagline -->
-					</h1>
+	<section class="below" aria-label="Quick Recycling Search">
+		<div class="below-inner">
+			<p class="subcopy">
+				Find information and guidance on recycling<br />
+				without all the hassle.
+			</p>
+
+			<div class="glass-wrap">
+				<div class="glass-anim" aria-hidden="true"></div>
+				<div class="search-card" role="group" aria-label="Search">
+					<form class="search-form" action="/find" method="get">
+						<div class="search-text">
+							<span>I want to recycle</span>
+							<label class="select-wrap" for="item" aria-label="Item type">
+								<select id="item" class="select" name="item">
+									<option value="shoes">Shoes</option>
+									<option value="clothes">Clothes</option>
+									<option value="batteries">Batteries</option>
+								</select>
+								<Triangle class="icon-sm dropdown-icon" aria-hidden="true" />
+							</label>
+							<span>near</span>
+							<label class="input-wrap" for="address" aria-label="Suburb or address">
+								<input id="address" name="address" class="input" type="text" placeholder="Enter suburb or address" autocomplete="street-address" />
+							</label>
+						</div>
+						<button class="go" type="submit" aria-label="Go">
+							<span>GO</span>
+							<ArrowRight class="icon" aria-hidden="true" />
+						</button>
+					</form>
 				</div>
-			</section>
+			</div>
+		</div>
+	</section>
 
-			<section class="below" aria-label="Quick Recycling Search">
-				<div class="below-inner">
-					<p class="subcopy">
-						Find information and guidance on recycling<br />
-						without all the hassle.
-					</p>
-
-
-					<div class="glass-wrap">
-						    <div class="glass-anim" aria-hidden="true"></div>
-						    <div class="search-card" role="group" aria-label="Search">
-							    <form class="search-form" action="/find" method="get">
-							    	<div class="search-text">
-								    	<span>I want to recycle</span>
-								    	<label class="select-wrap" for="item" aria-label="Item type">
-								    		<select id="item" class="select" name="item">
-								    			<option value="shoes">Shoes</option>
-							    				<option value="clothes">Clothes</option>
-							    				<option value="batteries">Batteries</option>
-							    			</select>
-							    			<Triangle class="icon-sm dropdown-icon" aria-hidden="true" />
-							    		</label>
-							    		<span>near</span>
-							    		<label class="input-wrap" for="address" aria-label="Suburb or address">
-							    			<input id="address" name="address" class="input" type="text" placeholder="Enter suburb or address" autocomplete="street-address" />
-							    		</label>
-						    		</div>
-						    		<button class="go" type="submit" aria-label="Go">
-									<span>GO</span>
-						    			<ArrowRight class="icon" aria-hidden="true" />
-						    		</button>
-						    	</form>
-					    	</div>
-					    </div>
-				    </div>
-			</section>
-			<script type="module" src={photonAutocompleteUrl}></script>
+	<script type="module" src={photonAutocompleteUrl}></script>
 </BaseLayout>
