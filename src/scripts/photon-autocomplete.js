@@ -102,6 +102,10 @@ export default (function initPhoton() {
                                 clearDropdown();
                             });
 
+                            btn.addEventListener('mousedown', (e) => {
+                                e.preventDefault();
+                            });
+
                             dropdown.appendChild(btn);
             });
 
@@ -131,6 +135,7 @@ export default (function initPhoton() {
 
     input.addEventListener('input', () => {
         selected = null;
+        input.dataset.photonId = '';
         const q = input.value.trim();
 
             if (q.length < 3) {
