@@ -4,16 +4,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout title="Quiz | WasteWise">
     <section class="simple-section results-container">
-        <h1 class="simple-title" style="text-align: center;">WasteWise Quiz</h1>
-        <p class="simple-subtitle tight" style="text-align: center; margin-bottom: 32px">Test your recycling knowledge</p>
-        <div style="display: flex; justify-content: center; width: 100%">
+        <h1 class="simple-title quiz-title">WasteWise Quiz</h1>
+        <p class="simple-subtitle tight quiz-subtitle">Test your recycling knowledge</p>
+        <div class="quiz-iframe-wrapper">
             <iframe
                 data-tally-src="https://tally.so/embed/0QM890?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
                 loading="lazy"
                 width="100%"
                 height="600"
                 title="WasteWise Quiz"
-                style="border: none; max-width: 600px"
+                class="quiz-iframe"
             ></iframe>
         </div>
     </section>
