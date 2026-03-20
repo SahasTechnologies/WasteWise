@@ -1,5 +1,6 @@
 ---
 import Topbar from '../components/Topbar.astro';
+import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 
 type Props = {
@@ -25,5 +26,6 @@ const { title } = Astro.props;
 			<Topbar />
 			<slot />
 		</main>
+		<Footer />
 	</body>
 </html>

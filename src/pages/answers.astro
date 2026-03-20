@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import answersData from '../data/answers.json';
+
+---
+
+<BaseLayout title="Quiz Results | WasteWise">
+    <section class="simple-section results-container">
+        <h1 class="simple-title tight" style="text-align: center;">Quiz Results</h1>
+        <p class="simple-subtitle" style="text-align: center; margin-bottom: 48px; font-size: 20px;" id="score-display">
+            Calculating score...
+        </p>
+
+        <div class="questions-list" id="questions-container" data-answers={JSON.stringify(answersData)}>
+            {answersData.map((question) => {
+                return (
+                    <div class="question-block" data-question-id={question.id}>
+                        <h3>{question.id}. {question.question}</h3>
+                        
+                        <div class="options">
+                            {Object.entries(question.options).map(([letter, text]) => {
+                                return (
+                                    <div class="option" data-letter={letter}>
+                                        <div class="option-label" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; font-weight: 700; background: #777672; border: 1px solid #777672; color: #ffffff; font-size: 14px;">
+                                            {letter}
+                                        </div>
+                                        <div class="option-body">
+                                            <div class="option-text">{text}</div>
+                                            <div class="option-status-container"></div>
+                                            
+                                            <div class="explanation" style="display: none;">
+                                                <strong>Explanation:</strong> {question.explanations[letter as keyof typeof question.explanations]}
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )
+            })}
+        </div>
+        
+        <div style="text-align: center; margin: 40px 0;">
+            <a href="/quiz?retry=true" class="go" style="text-decoration: none;">Retake Quiz</a>
+        </div>
+    </section>
+</BaseLayout>
+
+<script>
+    import '../scripts/answers.js';
+</script>
