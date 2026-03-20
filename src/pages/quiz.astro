@@ -3,7 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Quiz | WasteWise">
-    <section class="simple-section results-container">
+	<Fragment slot="head">
+		<script src="https://tally.so/widgets/embed.js" async></script>
+	</Fragment>
+
+	<section class="simple-section results-container">
         <h1 class="simple-title quiz-title">WasteWise Quiz</h1>
         <p class="simple-subtitle tight quiz-subtitle">Test your recycling knowledge</p>
         <div class="quiz-iframe-wrapper">
