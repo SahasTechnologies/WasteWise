@@ -1,4 +1,4 @@
-import quizData from '../data/answers.json';
+import quizData from './answers.json';
 
 function normalise(s) {
     return String(s ?? '')
