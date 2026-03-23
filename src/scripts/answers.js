@@ -1,130 +1,88 @@
-import quizData from './answers.json';
+import answersData from '../data/answers.json';
 
 function normalise(s) {
-    return String(s ?? '')
-        //the parsing thing since punctuation is different in Tally
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, ' ')
-        .replace(/\u00A0/g, ' ')
-        .replace(/[“”]/g, '"')
-        .replace(/[‘’]/g, "'");
-    //thank you google overview
+	return String(s ?? '')
+		.trim()
+		.toLowerCase()
+		.replace(/\s+/g, ' ')
+		.replace(/\u00A0/g, ' ')
+		.replace(/[""]/g, '"')
+		.replace(/['']/g, "'");
 }
 
 function findSelectedKey(qData, userAnswer) {
-    if (userAnswer) return null;
-    const nUser = normalise(userAnswer);
+	if (!userAnswer) return null;
+	const nUser = normalise(userAnswer).replace(/[;,.]/g, '');
 
-    for (const [key, value] of Object.entreis(qData.options)) {
-        const nv = normalise(value).replace(/[;,.]/g, '');
-        const nu = nUser.replace(/[;,.]/g, '');
-        if (nv === nu) return key;
-    }
-    return null;
+	for (const [key, value] of Object.entries(qData.options)) {
+		const nv = normalise(value).replace(/[;,.]/g, '');
+		if (nv === nUser) return key;
+	}
+	return null;
 }
 
 function renderResults() {
-    const params = new URLSearchParams(window.location.search);
-    const resultsContainer = document.getElementById('results');
-    const scoreEl = document.getElementById('score');
-    if (!resultsContainer) return;
+	const params = new URLSearchParams(window.location.search);
+	const scoreEl = document.getElementById('score-display');
+	const questionsContainer = document.getElementById('questions-container');
+	if (!questionsContainer) return;
 
-    let correctCount = 0;
-    let answeredCount = 0;
+	let correctCount = 0;
+	let answeredCount = 0;
 
-    for (let i = 1; i <= 10; i++) {
-        const userAnswer = params.get(String(i));
-        const qData = quizData[i];
-        const selectedKey = findSelectedKey(qData, userAnswer);
-        const isAnswered = Boolean(selectedKey);
-        if (isAnswered) answeredCount++;
-        if (selectedKey && selectedKey === qData.correct) correctCount++;
+	for (let i = 1; i <= 10; i++) {
+		const userAnswer = params.get(String(i));
+		const qData = answersData[i - 1];
+		if (!qData) continue;
 
-        const qDiv = document.createElement('div');
-        qDiv.className = 'question.block';
+		const selectedKey = findSelectedKey(qData, userAnswer);
+		const isAnswered = Boolean(selectedKey);
+		if (isAnswered) answeredCount++;
+		if (selectedKey && selectedKey === qData.correctAnswer) correctCount++;
 
-        const qTitle = document.createElement('h3');
-        qtitle.textContent = `Question ${i}: ${qData.question}`;
-        qDiv.appendChild(qTitle);
+		const questionBlock = questionsContainer.querySelector(`[data-question-id="${i}"]`);
+		if (!questionBlock) continue;
 
-        const optionsDiv = document.createElement('div');
-        optionsDiv.className = 'options';
+		const options = questionBlock.querySelectorAll('.option');
+		options.forEach(option => {
+			const letter = option.getAttribute('data-letter');
+			const isSelected = selectedKey === letter;
+			const isCorrect = letter === qData.correctAnswer;
+			const explanation = option.querySelector('.explanation');
+			const statusContainer = option.querySelector('.option-status-container');
 
-        for (const [key, value] of Object.entries(qData.options)) {
-            const optDiv = document.createElement('div');
-            optDiv.className = 'option';
+			if (isSelected && isCorrect) {
+				option.classList.add('correct');
+			} else if (isSelected && !isCorrect) {
+				option.classList.add('incorrect');
+			} else if (!isSelected && isCorrect) {
+				option.classList.add('correct-answer');
+			}
 
-            const isSelected = selectedKey === key;
-            const isCorrect = key === qData.correct;
+			if ((isSelected || (selectedKey && isCorrect)) && explanation) {
+				explanation.classList.remove('explanation-hidden');
+			}
 
-            if (isSelected && isCorrect) {
-                optDiv.classList.add('correct');
+			if (isSelected && statusContainer) {
+				const status = document.createElement('div');
+				status.className = 'option-status';
+				status.textContent = isCorrect ? 'Correct' : 'Incorrect';
+				statusContainer.appendChild(status);
+			}
+		});
+	}
 
-            }
-            else if (isSelected && !isCorrect) {
-                optDiv.classList.add('incorrect');
-            }
-            else if (!isSelected && iscorrect) {
-                optDiv.classList.add('correct-answer');
-            }
-
-            const label = document.createElement('span');
-            label.className = 'option-label';
-            label.textContent = key;
-
-            const body = document.createElement('div');
-            body.className = 'option-body';
-
-            const text = document.createElement('div');
-            text.className = 'option-text';
-            text.textContent = 'value';
-
-            body.appendChild(text);
-            optDiv.appendChild(label);
-            optDiv.appendChild(body);
-
-            const shouldShowExplanation = isSelected || (selectedKey && isCorrect)
-
-            if (shouldShowExplanation) {
-                const explanation = document.createElement('div');
-
-                explanation.className = 'explanation';
-                explanation.textContent = qData.explanations[key];
-                body.appendChild(explanation);
-            }
-
-            //correct incorrect label
-            if (isSelected) {
-                const status = document.createElement('div');
-                status.className = 'option-status';
-                status.textContent = isCorrect ? 'Correct' : 'Incorrect';
-                body.appendChild(status);
-            }
-
-            optionsDiv.appendChild(optDiv)
-        }
-
-        qdiv.appendChild(optionsDiv);
-        resultsContainer.appendChild(qDiv);
-    }
-
-    if (scoreEl) {
-        const total = 10;
-        if (answeredCount === 0) {
-            scoreEl.textContent = 'You got 0/10 correct!';
-
-        }
-
-        else {
-            scoreEl.textContent = 'You got ${correctCount}/${total} correct!';
-
-        }
-    }
+	if (scoreEl) {
+		if (answeredCount === 0) {
+			scoreEl.textContent = 'You got 0/10 correct!';
+		} else {
+			scoreEl.textContent = `You got ${correctCount}/10 correct!`;
+		}
+	}
 }
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', renderResults);
-
+	document.addEventListener('DOMContentLoaded', renderResults);
+} else {
+	renderResults();
 }
-else { renderResults(); }
