@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+const checkFinished = () => {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('finished') === 'true') {
         const formView = document.getElementById('form-view');
@@ -8,4 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
             successView.classList.remove('hidden');
         }
     }
-});
+};
+
+checkFinished();
+
+document.addEventListener('astro:page-load', checkFinished);

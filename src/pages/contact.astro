@@ -4,7 +4,7 @@ import BaseLayout from '../components/BaseLayout.astro';
 
 <BaseLayout title="Contact | WasteWise">
 	<section class="simple-section simple-section-centered">
-		<div id="form-view">
+		<div id="form-view" class="contact-container">
 			<h1 class="simple-title">Contact Us</h1>
 			<p class="simple-subtitle">We'd love to hear from you. Fill out the form below.</p>
 			
@@ -23,12 +23,20 @@ import BaseLayout from '../components/BaseLayout.astro';
 			</div>
 		</div>
 
-		<div id="success-view" class="hidden">
+		<div id="success-view" class="contact-container hidden">
 			<h1 class="simple-title">Message Sent! ✓</h1>
 			<p class="simple-subtitle">Thank you for contacting us. We will get back to you shortly.</p>
 			<a href="/" class="go">Return Home</a>
 		</div>
 	</section>
 </BaseLayout>
+
+<style>
+	.contact-container {
+		width: 100%;
+		max-width: 600px;
+		text-align: left;
+	}
+</style>
 
 <script src="../scripts/contact.js"></script>
