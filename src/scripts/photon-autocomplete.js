@@ -24,10 +24,9 @@ export default (function initPhoton() {
             const wrap = input.closest('.input-wrap') || input.parentElement;
 
             if (wrap) {
-                wrap.style.position = 'relative'; //theory of relativity 🧠🤓
-                wrap.appendChild(dropdown); //sorry for the last comment... im skipping sci revision for this even though its nothing related to theory of realtivity
-            } // my exam is on waves and all the stuff in waves bro i need to studyyyyy for this and history and maths and english and computing and commerce and japanese
-
+                wrap.style.position = 'relative';
+                wrap.appendChild(dropdown); 
+            } 
             else { document.body.appendChild(dropdown); }
         }
     }
