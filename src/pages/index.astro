@@ -1,6 +1,7 @@
 ---
 import { ArrowRight, Triangle } from '@lucide/astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from '../components/BaseLayout.astro';
+import ImpactStats from '../components/ImpactStats.astro';
 import photonAutocompleteUrl from '../scripts/photon-autocomplete.js?url';
 ---
 
@@ -57,6 +58,8 @@ import photonAutocompleteUrl from '../scripts/photon-autocomplete.js?url';
 			</div>
 		</div>
 	</section>
+
+	<ImpactStats />
 
 	<script type="module" src={photonAutocompleteUrl}></script>
 </BaseLayout>

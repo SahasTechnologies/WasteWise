@@ -1,0 +1,72 @@
+---
+---
+<section class="home-stats" aria-labelledby="stats-heading">
+  <div class="stats-container">
+    <h2 id="stats-heading" class="stats-title">Your small actions can reduce waste for good</h2>
+    
+    <div class="stats-widgets">
+      <!-- First counter (Tonnes of waste from households) -->
+      <div class="stat-widget static-stat">
+        <div class="stat-value"><span id="world-count-1">Loading...</span></div>
+        <div class="stat-label">Tonnes of waste from households (Globally, this year)</div>
+        <div class="stats-source">
+            <a href="https://www.theworldcounts.com/challenges/waste/waste-from-households" target="_blank" rel="noopener noreferrer">The World Counts</a>
+        </div>
+      </div>
+
+      <!-- Middle static stat -->
+      <div class="stat-widget static-stat">
+        <div class="stat-value">~1,500 <span class="stat-unit">Tonnes</span></div>
+        <div class="stat-label">Daily Sydney Household Waste Generation</div>
+        <div class="stats-source">
+            <a href="https://data.nsw.gov.au" target="_blank" rel="noopener noreferrer">data.nsw.gov.au</a>
+        </div>
+      </div>
+
+      <!-- Third counter (Tonnes of waste dumped) -->
+      <div class="stat-widget static-stat">
+        <div class="stat-value"><span id="world-count-2">Loading...</span></div>
+        <div class="stat-label">Tonnes of waste dumped (Globally, this year)</div>
+        <div class="stats-source">
+            <a href="https://www.theworldcounts.com/challenges/waste/global-waste-problem" target="_blank" rel="noopener noreferrer">The World Counts</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="impact-slider-section">
+      <h3 class="impact-title">See Your Impact</h3>
+      <p class="impact-subtitle">Move the slider to see what you save</p>
+      
+      <div class="slider-wrapper">
+        <input type="range" min="1" max="100" value="1" class="impact-slider" id="impact-slider" aria-label="Waste recycled in kg">
+        <div class="slider-labels">
+          <span>1 kg</span>
+          <span>100 kg</span>
+        </div>
+      </div>
+      
+      <div class="impact-results">
+        <p class="impact-text">Recycling <span id="val-waste" class="impact-highlight">1</span> kg of waste saves:</p>
+        <div class="impact-grid">
+          <div class="impact-card">
+            <span id="val-co2" class="impact-number">2.5</span>
+            <span class="impact-unit">kg CO₂ Eq</span>
+          </div>
+          <div class="impact-card">
+            <span id="val-energy" class="impact-number">4.0</span>
+            <span class="impact-unit">kWh Energy</span>
+          </div>
+          <div class="impact-card">
+            <span id="val-water" class="impact-number">10.0</span>
+            <span class="impact-unit">Liters Water</span>
+          </div>
+        </div>
+      </div>
+      <p class="stats-source">
+        Impact metrics based on <a href="https://www.epa.gov/warm" target="_blank" rel="noopener noreferrer">EPA WARM</a> averages.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script src="../scripts/impact-stats.js"></script>

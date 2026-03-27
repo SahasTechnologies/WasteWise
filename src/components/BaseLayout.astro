@@ -1,6 +1,6 @@
 ---
-import Topbar from '../components/Topbar.astro';
-import Footer from '../components/Footer.astro';
+import Topbar from './Topbar.astro';
+import Footer from './Footer.astro';
 import '../styles/global.css';
 
 type Props = {
@@ -14,7 +14,6 @@ const { title } = Astro.props;
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>

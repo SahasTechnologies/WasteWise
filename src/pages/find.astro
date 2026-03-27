@@ -1,5 +1,7 @@
+```
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import { Search } from '@lucide/astro';
+import BaseLayout from '../components/BaseLayout.astro';
 import mapInitUrl from '../scripts/map-init.js?url';
 
 const item = Astro.url.searchParams.get('item') ?? '';
