@@ -1,6 +1,10 @@
 import { neon } from '@neondatabase/serverless';
 
-const connectionString = import.meta.env.DATABASE_URL || import.meta.env.POSTGRES_URL;
+const connectionString =
+	process.env.DATABASE_URL ||
+	process.env.POSTGRES_URL ||
+	import.meta.env.DATABASE_URL ||
+	import.meta.env.POSTGRES_URL;
 if (!connectionString) {
 	throw new Error('Missing DATABASE_URL/POSTGRES_URL');
 }
