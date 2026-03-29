@@ -1,4 +1,10 @@
-import { sql } from '@vercel/postgres';
+import { neon } from '@neondatabase/serverless';
+
+const connectionString = import.meta.env.DATABASE_URL || import.meta.env.POSTGRES_URL;
+if (!connectionString) {
+	throw new Error('Missing DATABASE_URL/POSTGRES_URL');
+}
+const sql = neon(connectionString);
 
 async function ensureTable() {
 	await sql`
