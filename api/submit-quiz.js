@@ -33,8 +33,12 @@ async function ensureTable() {
 
 export const prerender = false;
 
-export async function POST({ request }) {
+export async function POST(context) {
 	try {
+		const request = context?.request ?? context;
+		if (!request || typeof request.json !== 'function') {
+			throw new Error('Invalid request');
+		}
 		const body = await request.json();
 		const { q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, ip, city, isp } = body;
 

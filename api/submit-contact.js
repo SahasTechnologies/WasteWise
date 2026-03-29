@@ -25,8 +25,12 @@ async function ensureTable() {
 
 export const prerender = false;
 
-export async function POST({ request }) {
+export async function POST(context) {
 	try {
+		const request = context?.request ?? context;
+		if (!request || typeof request.json !== 'function') {
+			throw new Error('Invalid request');
+		}
 		const body = await request.json();
 		const { Name, Email, Message, 'User IP': ip, City, ISP } = body;
 

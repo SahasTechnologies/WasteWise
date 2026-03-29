@@ -8,8 +8,12 @@ enough. I'm not using this IP to deliver targeted ads etc.
 
 export const prerender = false;
 
-export async function GET({ request }) {
+export async function GET(context) {
 	try {
+		const request = context?.request ?? context;
+		if (!request || !request.headers) {
+			throw new Error('Invalid request');
+		}
 		const forwarded = request.headers.get('x-forwarded-for');
 		const real = request.headers.get('x-real-ip');
 
