@@ -7,20 +7,59 @@ import BaseLayout from '../components/BaseLayout.astro';
 		<div id="form-view" class="contact-container">
 			<h1 class="simple-title">Contact Us</h1>
 			<p class="simple-subtitle">We'd love to hear from you. Fill out the form below.</p>
-			
-			<div class="tally-form-wrapper">
-				<iframe 
-					data-tally-src="https://tally.so/embed/ODLX1Y?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
-					loading="lazy" 
-					width="100%" 
-					height="400" 
-					frameborder="0" 
-					marginheight="0" 
-					marginwidth="0" 
-					title="WasteWise Contact Form">
-				</iframe>
-				<script defer src="https://tally.so/widgets/embed.js"></script>
-			</div>
+
+			<form
+				class="contact-form"
+				id="native-contact"
+				action="https://formsubmit.co/ajax/34d79f3e556fdaff9e7d0389663cfcce"
+				method="POST"
+			>
+				<!-- formsubmit.co config -->
+				<input type="hidden" name="_captcha" value="false" />
+				<input type="hidden" name="_subject" value="New WasteWise Contact Form Message" />
+				<!-- IP address and Geo fields — filled by JS -->
+				<input type="hidden" name="User IP" id="user-ip-field" value="unknown" />
+				<input type="hidden" name="City" id="user-city-field" value="unknown" />
+				<input type="hidden" name="ISP" id="user-isp-field" value="unknown" />
+
+				<div class="form-group">
+					<label class="form-label" for="contact-name">Name</label>
+					<input
+						class="form-input"
+						type="text"
+						id="contact-name"
+						name="Name"
+						placeholder="Your name"
+						required
+					/>
+				</div>
+
+				<div class="form-group">
+					<label class="form-label" for="contact-email">Email</label>
+					<input
+						class="form-input"
+						type="email"
+						id="contact-email"
+						name="Email"
+						placeholder="your@email.com"
+						required
+					/>
+				</div>
+
+				<div class="form-group">
+					<label class="form-label" for="contact-message">Message</label>
+					<textarea
+						class="form-input form-textarea"
+						id="contact-message"
+						name="Message"
+						placeholder="Type your message here…"
+						rows="5"
+						required
+					></textarea>
+				</div>
+
+				<button type="submit" class="go contact-submit">Send Message</button>
+			</form>
 		</div>
 
 		<div id="success-view" class="contact-container hidden">
@@ -35,8 +74,69 @@ import BaseLayout from '../components/BaseLayout.astro';
 	.contact-container {
 		width: 100%;
 		max-width: 600px;
-		text-align: left;
+		margin: 0 auto;
+		text-align: center;
 	}
 </style>
 
 <script src="../scripts/contact.js"></script>
+<script>
+	// Fetch visitor's IP and Geo info via our API and populate hidden fields
+	fetch('/api/get-ip')
+		.then(r => r.json())
+		.then(data => {
+			const ipField = document.getElementById('user-ip-field') as HTMLInputElement;
+			const cityField = document.getElementById('user-city-field') as HTMLInputElement;
+			const ispField = document.getElementById('user-isp-field') as HTMLInputElement;
+			
+			if (ipField) ipField.value = data.ip || 'unknown';
+			if (cityField) cityField.value = data.city || 'unknown';
+			if (ispField) ispField.value = data.isp || 'unknown';
+		})
+		.catch(() => {});
+
+	// Handle form submission to save to Vercel DB AND formsubmit.co via AJAX
+	const form = document.querySelector('.contact-form') as HTMLFormElement;
+	const formView = document.getElementById('form-view');
+	const successView = document.getElementById('success-view');
+
+	if (form) {
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault(); // Stop standard redirect!
+
+			const formData = new FormData(form);
+			const payload = Object.fromEntries(formData.entries());
+			
+			// Show sending state
+			const btn = form.querySelector('.contact-submit') as HTMLButtonElement;
+			if (btn) btn.textContent = 'Sending...';
+
+			try {
+				// Submit to our Vercel DB
+				await fetch('/api/submit-contact', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(payload)
+				}).catch(() => {});
+
+				// Submit to formsubmit.co via AJAX
+				await fetch(form.action, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					},
+					body: JSON.stringify(payload)
+				});
+
+				// Swap to success view without URL parameters
+				if (formView && successView) {
+					formView.classList.add('hidden');
+					successView.classList.remove('hidden');
+				}
+			} catch (err) {
+				if (btn) btn.textContent = 'Error - Try Again';
+			}
+		});
+	}
+</script>

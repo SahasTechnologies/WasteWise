@@ -27,3 +27,7 @@ pnpm-debug.log*
 .vscode
 node_modules
 
+# vercel
+build.log
+.vercel/
+build_log.txt

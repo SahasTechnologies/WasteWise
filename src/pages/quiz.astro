@@ -1,24 +1,58 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
+import answersData from '../data/answers.json';
 ---
 
 <BaseLayout title="Quiz | WasteWise">
-	<Fragment slot="head">
-		<script src="https://tally.so/widgets/embed.js" async></script>
-	</Fragment>
+	<section class="quiz-section">
+		<!-- Progress bar -->
+		<div class="quiz-progress-wrap" aria-label="Quiz progress">
+			<div class="quiz-progress-bar" id="quiz-progress-bar" style="width: 0%"></div>
+		</div>
 
-	<section class="simple-section results-container">
-        <h1 class="simple-title quiz-title">WasteWise Quiz</h1>
-        <p class="simple-subtitle tight quiz-subtitle">Test your recycling knowledge</p>
-        <div class="quiz-iframe-wrapper">
-            <iframe
-                data-tally-src="https://tally.so/embed/0QM890?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-                loading="lazy"
-                width="100%"
-                height="600"
-                title="WasteWise Quiz"
-                class="quiz-iframe"
-            ></iframe>
-        </div>
-    </section>
+		<!-- Question step container -->
+		<div class="quiz-stage" id="quiz-stage" data-total={answersData.length}>
+			{answersData.map((q, index) => (
+				<div class={`quiz-step ${index === 0 ? '' : 'hidden'}`} id={`quiz-step-${index}`} data-correct={q.correctAnswer}>
+					<p class="quiz-step-counter">{index + 1} / {answersData.length}</p>
+					<h2 class="quiz-question-text">{q.question} <span class="quiz-required">*</span></h2>
+					<div class="quiz-options" role="list">
+						{Object.entries(q.options).map(([letter, text]) => (
+							<button
+								class={`quiz-option option-btn-${index}`}
+								data-letter={letter}
+								role="listitem"
+								aria-label={`Option ${letter}: ${text}`}
+							>
+								<span class="quiz-option-label">{letter}</span>
+								<span class="quiz-option-text">{text}</span>
+							</button>
+						))}
+					</div>
+					<div class="quiz-explanation hidden" id={`explanation-${index}`}>
+						<p class="quiz-explanation-text" id={`explanation-text-${index}`}></p>
+					</div>
+					<div class="quiz-next-wrap hidden" id={`next-wrap-${index}`}>
+						<button class="go quiz-next-btn" id={`next-btn-${index}`}>
+							{index === answersData.length - 1 ? 'See Results' : 'Next →'}
+						</button>
+					</div>
+                    <div id={`expl-data-${index}`} class="hidden" data-explanations={JSON.stringify(q.explanations)}></div>
+				</div>
+			))}
+		</div>
+
+		<!-- Score screen (hidden until end) -->
+		<div class="quiz-score-screen hidden" id="quiz-score-screen">
+			<div class="score-inner">
+				<div class="score-icon">🎉</div>
+				<h1 class="score-title">Quiz Complete!</h1>
+				<p class="score-value" id="score-value">You got 0/10 correct</p>
+				<p class="score-sub" id="score-sub"></p>
+				<button class="go quiz-retake" id="quiz-retake">Retake Quiz</button>
+			</div>
+		</div>
+	</section>
 </BaseLayout>
+
+<script src="../scripts/quiz.js"></script>

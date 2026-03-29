@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import ImpactStats from '../components/ImpactStats.astro';
+export const prerender = true;
 ---
 
 <BaseLayout title="About | WasteWise">
@@ -8,6 +8,4 @@ import ImpactStats from '../components/ImpactStats.astro';
         <h1 class="simple-title">About WasteWise</h1>
         <p class="simple-subtitle">Learn more about our mission to save the planet.</p>
     </section>
-
-    <ImpactStats />
 </BaseLayout>
