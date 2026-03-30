@@ -1,170 +1,172 @@
 [
   {
     "id": 1,
-    "question": "What is \"Wish-cycling\"?",
+    "question": "You have a plastic meat tray from the supermarket. Which 'label' should you look for to see if it's actually recyclable?",
     "options": {
-      "A": "A magical process that turns plastic into renewable fuel.",
-      "B": "The act of only buying products packaged in 100% recycled materials.",
-      "C": "Putting non-recyclable items in the bin hoping they'll be recycled anyway.",
-      "D": "A community program where you donate old items to charity."
+      "A": "The 'Made in Australia' kangaroo logo.",
+      "B": "The 'Australasian Recycling Label' (ARL) - a little bin icon with instructions.",
+      "C": "The 'Triangle with numbers' at the bottom of the tray.",
+      "D": "The 'Use By' date stamp."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "explanations": {
-      "A": "This is incorrect because recycling is a mechanical or chemical process, not a \"magical\" one that automatically creates fuel.",
-      "B": "While buying recycled products is good, this is actually called \"closing the loop\" or \"green purchasing,\" not wish-cycling.",
-      "C": "This describes putting non-recyclable items in the bin hoping they'll be recycled, which often clogs machines and ruins batches of good material.",
-      "D": "Donating old items to charity is a form of \"Reuse,\" which is separate from the municipal recycling process."
+      "A": "This tells you where it's made, not how to dispose of it.",
+      "B": "The ARL is the only reliable guide in Australia. It tells you exactly which part goes in the trash, which goes in recycling, and which needs a rinse.",
+      "C": "The numbers (1-7) actually identify the type of plastic resin, not necessarily if your local council can recycle it.",
+      "D": "This is for food safety, not waste management."
     }
   },
   {
     "id": 2,
-    "question": "Which of these materials is \"infinitely\" recyclable without losing quality?",
+    "question": "What is 'Wish-cycling'?",
     "options": {
-      "A": "Plastic water bottles (PET)",
-      "B": "Glossy magazines and office paper",
-      "C": "Aluminum cans and glass jars",
-      "D": "Cardboard shipping boxes"
+      "A": "Buying items that say 'biodegradable' on the box.",
+      "B": "Putting an item in the yellow bin because you *hope* it can be recycled.",
+      "C": "Donating your old clothes to a Vinnies or Salvos bin.",
+      "D": "Entering a lottery to win a new compost system."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "explanations": {
-      "A": "Plastic water bottles are usually \"down-cycled,\" meaning the plastic quality degrades each time until it can no longer be used.",
-      "B": "Paper fibers break and shorten every time they are processed, meaning paper can typically only be recycled about 5 to 7 times.",
-      "C": "Aluminum and glass are unique because they can be melted down and reformed forever without any loss in purity or strength.",
-      "D": "Cardboard is made of paper fibers that, like office paper, eventually become too short to hold together after several recycling cycles."
+      "A": "Biodegradable items often don't belong in recycling bins.",
+      "B": "This is a big mistake. If you put things like old hoses, toys, or nappies in the yellow bin 'just in case,' you risk ruining the entire truckload of good recycling.",
+      "C": "This is 'Donating' or 'Reusing,' which is great, but separate from your home bins.",
+      "D": "This is just a wish for a prize!"
     }
   },
   {
     "id": 3,
-    "question": "What should you do with a plastic bottle cap?",
+    "question": "What should you do with a plastic water bottle and its lid?",
     "options": {
-      "A": "Throw them in the trash; they are a different plastic type.",
-      "B": "Remove them and put them loose in the recycling bin.",
-      "C": "Squeeze the air out, screw the cap on tight, and recycle.",
-      "D": "Save them in a separate glass jar for bulk drop-off."
+      "A": "Throw the lid in the red bin and the bottle in the yellow bin.",
+      "B": "Put the lid inside the bottle and leave it loose.",
+      "C": "Crush the bottle, screw the lid back on tight, and put in the yellow bin.",
+      "D": "Take both to a glass-only recycling center."
     },
     "correctAnswer": "C",
     "explanations": {
-      "A": "While caps used to be trash, most modern facilities now want them recycled alongside the bottle.",
-      "B": "Loose caps are so small they often fall through sorting machines and end up in the trash or jamming the equipment.",
-      "C": "Leaving the cap on ensures it makes it through the sorting process; flattening the bottle first prevents it from popping off under pressure.",
-      "D": "Most curbside programs don’t have a separate glass jar system for caps, and keeping them separate increases the chance they get lost."
+      "A": "Lids are recyclable, but only if they stay attached to the bottle.",
+      "B": "Loose lids fall through the sorting machines and end up as landfill waste.",
+      "C": "This is the current Australian standard. Crushing saves space and ensures the lid doesn't pop off during sorting.",
+      "D": "Plastic bottles never go in the glass-only stream."
     }
   },
   {
     "id": 4,
-    "question": "Why should you not recycle greasy pizza boxes?",
+    "question": "If your pizza box is covered in melted cheese and oil, where should it go?",
     "options": {
-      "A": "The cheese can mold and ruin the entire batch of paper.",
-      "B": "Food waste is too heavy for the optical sorting sensors.",
-      "C": "Oil prevents the paper fibers from bonding during the pulping process.",
-      "D": "Cardboard with any printing or ink cannot be recycled twice."
+      "A": "The yellow recycling bin.",
+      "B": "The green FOGO (Food Organics and Garden Organics) bin.",
+      "C": "The red landfill bin.",
+      "D": "Either B or C, depending on your council."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "D",
     "explanations": {
-      "A": "While mold is a concern, the primary technical reason for rejection in paper recycling is the presence of oils.",
-      "B": "Optical sensors can detect the box, but they cannot \"see\" the weight of food waste; the issue is the chemical contamination.",
-      "C": "Paper is recycled by mixing it with water into a slurry; since oil doesn't mix with water, it creates spots and holes in the new paper.",
-      "D": "Cardboard is actually one of the most recyclable materials and can be processed several times as long as it isn't contaminated by grease."
+      "A": "Grease and food residue are the enemies of paper recycling; they prevent the fibers from bonding into new paper.",
+      "B": "In many Australian suburbs, FOGO bins accept greasy cardboard as 'compostable' organic matter.",
+      "C": "If you don't have a FOGO bin, a heavily soiled box must go to landfill to avoid contaminating the recycling.",
+      "D": "It depends on your local council's specific rules for FOGO."
     }
   },
   {
     "id": 5,
-    "question": "How should you dispose of stretchy plastic film (grocery bags, bubble wrap)?",
+    "question": "Why can't soft plastics (like bread bags or bubble wrap) go in your yellow bin?",
     "options": {
-      "A": "Place them inside a milk jug and put them in the curbside bin.",
-      "B": "Bundle them together in one large bag for curbside pickup.",
-      "C": "Take them to a dedicated plastic film drop-off (usually at grocery stores).",
-      "D": "They are not recyclable in any capacity and must go to a landfill."
+      "A": "They are too light and blow away.",
+      "B": "They are 'Tanglers' that wrap around and break the sorting machines.",
+      "C": "They are made of toxic chemicals that melt the other plastics.",
+      "D": "They don't have the correct barcode for the sensors."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "explanations": {
-      "A": "Placing film inside other containers can lead to \"tanglers\" that wrap around and damage expensive sorting machinery.",
-      "B": "Even bundled together, stretchy plastic is a major hazard for standard curbside sorting facilities and is usually rejected.",
-      "C": "Grocery stores have specialized collection bins for film plastic, which is sent to dedicated facilities that can handle its stretchy nature.",
-      "D": "Plastic film is highly recyclable into items like composite lumber, but it requires a separate stream from your home bin to be processed."
+      "A": "While light, that isn't the primary reason they are excluded.",
+      "B": "Soft plastics act like a rope in the machines, jamming the rotating gears. Since the REDcycle program paused, most soft plastics must currently go in the red bin.",
+      "C": "They aren't more toxic; they are just a different physical shape that machines can't handle.",
+      "D": "Sorting is done by physical properties, not barcodes."
     }
   },
   {
     "id": 6,
-    "question": "Which of these 3 Rs has the greatest impact on our environment?",
+    "question": "What is the benefit of using a 10c 'Return and Earn' machine instead of your yellow bin?",
     "options": {
-      "A": "Recycle (Processing waste into new products)",
-      "B": "Reuse (Using items multiple times)",
-      "C": "Reduce (Buying less and creating less waste)"
+      "A": "It's the only way to recycle glass in Australia.",
+      "B": "It results in 'higher quality' recycling because the items aren't mixed with paper or food.",
+      "C": "It is faster for the council to collect.",
+      "D": "It's the only place that accepts plastic milk bottles."
     },
-    "correctAnswer": "C",
+    "correctAnswer": "B",
     "explanations": {
-      "A": "Recycling requires significant energy for transport and processing, making it the least efficient of the three options.",
-      "B": "Reusing is excellent because it extends an item's life, but it still involves a product that was already manufactured and will eventually become waste.",
-      "C": "Reducing is the most effective because it prevents the extraction of raw materials and the energy used in manufacturing from happening at all."
+      "A": "Glass can go in yellow bins, but it often breaks into tiny pieces.",
+      "B": "By separating cans and bottles at the machine, the material is 'pure' and can be turned back into new bottles much more easily.",
+      "C": "It actually requires you to do more work, but it pays you back!",
+      "D": "Milk bottles are usually not part of the 10c scheme; they belong in your yellow bin."
     }
   },
   {
     "id": 7,
-    "question": "In a \"Single-Stream\" recycling system, how are materials sorted?",
+    "question": "A battery is dead. Why is it 'illegal' and dangerous to put it in any household bin?",
     "options": {
-      "A": "Residents must separate paper, plastic, and metal into different bags.",
-      "B": "All items go in one bin and are sorted by machines and people at a facility.",
-      "C": "The truck has different compartments for each material type.",
-      "D": "Only one type of material (e.g., just paper) is collected each week."
+      "A": "It might leak and stain your bin.",
+      "B": "It can be crushed by the truck and start a massive fire.",
+      "C": "It makes the bin too heavy for the robotic arm.",
+      "D": "It attracts pests like rats and cockroaches."
     },
     "correctAnswer": "B",
     "explanations": {
-      "A": "This describes \"Multi-stream\" or \"Source-separated\" recycling, where the user does the heavy lifting of sorting.",
-      "B": "Single-stream allows all materials to be mixed in one bin, using high-tech magnets, screens, and manual labor to sort them later.",
-      "C": "In this system, the truck is just a large open container; it does not need compartments because the materials are already mixed.",
-      "D": "This is a scheduled collection method used in some cities, but it is not the definition of a single-stream system."
+      "A": "Stains are the least of your worries!",
+      "B": "Lithium-ion batteries (in vapes, phones, toys) are the leading cause of garbage truck fires in Australia. They must go to a B-cycle drop-off (at supermarkets or Bunnings).",
+      "C": "Trucks can lift much heavier items than a battery.",
+      "D": "Batteries aren't food, so they don't attract pests."
     }
   },
   {
     "id": 8,
-    "question": "What is the biggest danger of putting a Lithium-ion battery in a recycling bin?",
+    "question": "What does 'Empty, Clean, and Dry' mean for your recycling?",
     "options": {
-      "A": "It contaminates the plastic with toxic lead.",
-      "B": "It can get crushed and start a fire in the truck or facility.",
-      "C": "It ruins the magnets used to sort aluminum cans.",
-      "D": "It is too small to be picked up by the sorting screens."
+      "A": "You must use a dishwasher for every item.",
+      "B": "No liquid inside, no chunks of food, and no moisture that could soak paper items.",
+      "C": "You must leave your bin lid open so the sun can dry the contents.",
+      "D": "Only recycle items that have never touched food."
     },
     "correctAnswer": "B",
     "explanations": {
-      "A": "While batteries do contain chemicals, the immediate physical danger in a recycling facility is fire, not lead contamination of plastic.",
-      "B": "When these batteries are crushed by trucks or sorting machines, they can spark and cause massive, hard-to-extinguish fires.",
-      "C": "Magnets are used to sort metals, but the primary risk of a battery isn't the magnet—it's the explosive reaction when the battery casing is punctured.",
-      "D": "While they are small, their size is less concerning than the fact that they are highly combustible under pressure."
+      "A": "A quick rinse is all you need; don't waste power and water.",
+      "B": "If you leave half a coke in a bottle, it spills on the cardboard in the truck, making that cardboard unrecyclable.",
+      "C": "Leaving your bin lid open leads to litter and pests.",
+      "D": "Most food containers are recyclable if you just rinse them out."
     }
   },
   {
     "id": 9,
-    "question": "What is the \"Golden Rule\" for food and liquid containers?",
+    "question": "Which of these is the most effective way to help the environment?",
     "options": {
-      "A": "They must be sterilized with boiling water.",
-      "B": "They should be \"Empty, Clean, and Dry.\"",
-      "C": "As long as they are 75% empty, they are acceptable.",
-      "D": "Only glass containers need to be washed; plastic can be dirty."
+      "A": "Buying a bigger recycling bin.",
+      "B": "Recycling 100% of your waste.",
+      "C": "Reducing your waste by buying products with less packaging.",
+      "D": "Printing out more recycling guides."
     },
-    "correctAnswer": "B",
+    "correctAnswer": "C",
     "explanations": {
-      "A": "Sterilizing is unnecessary and wastes energy; a simple rinse to remove residue is all that is required.",
-      "B": "Items must be empty to avoid weight errors, clean to prevent contamination, and dry so they don't soak and ruin paper items in the same bin.",
-      "C": "Even a small amount of liquid (25%) can spill and contaminate an entire truckload of dry paper, making it unrecyclable.",
-      "D": "Both glass and plastic need to be clean; leftover food in plastic can ruin the chemical bonding of new plastic products."
+      "A": "More bins usually mean more consumption.",
+      "B": "Recycling still uses energy. It's better to not create the waste in the first place.",
+      "C": "'Reduce' is the most important of the 3 Rs because it saves the energy and resources used to make the product.",
+      "D": "Digital guides are better—no paper wasted!"
     }
   },
   {
     "id": 10,
-    "question": "What does the \"Circular Economy\" aim to eliminate?",
+    "question": "In Australia, where can you check the exact rules for YOUR specific street?",
     "options": {
-      "A": "The use of all plastic materials globally.",
-      "B": "The \"Take-Make-Waste\" linear model of production.",
-      "C": "International trade of recycled commodities.",
-      "D": "The use of paper-based packaging in shipping."
+      "A": "The Prime Minister's website.",
+      "B": "Your local Council's website.",
+      "C": "The back of your grocery receipt.",
+      "D": "By asking a neighbor who has lived there a long time."
     },
     "correctAnswer": "B",
     "explanations": {
-      "A": "The goal isn't necessarily to stop using plastic, but to ensure that any plastic used stays in a continuous loop of reuse.",
-      "B": "It aims to replace the \"Linear Model\" where we take resources, make a product, and then throw it away (waste).",
-      "C": "A circular economy actually encourages the trade of recycled materials as valuable commodities to keep them out of landfills.",
-      "D": "Paper-based packaging is often a key part of a circular economy because it is renewable and highly recyclable compared to many synthetics."
+      "A": "Recycling is managed by local councils, not the federal government.",
+      "B": "Every council in Australia has slightly different rules. Checking their website is the only way to be 100% sure.",
+      "C": "Receipts don't carry this info.",
+      "D": "Neighbors often 'wish-cycle' too! Stick to the official council guide."
     }
   }
 ]

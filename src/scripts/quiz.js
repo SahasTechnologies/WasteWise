@@ -104,25 +104,84 @@
 		if (scoreScreen) scoreScreen.classList.remove('hidden');
 
 		let correctCount = 0;
+		const payload = {};
+		
 		for (let i = 0; i < totalQuestions; i++) {
 			const step = document.getElementById(`quiz-step-${i}`);
 			const correctLetter = step ? step.getAttribute('data-correct') : null;
-			if (userAnswers[i + 1] === correctLetter) correctCount++;
+			const isCorrect = userAnswers[i + 1] === correctLetter ? 1 : 0;
+			correctCount += isCorrect;
+			payload[`q${i + 1}`] = isCorrect;
+		}
+		
+		payload.score = correctCount;
+
+		// Update score icon based on performance
+		const scoreIcon = document.getElementById('score-icon');
+		const pct = Math.round((correctCount / totalQuestions) * 100);
+		
+		if (scoreIcon) {
+			const trophyIcon = scoreIcon.querySelector('.icon-trophy');
+			const starIcon = scoreIcon.querySelector('.icon-star');
+			
+			if (pct >= 80) {
+				// Show trophy for high scores
+				if (trophyIcon) {
+					trophyIcon.classList.remove('hidden');
+					trophyIcon.style.color = '#22c55e';
+				}
+				if (starIcon) starIcon.classList.add('hidden');
+			} else {
+				// Show star for other scores
+				if (starIcon) {
+					starIcon.classList.remove('hidden');
+					starIcon.style.color = pct >= 50 ? '#3b82f6' : '#f59e0b';
+				}
+				if (trophyIcon) trophyIcon.classList.add('hidden');
+			}
 		}
 
 		if (scoreValue) scoreValue.textContent = `You got ${correctCount} out of ${totalQuestions} correct!`;
 		if (scoreSub) {
-			const pct = Math.round((correctCount / totalQuestions) * 100);
-			if (pct >= 80) scoreSub.textContent = "Amazing work — you're a recycling expert! 🌿";
+			if (pct >= 80) scoreSub.textContent = "Amazing work — you're a recycling expert!";
 			else if (pct >= 50) scoreSub.textContent = "Good effort! Keep learning about recycling.";
 			else scoreSub.textContent = "Don't worry — every quiz is a learning opportunity!";
 		}
 
-		const payload = {};
-		for (let i = 1; i <= totalQuestions; i++) {
-			payload[`q${i}`] = userAnswers[i] || 'X';
-		}
+		// Fetch and display statistics
+		fetch('/api/get-quiz-stats')
+			.then(r => r.json())
+			.then(stats => {
+				const total = parseInt(stats.range_0_10) + parseInt(stats.range_10_40) + 
+							  parseInt(stats.range_40_70) + parseInt(stats.range_70_99) + 
+							  parseInt(stats.range_100);
+				
+				if (total > 0) {
+					const ranges = [
+						{ id: '0-10', count: parseInt(stats.range_0_10) },
+						{ id: '10-40', count: parseInt(stats.range_10_40) },
+						{ id: '40-70', count: parseInt(stats.range_40_70) },
+						{ id: '70-99', count: parseInt(stats.range_70_99) },
+						{ id: '100', count: parseInt(stats.range_100) }
+					];
+					
+					const maxCount = Math.max(...ranges.map(r => r.count));
+					
+					ranges.forEach(range => {
+						const barEl = document.getElementById(`bar-${range.id}`);
+						const countEl = document.getElementById(`count-${range.id}`);
+						
+						if (barEl && countEl) {
+							const height = maxCount > 0 ? (range.count / maxCount) * 100 : 0;
+							barEl.style.height = height + '%';
+							countEl.textContent = range.count;
+						}
+					});
+				}
+			})
+			.catch(err => console.error('Failed to fetch stats:', err));
 
+		// Submit quiz results
 		fetch('/api/get-ip')
 			.then(r => r.json())
 			.then(data => {

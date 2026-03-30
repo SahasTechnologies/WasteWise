@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
 import answersData from '../data/answers.json';
+import { Trophy, Star } from '@lucide/astro';
 ---
 
 <BaseLayout title="Quiz | WasteWise">
@@ -45,10 +46,60 @@ import answersData from '../data/answers.json';
 		<!-- Score screen (hidden until end) -->
 		<div class="quiz-score-screen hidden" id="quiz-score-screen">
 			<div class="score-inner">
-				<div class="score-icon">🎉</div>
+				<div class="score-icon" id="score-icon">
+					<div class="icon-trophy hidden">
+						<Trophy size={64} />
+					</div>
+					<div class="icon-star">
+						<Star size={64} />
+					</div>
+				</div>
 				<h1 class="score-title">Quiz Complete!</h1>
 				<p class="score-value" id="score-value">You got 0/10 correct</p>
 				<p class="score-sub" id="score-sub"></p>
+				
+				<!-- Results Distribution Chart -->
+				<div class="quiz-results-chart" id="quiz-results-chart">
+					<h3 class="chart-title">How Others Scored</h3>
+					<div class="chart-bars">
+						<div class="chart-bar-group">
+							<div class="chart-bar-wrapper">
+								<div class="chart-bar" id="bar-0-10" style="height: 0%"></div>
+							</div>
+							<span class="chart-label">0-10%</span>
+							<span class="chart-count" id="count-0-10">0</span>
+						</div>
+						<div class="chart-bar-group">
+							<div class="chart-bar-wrapper">
+								<div class="chart-bar" id="bar-10-40" style="height: 0%"></div>
+							</div>
+							<span class="chart-label">10-40%</span>
+							<span class="chart-count" id="count-10-40">0</span>
+						</div>
+						<div class="chart-bar-group">
+							<div class="chart-bar-wrapper">
+								<div class="chart-bar" id="bar-40-70" style="height: 0%"></div>
+							</div>
+							<span class="chart-label">40-70%</span>
+							<span class="chart-count" id="count-40-70">0</span>
+						</div>
+						<div class="chart-bar-group">
+							<div class="chart-bar-wrapper">
+								<div class="chart-bar" id="bar-70-99" style="height: 0%"></div>
+							</div>
+							<span class="chart-label">70-99%</span>
+							<span class="chart-count" id="count-70-99">0</span>
+						</div>
+						<div class="chart-bar-group">
+							<div class="chart-bar-wrapper">
+								<div class="chart-bar" id="bar-100" style="height: 0%"></div>
+							</div>
+							<span class="chart-label">100%</span>
+							<span class="chart-count" id="count-100">0</span>
+						</div>
+					</div>
+				</div>
+				
 				<button class="go quiz-retake" id="quiz-retake">Retake Quiz</button>
 			</div>
 		</div>
