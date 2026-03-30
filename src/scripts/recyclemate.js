@@ -285,7 +285,7 @@
 		
 		places.slice(0, 10).forEach((place, index) => {
 			html += `
-				<div class="location-card">
+				<div class="location-card" data-place-id="${place._id}" data-index="${index}">
 					<h4>${index + 1}. ${place.name}</h4>
 					<p class="location-address">${place.address}</p>
 					${place.openingHours ? `
@@ -296,29 +296,83 @@
 							</ul>
 						</details>
 					` : ''}
-					${place.website ? `<p><a href="${place.website}" target="_blank" rel="noopener">Visit Website</a></p>` : ''}
+					${place.website ? `<p><a href="${place.website}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Visit Website</a></p>` : ''}
 					${place.facilityMessage ? `<p class="facility-message">${place.facilityMessage}</p>` : ''}
 				</div>
 			`;
 		});
 
 		locationsList.innerHTML = html;
+		
+		// Add click handlers to location cards
+		locationsList.querySelectorAll('.location-card').forEach(card => {
+			card.addEventListener('click', () => {
+				// Remove active class from all cards
+				locationsList.querySelectorAll('.location-card').forEach(c => c.classList.remove('active'));
+				// Add active class to clicked card
+				card.classList.add('active');
+				// Scroll card into view
+				card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+			});
+		});
 	}
 
 	function displayMap(places, userLocation) {
 		mapContainer.classList.remove('hidden');
 		
-		// Create a simple embedded map with markers
-		const markers = places.slice(0, 10).map((place, i) => {
+		// Create markers for all locations (green) and user location (blue)
+		const bounds = {
+			minLat: userLocation.lat,
+			maxLat: userLocation.lat,
+			minLng: userLocation.lng,
+			maxLng: userLocation.lng
+		};
+		
+		// Update bounds to include all places
+		places.slice(0, 10).forEach(place => {
 			const coords = place.location?.coordinates;
 			if (coords && coords.length === 2) {
-				return `&marker=${coords[1]},${coords[0]}`;
+				const [lng, lat] = coords;
+				bounds.minLat = Math.min(bounds.minLat, lat);
+				bounds.maxLat = Math.max(bounds.maxLat, lat);
+				bounds.minLng = Math.min(bounds.minLng, lng);
+				bounds.maxLng = Math.max(bounds.maxLng, lng);
 			}
-			return '';
-		}).join('');
-
-		const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${userLocation.lng - 0.05},${userLocation.lat - 0.05},${userLocation.lng + 0.05},${userLocation.lat + 0.05}&layer=mapnik&marker=${userLocation.lat},${userLocation.lng}`;
+		});
 		
-		mapElement.innerHTML = `<iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="${mapUrl}"></iframe>`;
+		// Add padding to bounds
+		const latPadding = (bounds.maxLat - bounds.minLat) * 0.2 || 0.01;
+		const lngPadding = (bounds.maxLng - bounds.minLng) * 0.2 || 0.01;
+		
+		const bbox = `${bounds.minLng - lngPadding},${bounds.minLat - latPadding},${bounds.maxLng + lngPadding},${bounds.maxLat + latPadding}`;
+		
+		// Create map URL with user location marker (blue) and recycling locations (green)
+		let mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik`;
+		
+		// Add user location marker (blue)
+		mapUrl += `&marker=${userLocation.lat},${userLocation.lng}`;
+		
+		mapElement.innerHTML = `
+			<iframe 
+				width="100%" 
+				height="100%" 
+				frameborder="0" 
+				scrolling="no" 
+				marginheight="0" 
+				marginwidth="0" 
+				src="${mapUrl}"
+				title="Recycling locations map"
+			></iframe>
+			<div class="map-legend">
+				<div class="legend-item">
+					<span class="legend-marker user-marker"></span>
+					<span>Your Location</span>
+				</div>
+				<div class="legend-item">
+					<span class="legend-marker recycling-marker"></span>
+					<span>Recycling Locations</span>
+				</div>
+			</div>
+		`;
 	}
 })();

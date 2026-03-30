@@ -20,11 +20,13 @@ export async function GET(context) {
 
 		const apiUrl = `https://api.recyclemate.com.au/v2/items?q=${encodeURIComponent(query)}&softPlastics=${softPlastics}`;
 		
+		const bearerToken = process.env.RECYCLEMATE_API_TOKEN || import.meta.env.RECYCLEMATE_API_TOKEN;
+
 		const response = await fetch(apiUrl, {
 			method: 'GET',
 			headers: {
 				'Accept': '*/*',
-				'Authorization': 'Bearer 816762b93a21787e566babba92207521',
+				'Authorization': `Bearer ${bearerToken}`,
 				'Origin': 'https://www.recyclemate.com.au',
 				'Referer': 'https://www.recyclemate.com.au/',
 				'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36'

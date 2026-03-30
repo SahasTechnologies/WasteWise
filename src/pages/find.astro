@@ -41,11 +41,13 @@ import BaseLayout from '../components/BaseLayout.astro';
 
 		<div id="results-container" class="results-container hidden">
 			<div id="item-info" class="item-info"></div>
-			<div id="locations-list" class="locations-list"></div>
-		</div>
-
-		<div id="map-container" class="map-container hidden">
-			<div id="map" class="recyclemate-map"></div>
+			
+			<div class="results-layout">
+				<div id="locations-list" class="locations-list"></div>
+				<div id="map-container" class="map-container">
+					<div id="map" class="recyclemate-map"></div>
+				</div>
+			</div>
 		</div>
 
 		<div class="recyclemate-attribution">
