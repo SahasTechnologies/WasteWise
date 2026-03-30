@@ -96,8 +96,7 @@
 
 		debounceTimer = setTimeout(async () => {
 			try {
-				// Call RecycleMate API directly from browser
-				const response = await fetch(`https://api.recyclemate.com.au/v2/items?q=${encodeURIComponent(query)}&softPlastics=1`);
+				const response = await fetch(`/api/recyclemate-items?q=${encodeURIComponent(query)}`);
 				const items = await response.json();
 				
 				// Hide loading indicator
@@ -169,19 +168,11 @@
 				itemId = selectedItem.components[0].id;
 			}
 
-			// Fetch recycling locations directly from RecycleMate (browser-side to avoid CORS)
-			const apiUrl = `https://api.recyclemate.com.au/v2/places/item/${itemId}?limit=100&offset=0&lat=${currentLocation.lat}&lng=${currentLocation.lng}`;
-			const placesResponse = await fetch(apiUrl);
-			
-			if (!placesResponse.ok) {
-				console.error('RecycleMate API error:', placesResponse.status);
-				locationsList.innerHTML = '<p class="no-results">Unable to fetch recycling locations at this time. Please try again later.</p>';
-				resultsContainer.classList.remove('hidden');
-				return;
-			}
-			
-			const data = await placesResponse.json();
-			const places = data.places || data;
+			// Fetch recycling locations through Vercel API
+			const placesResponse = await fetch(
+				`/api/recyclemate-places?itemId=${itemId}&lat=${currentLocation.lat}&lng=${currentLocation.lng}`
+			);
+			const places = await placesResponse.json();
 
 			if (places && places.length > 0) {
 				displayLocations(places);
