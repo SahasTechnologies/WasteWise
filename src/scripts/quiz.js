@@ -14,7 +14,55 @@
 
 	let currentIndex = 0;
 	const userAnswers = {}; // { 1: 'A', 2: 'C', ... }
+	const shuffledOptions = {}; // Store the shuffled order for each question
 	let answered = false;
+
+	// Fisher-Yates shuffle algorithm
+	function shuffleArray(array) {
+		const shuffled = [...array];
+		for (let i = shuffled.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+		}
+		return shuffled;
+	}
+
+	// Shuffle options for each question
+	function shuffleQuestionOptions() {
+		for (let i = 0; i < totalQuestions; i++) {
+			const optionsContainer = document.getElementById(`quiz-options-${i}`);
+			if (!optionsContainer) continue;
+
+			const buttons = Array.from(optionsContainer.querySelectorAll('.quiz-option'));
+			const optionsData = buttons.map(btn => ({
+				letter: btn.getAttribute('data-letter'),
+				text: btn.getAttribute('data-text') || btn.querySelector('.quiz-option-text').textContent
+			}));
+
+			// Shuffle the options
+			const shuffled = shuffleArray(optionsData);
+			shuffledOptions[i] = shuffled;
+
+			// Re-render the buttons in shuffled order
+			optionsContainer.innerHTML = '';
+			shuffled.forEach((opt, idx) => {
+				const newLabel = String.fromCharCode(65 + idx); // A, B, C, D
+				const button = document.createElement('button');
+				button.className = `quiz-option option-btn-${i}`;
+				button.setAttribute('data-letter', opt.letter); // Keep original letter for answer checking
+				button.setAttribute('data-display-letter', newLabel); // Display letter
+				button.setAttribute('role', 'listitem');
+				button.setAttribute('aria-label', `Option ${newLabel}: ${opt.text}`);
+				
+				button.innerHTML = `
+					<span class="quiz-option-label">${newLabel}</span>
+					<span class="quiz-option-text">${opt.text}</span>
+				`;
+				
+				optionsContainer.appendChild(button);
+			});
+		}
+	}
 
 	function updateProgress() {
 		const pct = (currentIndex / totalQuestions) * 100;
@@ -26,14 +74,15 @@
 			const step = document.getElementById(`quiz-step-${i}`);
 			if (!step) continue;
 
-			// Bind buttons
-			const options = step.querySelectorAll('.quiz-option');
-			options.forEach(btn => {
-				btn.addEventListener('click', () => {
-					if (answered) return;
-					onOptionSelected(i, btn.getAttribute('data-letter'), step);
+			// Bind buttons (need to rebind after shuffle)
+			const optionsContainer = document.getElementById(`quiz-options-${i}`);
+			if (optionsContainer) {
+				optionsContainer.addEventListener('click', (e) => {
+					const btn = e.target.closest('.quiz-option');
+					if (!btn || answered) return;
+					onOptionSelected(i, btn.getAttribute('data-letter'), btn.getAttribute('data-display-letter'), step);
 				});
-			});
+			}
 
 			// Bind Next button
 			const nextBtn = document.getElementById(`next-btn-${i}`);
@@ -43,9 +92,9 @@
 		}
 	}
 
-	function onOptionSelected(qIndex, selectedLetter, stepEl) {
+	function onOptionSelected(qIndex, originalLetter, displayLetter, stepEl) {
 		answered = true;
-		userAnswers[qIndex + 1] = selectedLetter;
+		userAnswers[qIndex + 1] = originalLetter;
 
 		const correct = stepEl.getAttribute('data-correct');
 		const explDataEl = document.getElementById(`expl-data-${qIndex}`);
@@ -61,22 +110,22 @@
 			btn.disabled = true;
 			if (letter === correct) {
 				btn.classList.add('quiz-option--correct');
-			} else if (letter === selectedLetter && letter !== correct) {
+			} else if (letter === originalLetter && letter !== correct) {
 				btn.classList.add('quiz-option--incorrect');
 			}
 		});
 
 		// Build explanation
-		let explString = explanations[selectedLetter] || '';
-		if (selectedLetter !== correct && explanations[correct]) {
-			explString += `\nCorrect Answer (${correct}): ${explanations[correct]}`;
+		let explString = explanations[originalLetter] || '';
+		if (originalLetter !== correct && explanations[correct]) {
+			explString += `\n\nCorrect Answer: ${explanations[correct]}`;
 		}
 
 		if (explanationEl && explanationTextEl) {
 			explanationTextEl.innerText = explString;
 			explanationEl.classList.remove('hidden');
-			explanationEl.classList.toggle('quiz-explanation--correct', selectedLetter === correct);
-			explanationEl.classList.toggle('quiz-explanation--incorrect', selectedLetter !== correct);
+			explanationEl.classList.toggle('quiz-explanation--correct', originalLetter === correct);
+			explanationEl.classList.toggle('quiz-explanation--incorrect', originalLetter !== correct);
 		}
 
 		if (nextWrap) nextWrap.classList.remove('hidden');
@@ -132,10 +181,10 @@
 				}
 				if (starIcon) starIcon.classList.add('hidden');
 			} else {
-				// Show star for other scores
+				// Show green star for other scores
 				if (starIcon) {
 					starIcon.classList.remove('hidden');
-					starIcon.style.color = pct >= 50 ? '#3b82f6' : '#f59e0b';
+					starIcon.style.color = '#22c55e';
 				}
 				if (trophyIcon) trophyIcon.classList.add('hidden');
 			}
@@ -152,34 +201,58 @@
 		fetch('/api/get-quiz-stats')
 			.then(r => r.json())
 			.then(stats => {
-				const total = parseInt(stats.range_0_10) + parseInt(stats.range_10_40) + 
-							  parseInt(stats.range_40_70) + parseInt(stats.range_70_99) + 
-							  parseInt(stats.range_100);
+				// Create array for scores 1-10
+				const scoreCounts = [];
+				for (let i = 1; i <= 10; i++) {
+					let count = parseInt(stats[`score_${i}`] || 0);
+					// Add 1 to the user's score to include their current result
+					if (i === correctCount) {
+						count += 1;
+					}
+					scoreCounts.push({ score: i, count: count });
+				}
+				
+				const total = scoreCounts.reduce((sum, item) => sum + item.count, 0);
 				
 				if (total > 0) {
-					const ranges = [
-						{ id: '0-10', count: parseInt(stats.range_0_10) },
-						{ id: '10-40', count: parseInt(stats.range_10_40) },
-						{ id: '40-70', count: parseInt(stats.range_40_70) },
-						{ id: '70-99', count: parseInt(stats.range_70_99) },
-						{ id: '100', count: parseInt(stats.range_100) }
-					];
+					const maxCount = Math.max(...scoreCounts.map(s => s.count));
 					
-					const maxCount = Math.max(...ranges.map(r => r.count));
-					
-					ranges.forEach(range => {
-						const barEl = document.getElementById(`bar-${range.id}`);
-						const countEl = document.getElementById(`count-${range.id}`);
+					scoreCounts.forEach(item => {
+						const barEl = document.getElementById(`bar-${item.score}`);
+						const countEl = document.getElementById(`count-${item.score}`);
 						
 						if (barEl && countEl) {
-							const height = maxCount > 0 ? (range.count / maxCount) * 100 : 0;
+							const height = maxCount > 0 ? (item.count / maxCount) * 100 : 0;
 							barEl.style.height = height + '%';
-							countEl.textContent = range.count;
+							countEl.textContent = item.count;
+							
+							// Highlight the user's score
+							if (item.score === correctCount) {
+								barEl.classList.add('user-score-bar');
+								const barGroup = barEl.closest('.chart-bar-group');
+								if (barGroup) {
+									barGroup.classList.add('user-score-group');
+								}
+							}
 						}
 					});
 				}
 			})
-			.catch(err => console.error('Failed to fetch stats:', err));
+			.catch(err => {
+				console.error('Failed to fetch stats:', err);
+				// If fetch fails, still show the user's score
+				const barEl = document.getElementById(`bar-${correctCount}`);
+				const countEl = document.getElementById(`count-${correctCount}`);
+				if (barEl && countEl) {
+					barEl.style.height = '100%';
+					countEl.textContent = '1';
+					barEl.classList.add('user-score-bar');
+					const barGroup = barEl.closest('.chart-bar-group');
+					if (barGroup) {
+						barGroup.classList.add('user-score-group');
+					}
+				}
+			});
 
 		// Submit quiz results
 		fetch('/api/get-ip')
@@ -205,6 +278,8 @@
 
 	if (retakeBtn) retakeBtn.addEventListener('click', () => window.location.reload());
 
+	// Initialize: shuffle options first, then bind logic
+	shuffleQuestionOptions();
 	bindLogic();
 	updateProgress();
 })();

@@ -1,62 +1,55 @@
 ---
-import { Search } from '@lucide/astro';
+import { Search, MapPin, Trash2 } from '@lucide/astro';
 import BaseLayout from '../components/BaseLayout.astro';
-import mapInitUrl from '../scripts/map-init.js?url';
-
-const item = Astro.url.searchParams.get('item') ?? '';
-const address = Astro.url.searchParams.get('address') ?? '';
-
-const hasAddress = Boolean(address.trim());
-
-let mapSrc = 'https://openstreetmap.org/export/embed.html?layer=mapnik';
-
-if (hasAddress) {
-	try {
-		const searchUrl = new URL('https://nominatim.openstreetmap.org/search');
-		searchUrl.searchParams.set('format', 'json');
-		searchUrl.searchParams.set('limit', '1');
-		searchUrl.searchParams.set('q', address);
-
-		const res = await fetch(searchUrl, {
-			headers: {
-				'accept': 'application/json',
-				'user-agent': 'WasteWise/0.0.1'
-			}
-		});
-
-		if (res.ok) {
-			const data = await res.json();
-			const first = Array.isArray(data) ? data[0] : null;
-			const lat = typeof first?.lat === 'string' || typeof first?.lat === 'number' ? Number(first.lat) : null;
-			const lon = typeof first?.lon === 'string' || typeof first?.lon === 'number' ? Number(first.lon) : null;
-
-			if (typeof lat === 'number' && Number.isFinite(lat) && typeof lon === 'number' && Number.isFinite(lon)) {
-				const embedUrl = new URL('https://www.openstreetmap.org/export/embed.html');
-				embedUrl.searchParams.set('layer', 'mapnik');
-				embedUrl.searchParams.set('marker', `${lat},${lon}`);
-				embedUrl.searchParams.set('zoom', '18');
-				mapSrc = embedUrl.toString();
-			}
-		}
-	} catch {
-		// ignore
-	}
-}
 ---
 
-<BaseLayout title="Find | WasteWise">
-	<section class="simple-section">
-		<h1 class="simple-title">Find</h1>
-		<p class="simple-subtitle" id="map-subtitle">Map for: {address || 'No address provided'}</p>
+<BaseLayout title="Find Recycling Locations | WasteWise">
+	<section class="recyclemate-section">
+		<h1 class="simple-title">Find Recycling Locations</h1>
+		<p class="simple-subtitle">Search for items and find where to recycle them near you</p>
 
-		<div class="map-embed" aria-label="Map">
-			<iframe
-				id="map-iframe"
-				title="Map"
-				src={mapSrc}
-			></iframe>
+		<div class="recyclemate-search-container">
+			<div class="search-input-group">
+				<input 
+					type="text" 
+					id="address-input" 
+					placeholder="Enter your address" 
+					class="search-input"
+					autocomplete="off"
+				/>
+				<div id="address-suggestions" class="autocomplete-suggestions"></div>
+			</div>
+
+			<div class="search-input-group">
+				<input 
+					type="text" 
+					id="item-input" 
+					placeholder="What do you want to recycle?" 
+					class="search-input"
+					autocomplete="off"
+				/>
+				<div id="item-suggestions" class="autocomplete-suggestions"></div>
+			</div>
+
+			<button id="search-btn" class="go search-btn">
+				<Search size={20} />
+				Search
+			</button>
+		</div>
+
+		<div id="results-container" class="results-container hidden">
+			<div id="item-info" class="item-info"></div>
+			<div id="locations-list" class="locations-list"></div>
+		</div>
+
+		<div id="map-container" class="map-container hidden">
+			<div id="map" class="recyclemate-map"></div>
+		</div>
+
+		<div class="recyclemate-attribution">
+			Information from <a href="https://recyclemate.com.au" target="_blank" rel="noopener noreferrer">RecycleMate</a>
 		</div>
 	</section>
 
-	<script type="module" src={mapInitUrl}></script>
+	<script src="../scripts/recyclemate.js"></script>
 </BaseLayout>

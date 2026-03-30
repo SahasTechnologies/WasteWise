@@ -16,12 +16,13 @@ import { Trophy, Star } from '@lucide/astro';
 			{answersData.map((q, index) => (
 				<div class={`quiz-step ${index === 0 ? '' : 'hidden'}`} id={`quiz-step-${index}`} data-correct={q.correctAnswer}>
 					<p class="quiz-step-counter">{index + 1} / {answersData.length}</p>
-					<h2 class="quiz-question-text">{q.question} <span class="quiz-required">*</span></h2>
-					<div class="quiz-options" role="list">
+					<h2 class="quiz-question-text">{q.question}</h2>
+					<div class="quiz-options" role="list" id={`quiz-options-${index}`}>
 						{Object.entries(q.options).map(([letter, text]) => (
 							<button
 								class={`quiz-option option-btn-${index}`}
 								data-letter={letter}
+								data-text={text}
 								role="listitem"
 								aria-label={`Option ${letter}: ${text}`}
 							>
@@ -64,38 +65,73 @@ import { Trophy, Star } from '@lucide/astro';
 					<div class="chart-bars">
 						<div class="chart-bar-group">
 							<div class="chart-bar-wrapper">
-								<div class="chart-bar" id="bar-0-10" style="height: 0%"></div>
+								<div class="chart-bar" id="bar-1" style="height: 0%"></div>
 							</div>
-							<span class="chart-label">0-10%</span>
-							<span class="chart-count" id="count-0-10">0</span>
+							<span class="chart-label">1/10</span>
+							<span class="chart-count" id="count-1">0</span>
 						</div>
 						<div class="chart-bar-group">
 							<div class="chart-bar-wrapper">
-								<div class="chart-bar" id="bar-10-40" style="height: 0%"></div>
+								<div class="chart-bar" id="bar-2" style="height: 0%"></div>
 							</div>
-							<span class="chart-label">10-40%</span>
-							<span class="chart-count" id="count-10-40">0</span>
+							<span class="chart-label">2/10</span>
+							<span class="chart-count" id="count-2">0</span>
 						</div>
 						<div class="chart-bar-group">
 							<div class="chart-bar-wrapper">
-								<div class="chart-bar" id="bar-40-70" style="height: 0%"></div>
+								<div class="chart-bar" id="bar-3" style="height: 0%"></div>
 							</div>
-							<span class="chart-label">40-70%</span>
-							<span class="chart-count" id="count-40-70">0</span>
+							<span class="chart-label">3/10</span>
+							<span class="chart-count" id="count-3">0</span>
 						</div>
 						<div class="chart-bar-group">
 							<div class="chart-bar-wrapper">
-								<div class="chart-bar" id="bar-70-99" style="height: 0%"></div>
+								<div class="chart-bar" id="bar-4" style="height: 0%"></div>
 							</div>
-							<span class="chart-label">70-99%</span>
-							<span class="chart-count" id="count-70-99">0</span>
+							<span class="chart-label">4/10</span>
+							<span class="chart-count" id="count-4">0</span>
 						</div>
 						<div class="chart-bar-group">
 							<div class="chart-bar-wrapper">
-								<div class="chart-bar" id="bar-100" style="height: 0%"></div>
+								<div class="chart-bar" id="bar-5" style="height: 0%"></div>
 							</div>
-							<span class="chart-label">100%</span>
-							<span class="chart-count" id="count-100">0</span>
+							<span class="chart-label">5/10</span>
+							<span class="chart-count" id="count-5">0</span>
+						</div>
+						<div class="chart-bar-group">
+							<div class="chart-bar-wrapper">
+								<div class="chart-bar" id="bar-6" style="height: 0%"></div>
+							</div>
+							<span class="chart-label">6/10</span>
+							<span class="chart-count" id="count-6">0</span>
+						</div>
+						<div class="chart-bar-group">
+							<div class="chart-bar-wrapper">
+								<div class="chart-bar" id="bar-7" style="height: 0%"></div>
+							</div>
+							<span class="chart-label">7/10</span>
+							<span class="chart-count" id="count-7">0</span>
+						</div>
+						<div class="chart-bar-group">
+							<div class="chart-bar-wrapper">
+								<div class="chart-bar" id="bar-8" style="height: 0%"></div>
+							</div>
+							<span class="chart-label">8/10</span>
+							<span class="chart-count" id="count-8">0</span>
+						</div>
+						<div class="chart-bar-group">
+							<div class="chart-bar-wrapper">
+								<div class="chart-bar" id="bar-9" style="height: 0%"></div>
+							</div>
+							<span class="chart-label">9/10</span>
+							<span class="chart-count" id="count-9">0</span>
+						</div>
+						<div class="chart-bar-group">
+							<div class="chart-bar-wrapper">
+								<div class="chart-bar" id="bar-10" style="height: 0%"></div>
+							</div>
+							<span class="chart-label">10/10</span>
+							<span class="chart-count" id="count-10">0</span>
 						</div>
 					</div>
 				</div>
