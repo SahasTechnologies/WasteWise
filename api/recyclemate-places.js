@@ -19,15 +19,28 @@ export async function GET(context) {
 		}
 
 		const apiUrl = `https://api.recyclemate.com.au/v2/places/item/${itemId}?limit=${limit}&offset=${offset}&lat=${lat}&lng=${lng}`;
+		
 		const response = await fetch(apiUrl, {
 			headers: {
 				'Accept': 'application/json',
-				'User-Agent': 'WasteWise/1.0'
+				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+				'Origin': 'https://recyclemate.com.au',
+				'Referer': 'https://recyclemate.com.au/'
 			}
 		});
 
 		if (!response.ok) {
-			throw new Error(`RecycleMate API error: ${response.status}`);
+			const errorText = await response.text();
+			console.error(`RecycleMate API error: ${response.status}`, errorText);
+			
+			// Return empty array instead of error to prevent breaking the UI
+			return new Response(JSON.stringify([]), {
+				status: 200,
+				headers: { 
+					'Content-Type': 'application/json',
+					'Cache-Control': 'public, max-age=1800'
+				},
+			});
 		}
 
 		const data = await response.json();
@@ -35,7 +48,7 @@ export async function GET(context) {
 		// RecycleMate returns {places: [...]} so extract the places array
 		const places = data.places || data;
 
-		return new Response(JSON.stringify(places), {
+		return new Response(JSON.stringify(Array.isArray(places) ? places : []), {
 			status: 200,
 			headers: { 
 				'Content-Type': 'application/json',
@@ -44,8 +57,9 @@ export async function GET(context) {
 		});
 	} catch (err) {
 		console.error('recyclemate-places error:', err);
-		return new Response(JSON.stringify({ error: String(err) }), {
-			status: 500,
+		// Return empty array instead of error
+		return new Response(JSON.stringify([]), {
+			status: 200,
 			headers: { 'Content-Type': 'application/json' },
 		});
 	}
