@@ -1,18 +1,6 @@
 // Proxy endpoint for RecycleMate items search API
 export const prerender = false;
 
-export async function OPTIONS() {
-	// Handle CORS preflight
-	return new Response(null, {
-		status: 204,
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			'Access-Control-Allow-Methods': 'GET, OPTIONS',
-			'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-		},
-	});
-}
-
 export async function GET(context) {
 	try {
 		const request = context?.request ?? context;
@@ -32,26 +20,14 @@ export async function GET(context) {
 
 		const apiUrl = `https://api.recyclemate.com.au/v2/items?q=${encodeURIComponent(query)}&softPlastics=${softPlastics}`;
 		
-		// First send OPTIONS request
-		await fetch(apiUrl, {
-			method: 'OPTIONS',
-			headers: {
-				'Accept': 'application/json',
-				'Origin': 'https://recyclemate.com.au',
-				'Access-Control-Request-Method': 'GET',
-				'Access-Control-Request-Headers': 'content-type',
-			}
-		});
-
-		// Then send the actual GET request
 		const response = await fetch(apiUrl, {
 			method: 'GET',
 			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-				'Origin': 'https://recyclemate.com.au',
-				'Referer': 'https://recyclemate.com.au/',
-				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+				'Accept': '*/*',
+				'Authorization': 'Bearer 816762b93a21787e566babba92207521',
+				'Origin': 'https://www.recyclemate.com.au',
+				'Referer': 'https://www.recyclemate.com.au/',
+				'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36'
 			}
 		});
 

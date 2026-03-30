@@ -168,17 +168,66 @@
 				itemId = selectedItem.components[0].id;
 			}
 
-			// Fetch recycling locations through Vercel API
-			const placesResponse = await fetch(
-				`/api/recyclemate-places?itemId=${itemId}&lat=${currentLocation.lat}&lng=${currentLocation.lng}`
-			);
-			const places = await placesResponse.json();
+			// Try to fetch from API first, fallback to local data
+			let places = [];
+			
+			try {
+				const placesResponse = await fetch(
+					`/api/recyclemate-places?itemId=${itemId}&lat=${currentLocation.lat}&lng=${currentLocation.lng}`
+				);
+				places = await placesResponse.json();
+			} catch (apiError) {
+				console.log('API failed, using local data:', apiError);
+			}
+
+			// If API returns empty or fails, use local data
+			if (!places || places.length === 0) {
+				try {
+					const localResponse = await fetch('/src/data/recycling-locations.json');
+					const localData = await localResponse.json();
+					
+					// Filter locations within 50km radius
+					if (localData.locations && localData.locations.length > 0) {
+						places = localData.locations.filter(place => {
+							if (!place.location || !place.location.coordinates) return false;
+							const [lng, lat] = place.location.coordinates;
+							const distance = calculateDistance(
+								currentLocation.lat, currentLocation.lng,
+								lat, lng
+							);
+							return distance <= 50; // 50km radius
+						}).sort((a, b) => {
+							const distA = calculateDistance(
+								currentLocation.lat, currentLocation.lng,
+								a.location.coordinates[1], a.location.coordinates[0]
+							);
+							const distB = calculateDistance(
+								currentLocation.lat, currentLocation.lng,
+								b.location.coordinates[1], b.location.coordinates[0]
+							);
+							return distA - distB;
+						});
+					}
+				} catch (localError) {
+					console.error('Local data error:', localError);
+				}
+			}
 
 			if (places && places.length > 0) {
 				displayLocations(places);
 				displayMap(places, currentLocation);
 			} else {
-				locationsList.innerHTML = '<p class="no-results">No recycling locations found nearby for this item.</p>';
+				// Show helpful message with link to RecycleMate
+				locationsList.innerHTML = `
+					<div class="no-results-card">
+						<h3>Find Recycling Locations</h3>
+						<p>To find specific recycling locations for <strong>${selectedItem.name}</strong> near you, please visit RecycleMate directly:</p>
+						<a href="https://recyclemate.com.au" target="_blank" rel="noopener noreferrer" class="recyclemate-link">
+							Visit RecycleMate →
+						</a>
+						<p class="help-text">RecycleMate provides detailed information about recycling locations, collection services, and disposal options in your area.</p>
+					</div>
+				`;
 			}
 
 			resultsContainer.classList.remove('hidden');
@@ -191,6 +240,19 @@
 			searchBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg> Search';
 		}
 	});
+
+	// Calculate distance between two coordinates (Haversine formula)
+	function calculateDistance(lat1, lon1, lat2, lon2) {
+		const R = 6371; // Earth's radius in km
+		const dLat = (lat2 - lat1) * Math.PI / 180;
+		const dLon = (lon2 - lon1) * Math.PI / 180;
+		const a = 
+			Math.sin(dLat/2) * Math.sin(dLat/2) +
+			Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+			Math.sin(dLon/2) * Math.sin(dLon/2);
+		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		return R * c;
+	}
 
 	function displayItemInfo(item) {
 		let html = `<h2>${item.name}</h2>`;

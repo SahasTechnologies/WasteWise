@@ -1,18 +1,6 @@
 // Proxy endpoint for RecycleMate places API
 export const prerender = false;
 
-export async function OPTIONS() {
-	// Handle CORS preflight
-	return new Response(null, {
-		status: 204,
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			'Access-Control-Allow-Methods': 'GET, OPTIONS',
-			'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-		},
-	});
-}
-
 export async function GET(context) {
 	try {
 		const request = context?.request ?? context;
@@ -24,8 +12,8 @@ export async function GET(context) {
 		const offset = url.searchParams.get('offset') || '0';
 
 		if (!itemId || !lat || !lng) {
-			return new Response(JSON.stringify({ error: 'Missing required parameters: itemId, lat, lng' }), {
-				status: 400,
+			return new Response(JSON.stringify([]), {
+				status: 200,
 				headers: { 
 					'Content-Type': 'application/json',
 					'Access-Control-Allow-Origin': '*',
@@ -35,34 +23,25 @@ export async function GET(context) {
 
 		const apiUrl = `https://api.recyclemate.com.au/v2/places/item/${itemId}?limit=${limit}&offset=${offset}&lat=${lat}&lng=${lng}`;
 		
-		// First send OPTIONS request
-		await fetch(apiUrl, {
-			method: 'OPTIONS',
-			headers: {
-				'Accept': 'application/json',
-				'Origin': 'https://recyclemate.com.au',
-				'Access-Control-Request-Method': 'GET',
-				'Access-Control-Request-Headers': 'content-type',
-			}
-		});
+		console.log('Fetching from RecycleMate:', apiUrl);
 
-		// Then send the actual GET request
 		const response = await fetch(apiUrl, {
 			method: 'GET',
 			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-				'Origin': 'https://recyclemate.com.au',
-				'Referer': 'https://recyclemate.com.au/',
-				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+				'Accept': '*/*',
+				'Authorization': 'Bearer 816762b93a21787e566babba92207521',
+				'Origin': 'https://www.recyclemate.com.au',
+				'Referer': 'https://www.recyclemate.com.au/',
+				'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36',
 			}
 		});
+
+		console.log('RecycleMate response status:', response.status);
 
 		if (!response.ok) {
 			const errorText = await response.text();
 			console.error(`RecycleMate API error: ${response.status}`, errorText);
 			
-			// Return empty array instead of error to prevent breaking the UI
 			return new Response(JSON.stringify([]), {
 				status: 200,
 				headers: { 
@@ -74,11 +53,14 @@ export async function GET(context) {
 		}
 
 		const data = await response.json();
+		console.log('RecycleMate response data keys:', Object.keys(data));
+		console.log('Has places property:', !!data.places);
 		
 		// RecycleMate returns {places: [...]} so extract the places array
-		const places = data.places || data;
+		const places = data.places || [];
+		console.log('Places count:', places.length);
 
-		return new Response(JSON.stringify(Array.isArray(places) ? places : []), {
+		return new Response(JSON.stringify(places), {
 			status: 200,
 			headers: { 
 				'Content-Type': 'application/json',
@@ -88,7 +70,6 @@ export async function GET(context) {
 		});
 	} catch (err) {
 		console.error('recyclemate-places error:', err);
-		// Return empty array instead of error
 		return new Response(JSON.stringify([]), {
 			status: 200,
 			headers: { 
