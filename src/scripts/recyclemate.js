@@ -96,7 +96,8 @@
 
 		debounceTimer = setTimeout(async () => {
 			try {
-				const response = await fetch(`/api/recyclemate-items?q=${encodeURIComponent(query)}`);
+				// Call RecycleMate API directly from browser
+				const response = await fetch(`https://api.recyclemate.com.au/v2/items?q=${encodeURIComponent(query)}&softPlastics=1`);
 				const items = await response.json();
 				
 				// Hide loading indicator
@@ -168,11 +169,19 @@
 				itemId = selectedItem.components[0].id;
 			}
 
-			// Fetch recycling locations
-			const placesResponse = await fetch(
-				`/api/recyclemate-places?itemId=${itemId}&lat=${currentLocation.lat}&lng=${currentLocation.lng}`
-			);
-			const places = await placesResponse.json();
+			// Fetch recycling locations directly from RecycleMate (browser-side to avoid CORS)
+			const apiUrl = `https://api.recyclemate.com.au/v2/places/item/${itemId}?limit=100&offset=0&lat=${currentLocation.lat}&lng=${currentLocation.lng}`;
+			const placesResponse = await fetch(apiUrl);
+			
+			if (!placesResponse.ok) {
+				console.error('RecycleMate API error:', placesResponse.status);
+				locationsList.innerHTML = '<p class="no-results">Unable to fetch recycling locations at this time. Please try again later.</p>';
+				resultsContainer.classList.remove('hidden');
+				return;
+			}
+			
+			const data = await placesResponse.json();
+			const places = data.places || data;
 
 			if (places && places.length > 0) {
 				displayLocations(places);
@@ -184,7 +193,8 @@
 			resultsContainer.classList.remove('hidden');
 		} catch (err) {
 			console.error('Search error:', err);
-			alert('An error occurred while searching. Please try again.');
+			locationsList.innerHTML = '<p class="no-results">An error occurred while searching. Please try again.</p>';
+			resultsContainer.classList.remove('hidden');
 		} finally {
 			searchBtn.disabled = false;
 			searchBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg> Search';
