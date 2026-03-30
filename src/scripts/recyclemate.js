@@ -4,6 +4,8 @@
 	const searchBtn = document.getElementById('search-btn');
 	const addressSuggestions = document.getElementById('address-suggestions');
 	const itemSuggestions = document.getElementById('item-suggestions');
+	const addressLoading = document.getElementById('address-loading');
+	const itemLoading = document.getElementById('item-loading');
 	const resultsContainer = document.getElementById('results-container');
 	const itemInfo = document.getElementById('item-info');
 	const locationsList = document.getElementById('locations-list');
@@ -14,7 +16,7 @@
 	let selectedItem = null;
 	let debounceTimer = null;
 
-	//nominatim geocoding
+	// Geocode address using Nominatim
 	async function geocodeAddress(address) {
 		try {
 			const url = `https://nominatim.openstreetmap.org/search?format=json&limit=5&q=${encodeURIComponent(address)}`;
@@ -29,7 +31,7 @@
 		}
 	}
 
-	//address autocomplete
+	// Address autocomplete
 	addressInput.addEventListener('input', () => {
 		clearTimeout(debounceTimer);
 		const query = addressInput.value.trim();
@@ -37,11 +39,18 @@
 		if (query.length < 3) {
 			addressSuggestions.innerHTML = '';
 			addressSuggestions.classList.remove('active');
+			addressLoading.classList.add('hidden');
 			return;
 		}
 
+		// Show loading indicator
+		addressLoading.classList.remove('hidden');
+
 		debounceTimer = setTimeout(async () => {
 			const results = await geocodeAddress(query);
+			
+			// Hide loading indicator
+			addressLoading.classList.add('hidden');
 			
 			if (results.length > 0) {
 				addressSuggestions.innerHTML = results.map(r => 
@@ -51,7 +60,7 @@
 				).join('');
 				addressSuggestions.classList.add('active');
 				
-				//bind click events
+				// Bind click events
 				addressSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
 					item.addEventListener('click', () => {
 						addressInput.value = item.getAttribute('data-display');
@@ -70,7 +79,7 @@
 		}, 300);
 	});
 
-	//searching autocomplete
+	// Item search autocomplete
 	itemInput.addEventListener('input', () => {
 		clearTimeout(debounceTimer);
 		const query = itemInput.value.trim();
@@ -78,13 +87,20 @@
 		if (query.length < 2) {
 			itemSuggestions.innerHTML = '';
 			itemSuggestions.classList.remove('active');
+			itemLoading.classList.add('hidden');
 			return;
 		}
+
+		// Show loading indicator
+		itemLoading.classList.remove('hidden');
 
 		debounceTimer = setTimeout(async () => {
 			try {
 				const response = await fetch(`/api/recyclemate-items?q=${encodeURIComponent(query)}`);
 				const items = await response.json();
+				
+				// Hide loading indicator
+				itemLoading.classList.add('hidden');
 				
 				if (items && items.length > 0) {
 					itemSuggestions.innerHTML = items.slice(0, 8).map(item => 
@@ -110,6 +126,7 @@
 				}
 			} catch (err) {
 				console.error('Item search error:', err);
+				itemLoading.classList.add('hidden');
 			}
 		}, 300);
 	});

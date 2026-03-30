@@ -16,6 +16,18 @@
 	const userAnswers = {}; // { 1: 'A', 2: 'C', ... }
 	const shuffledOptions = {}; // Store the shuffled order for each question
 	let answered = false;
+	let cachedStats = null; // Cache the stats fetched at start
+
+	// Fetch stats at the beginning
+	async function prefetchStats() {
+		try {
+			const response = await fetch('/api/get-quiz-stats');
+			cachedStats = await response.json();
+		} catch (err) {
+			console.error('Failed to prefetch stats:', err);
+			cachedStats = null;
+		}
+	}
 
 	// Fisher-Yates shuffle algorithm
 	function shuffleArray(array) {
@@ -197,62 +209,58 @@
 			else scoreSub.textContent = "Don't worry — every quiz is a learning opportunity!";
 		}
 
-		// Fetch and display statistics
-		fetch('/api/get-quiz-stats')
-			.then(r => r.json())
-			.then(stats => {
-				// Create array for scores 1-10
-				const scoreCounts = [];
-				for (let i = 1; i <= 10; i++) {
-					let count = parseInt(stats[`score_${i}`] || 0);
-					// Add 1 to the user's score to include their current result
-					if (i === correctCount) {
-						count += 1;
-					}
-					scoreCounts.push({ score: i, count: count });
-				}
+		// Use cached stats and add user's score
+		const stats = cachedStats || {};
+		
+		// Create array for scores 1-10
+		const scoreCounts = [];
+		for (let i = 1; i <= 10; i++) {
+			let count = parseInt(stats[`score_${i}`] || 0);
+			// Add 1 to the user's score to include their current result
+			if (i === correctCount) {
+				count += 1;
+			}
+			scoreCounts.push({ score: i, count: count });
+		}
+		
+		const total = scoreCounts.reduce((sum, item) => sum + item.count, 0);
+		
+		if (total > 0) {
+			const maxCount = Math.max(...scoreCounts.map(s => s.count));
+			
+			scoreCounts.forEach(item => {
+				const barEl = document.getElementById(`bar-${item.score}`);
+				const countEl = document.getElementById(`count-${item.score}`);
 				
-				const total = scoreCounts.reduce((sum, item) => sum + item.count, 0);
-				
-				if (total > 0) {
-					const maxCount = Math.max(...scoreCounts.map(s => s.count));
-					
-					scoreCounts.forEach(item => {
-						const barEl = document.getElementById(`bar-${item.score}`);
-						const countEl = document.getElementById(`count-${item.score}`);
-						
-						if (barEl && countEl) {
-							const height = maxCount > 0 ? (item.count / maxCount) * 100 : 0;
-							barEl.style.height = height + '%';
-							countEl.textContent = item.count;
-							
-							// Highlight the user's score
-							if (item.score === correctCount) {
-								barEl.classList.add('user-score-bar');
-								const barGroup = barEl.closest('.chart-bar-group');
-								if (barGroup) {
-									barGroup.classList.add('user-score-group');
-								}
-							}
-						}
-					});
-				}
-			})
-			.catch(err => {
-				console.error('Failed to fetch stats:', err);
-				// If fetch fails, still show the user's score
-				const barEl = document.getElementById(`bar-${correctCount}`);
-				const countEl = document.getElementById(`count-${correctCount}`);
 				if (barEl && countEl) {
-					barEl.style.height = '100%';
-					countEl.textContent = '1';
-					barEl.classList.add('user-score-bar');
-					const barGroup = barEl.closest('.chart-bar-group');
-					if (barGroup) {
-						barGroup.classList.add('user-score-group');
+					const height = maxCount > 0 ? (item.count / maxCount) * 100 : 0;
+					barEl.style.height = height + '%';
+					countEl.textContent = item.count;
+					
+					// Highlight the user's score
+					if (item.score === correctCount) {
+						barEl.classList.add('user-score-bar');
+						const barGroup = barEl.closest('.chart-bar-group');
+						if (barGroup) {
+							barGroup.classList.add('user-score-group');
+						}
 					}
 				}
 			});
+		} else {
+			// If no stats available, just show user's score
+			const barEl = document.getElementById(`bar-${correctCount}`);
+			const countEl = document.getElementById(`count-${correctCount}`);
+			if (barEl && countEl) {
+				barEl.style.height = '100%';
+				countEl.textContent = '1';
+				barEl.classList.add('user-score-bar');
+				const barGroup = barEl.closest('.chart-bar-group');
+				if (barGroup) {
+					barGroup.classList.add('user-score-group');
+				}
+			}
+		}
 
 		// Submit quiz results
 		fetch('/api/get-ip')
@@ -278,8 +286,10 @@
 
 	if (retakeBtn) retakeBtn.addEventListener('click', () => window.location.reload());
 
-	// Initialize: shuffle options first, then bind logic
-	shuffleQuestionOptions();
-	bindLogic();
-	updateProgress();
+	// Initialize: prefetch stats, shuffle options, then bind logic
+	prefetchStats().then(() => {
+		shuffleQuestionOptions();
+		bindLogic();
+		updateProgress();
+	});
 })();

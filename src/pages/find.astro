@@ -1,5 +1,5 @@
 ---
-import { Search, MapPin, Trash2 } from '@lucide/astro';
+import { Search, MapPin, Trash2, Loader2 } from '@lucide/astro';
 import BaseLayout from '../components/BaseLayout.astro';
 ---
 
@@ -17,6 +17,7 @@ import BaseLayout from '../components/BaseLayout.astro';
 					class="search-input"
 					autocomplete="off"
 				/>
+				<Loader2 id="address-loading" class="autocomplete-loading hidden" size={20} />
 				<div id="address-suggestions" class="autocomplete-suggestions"></div>
 			</div>
 
@@ -28,6 +29,7 @@ import BaseLayout from '../components/BaseLayout.astro';
 					class="search-input"
 					autocomplete="off"
 				/>
+				<Loader2 id="item-loading" class="autocomplete-loading hidden" size={20} />
 				<div id="item-suggestions" class="autocomplete-suggestions"></div>
 			</div>
 

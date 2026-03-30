@@ -31,8 +31,11 @@ export async function GET(context) {
 		}
 
 		const data = await response.json();
+		
+		// RecycleMate returns {places: [...]} so extract the places array
+		const places = data.places || data;
 
-		return new Response(JSON.stringify(data), {
+		return new Response(JSON.stringify(places), {
 			status: 200,
 			headers: { 
 				'Content-Type': 'application/json',

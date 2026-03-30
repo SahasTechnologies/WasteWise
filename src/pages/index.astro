@@ -1,8 +1,7 @@
 ---
-import { ArrowRight, Triangle } from '@lucide/astro';
+import { ArrowRight } from '@lucide/astro';
 import BaseLayout from '../components/BaseLayout.astro';
 import ImpactStats from '../components/ImpactStats.astro';
-import photonAutocompleteUrl from '../scripts/photon-autocomplete.js?url';
 export const prerender = true;
 ---
 
@@ -34,33 +33,18 @@ export const prerender = true;
 			<div class="glass-wrap">
 				<div class="glass-anim" aria-hidden="true"></div>
 				<div class="search-card" role="group" aria-label="Search">
-					<form class="search-form" action="/find" method="get">
-						<div class="search-text">
-							<span>I want to recycle</span>
-							<label class="select-wrap" for="item" aria-label="Item type">
-								<select id="item" class="select" name="item">
-									<option value="shoes">Shoes</option>
-									<option value="clothes">Clothes</option>
-									<option value="batteries">Batteries</option>
-								</select>
-								<Triangle class="icon-sm dropdown-icon" aria-hidden="true" />
-							</label>
-							<span>near</span>
-							<label class="input-wrap" for="address" aria-label="Suburb or address">
-								<input id="address" name="address" class="input" type="text" placeholder="Enter suburb or address" autocomplete="street-address" />
-							</label>
-						</div>
-						<button class="go" type="submit" aria-label="Go">
-							<span>GO</span>
-							<ArrowRight class="icon" aria-hidden="true" />
-						</button>
-					</form>
+					<div class="search-text">
+						<span>Find where to recycle items near you</span>
+					</div>
+					<a class="go" href="/find" aria-label="Find Recycling Locations">
+						<span>Find</span>
+						<ArrowRight class="icon" aria-hidden="true" />
+					</a>
 				</div>
 			</div>
 		</div>
 	</section>
 
 	<ImpactStats />
-
-	<script type="module" src={photonAutocompleteUrl}></script>
 </BaseLayout>
+
