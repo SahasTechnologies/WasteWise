@@ -1977,3 +1977,142 @@ input {
 .recyclemate-map {
 	position: relative;
 }
+
+/* Community page styles */
+.community-stats-bar {
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 12px;
+	margin-bottom: 18px;
+	padding: 14px;
+	border-radius: 16px;
+	background: rgba(255, 255, 255, 0.95);
+	border: 1px solid rgba(11, 19, 32, 0.08);
+	box-shadow: 0 4px 16px rgba(11, 19, 32, 0.06);
+}
+
+.community-stat {
+	padding: 10px 12px;
+	border-radius: 12px;
+	background: rgba(11, 19, 32, 0.03);
+	border: 1px solid rgba(11, 19, 32, 0.06);
+}
+
+.community-stat-label {
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	opacity: 0.65;
+}
+
+.community-stat-value {
+	margin-top: 6px;
+	font-size: 26px;
+	font-weight: 800;
+	color: var(--green-2);
+}
+
+.community-card {
+	margin-top: 18px;
+	padding: 22px;
+	border-radius: 16px;
+	background: rgba(255, 255, 255, 0.95);
+	border: 1px solid rgba(11, 19, 32, 0.08);
+	box-shadow: 0 4px 16px rgba(11, 19, 32, 0.06);
+}
+
+.community-card-title {
+	margin: 0 0 12px 0;
+}
+
+.community-poll {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.poll-option {
+	display: flex;
+	gap: 10px;
+	align-items: flex-start;
+	padding: 12px 12px;
+	border-radius: 12px;
+	background: rgba(11, 19, 32, 0.02);
+	border: 1px solid rgba(11, 19, 32, 0.08);
+	cursor: pointer;
+	font-weight: 400;
+}
+
+.poll-option input {
+	margin-top: 3px;
+}
+
+.poll-results {
+	margin-top: 18px;
+}
+
+.poll-results-title {
+	margin: 0 0 8px 0;
+}
+
+.poll-total {
+	font-weight: 400;
+	opacity: 0.75;
+	margin-bottom: 10px;
+}
+
+.poll-bars {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.poll-bar-row {
+	display: grid;
+	grid-template-columns: 1fr 2fr auto;
+	gap: 12px;
+	align-items: center;
+}
+
+.poll-bar-label {
+	font-weight: 400;
+	opacity: 0.9;
+}
+
+.poll-bar-track {
+	height: 10px;
+	background: rgba(11, 19, 32, 0.08);
+	border-radius: 999px;
+	overflow: hidden;
+}
+
+.poll-bar-fill {
+	height: 100%;
+	background: linear-gradient(180deg, var(--green-1), var(--green-2));
+	border-radius: 999px;
+}
+
+.poll-bar-meta {
+	font-weight: 400;
+	opacity: 0.75;
+	white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+	.community-stats-bar {
+		grid-template-columns: 1fr;
+	}
+	.poll-bar-row {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Find page full width override */
+.find-results-container {
+	max-width: none;
+	margin-left: 0;
+	margin-right: 0;
+}
+

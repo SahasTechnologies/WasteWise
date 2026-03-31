@@ -55,7 +55,9 @@ import { CheckCircle } from '@lucide/astro';
 					></textarea>
 				</div>
 
-
+				<!-- Cloudflare Turnstile -->
+				<div class="cf-turnstile" data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITE_ID}></div>
+				<br/>
 
 				<button type="submit" class="go contact-submit">Send Message</button>
 			</form>
@@ -133,7 +135,13 @@ import { CheckCircle } from '@lucide/astro';
 			e.preventDefault();
 
 			const formData = new FormData(form);
-
+			const payload = Object.fromEntries(formData.entries());
+			
+			// Must complete CAPTCHA before submitting
+			if (!payload['cf-turnstile-response']) {
+				alert('Please complete the security check.');
+				return;
+			}
 			
 			// Show sending state
 			const btn = form.querySelector('.contact-submit') as HTMLButtonElement;
@@ -165,3 +173,5 @@ import { CheckCircle } from '@lucide/astro';
 		});
 	}
 </script>
+<!-- Cloudflare Turnstile API -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

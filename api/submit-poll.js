@@ -15,15 +15,11 @@ async function ensureTable() {
 		CREATE TABLE IF NOT EXISTS poll_submissions (
 			id SERIAL PRIMARY KEY,
 			barrier VARCHAR(255),
-			submitted_at TIMESTAMPTZ DEFAULT NOW(),
-			ip_address VARCHAR(45)
+			ip VARCHAR(64),
+			device_fingerprint VARCHAR(255),
+			submitted_at TIMESTAMPTZ DEFAULT NOW()
 		)
 	`;
-	try {
-		await sql`ALTER TABLE poll_submissions ADD COLUMN IF NOT EXISTS ip_address VARCHAR(45)`;
-	} catch (e) {
-		console.warn('Could not alter poll_submissions table:', e);
-	}
 }
 
 export const prerender = false;
@@ -32,17 +28,32 @@ export async function POST(context) {
 	try {
 		const request = context?.request ?? context;
 		const body = await request.json();
-		const { barrier } = body;
+		const { barrier, deviceFingerprint } = body;
 
 		if (!barrier) return new Response(JSON.stringify({ ok: false, error: 'Missing barrier option' }), { status: 400 });
 
+		// Get IP from headers
+		const forwarded = request.headers.get('x-forwarded-for');
+		const real = request.headers.get('x-real-ip');
+		const ip = forwarded ? forwarded.split(',')[0].trim() : (real ? real.trim() : 'unknown');
+
 		await ensureTable();
 
-		const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+		// Check if this device has already voted (one vote per device forever)
+		if (deviceFingerprint) {
+			const existing = await sql`
+				SELECT id FROM poll_submissions 
+				WHERE device_fingerprint = ${String(deviceFingerprint).slice(0, 255)}
+				LIMIT 1
+			`;
+			if (existing.length > 0) {
+				return new Response(JSON.stringify({ ok: false, error: 'You have already voted on this device' }), { status: 403 });
+			}
+		}
 
 		await sql`
-			INSERT INTO poll_submissions (barrier, ip_address)
-			VALUES (${String(barrier).slice(0, 255)}, ${ip})
+			INSERT INTO poll_submissions (barrier, ip, device_fingerprint)
+			VALUES (${String(barrier).slice(0, 255)}, ${String(ip).slice(0, 64)}, ${deviceFingerprint ? String(deviceFingerprint).slice(0, 255) : null})
 		`;
 
 		return new Response(JSON.stringify({ ok: true }), { status: 200 });

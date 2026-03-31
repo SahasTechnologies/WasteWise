@@ -1,535 +1,217 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
-import { Users, BarChart3, HelpCircle, ArrowRight } from '@lucide/astro';
 ---
 
 <BaseLayout title="Community | WasteWise">
-	<section class="simple-section simple-section-centered">
-		<h1 class="header-title">WasteWise Community</h1>
-		<p class="header-subtitle">See what others are saying and join the movement.</p>
-
-		<!-- Stats Overview -->
-		<div class="stats-overview" id="community-stats-container">
-			<div class="stat-card">
-				<Users class="stat-icon" aria-hidden="true" />
-				<div class="stat-value" id="stat-total">...</div>
-				<div class="stat-label">Total Contributions</div>
+	<section class="simple-section">
+		<div class="community-stats-bar" id="community-stats-bar">
+			<div class="community-stat">
+				<div class="community-stat-label">Quiz submissions</div>
+				<div class="community-stat-value" id="stat-quiz">0</div>
 			</div>
-			<div class="stat-card">
-				<HelpCircle class="stat-icon" aria-hidden="true" />
-				<div class="stat-value" id="stat-quiz">...</div>
-				<div class="stat-label">Quizzes Taken</div>
+			<div class="community-stat">
+				<div class="community-stat-label">Poll submissions</div>
+				<div class="community-stat-value" id="stat-poll">0</div>
 			</div>
-			<div class="stat-card">
-				<BarChart3 class="stat-icon" aria-hidden="true" />
-				<div class="stat-value" id="stat-poll">...</div>
-				<div class="stat-label">Poll Responses</div>
+			<div class="community-stat">
+				<div class="community-stat-label">Contact messages</div>
+				<div class="community-stat-value" id="stat-contact">0</div>
 			</div>
 		</div>
 
-		<!-- Community Poll -->
-		<div class="content-block">
-			<h2 class="section-title">Community Poll</h2>
-			<p class="section-subtitle">What is the biggest barrier to recycling in your area?</p>
-			
-			<div id="poll-interface">
-				<form id="poll-form" class="poll-form">
-					<label class="poll-option">
-						<input type="radio" name="barrier" value="Lack of accessible bins" required />
-						<span class="radio-custom"></span>
-						Lack of accessible bins
-					</label>
-					<label class="poll-option">
-						<input type="radio" name="barrier" value="Confusing recycling rules" />
-						<span class="radio-custom"></span>
-						Confusing recycling rules
-					</label>
-					<label class="poll-option">
-						<input type="radio" name="barrier" value="Not enough time or effort" />
-						<span class="radio-custom"></span>
-						Not enough time or effort
-					</label>
-					<label class="poll-option">
-						<input type="radio" name="barrier" value="No curbside pickup" />
-						<span class="radio-custom"></span>
-						No curbside pickup
-					</label>
-					<label class="poll-option">
-						<input type="radio" name="barrier" value="Other" />
-						<span class="radio-custom"></span>
-						Other
-					</label>
-					
-					<button type="submit" class="go poll-submit">Submit Vote</button>
-				</form>
-			</div>
+		<h1 class="simple-title">Community</h1>
+		<p class="simple-subtitle">See what others are doing and share your thoughts.</p>
 
-			<div id="poll-results" class="hidden">
-				<h3 class="results-heading">Current Results (<span id="poll-total-votes">0</span> votes)</h3>
-				<div id="poll-bars-container" class="poll-bars">
-					<!-- Dynamically populated -->
-				</div>
-			</div>
-		</div>
+		<div class="community-card">
+			<h2 class="community-card-title">Poll: What's the biggest barrier to recycling in your area?</h2>
 
-		<!-- Quiz Results -->
-		<div class="content-block">
-			<h2 class="section-title">Quiz Performance</h2>
-			<p class="section-subtitle">How our community scores on the WasteWise Quiz</p>
-			
-			<div class="quiz-chart-container">
-				<div id="quiz-bars" class="quiz-bars">
-					<!-- Dynamically populated -->
+			<form id="poll-form" class="community-poll">
+				<label class="poll-option">
+					<input type="radio" name="barrier" value="Confusing or unclear recycling rules" />
+					<span>Confusing or unclear recycling rules</span>
+				</label>
+
+				<label class="poll-option">
+					<input type="radio" name="barrier" value="Not enough public recycling bins" />
+					<span>Not enough public recycling bins</span>
+				</label>
+
+				<label class="poll-option">
+					<input type="radio" name="barrier" value="Inconvenient or far-away drop-off locations" />
+					<span>Inconvenient or far-away drop-off locations</span>
+				</label>
+
+				<label class="poll-option">
+					<input type="radio" name="barrier" value="Lack of motivation or time" />
+					<span>Lack of motivation or time</span>
+				</label>
+
+				<label class="poll-option">
+					<input type="radio" name="barrier" value="No local recycling services" />
+					<span>No local recycling services</span>
+				</label>
+
+				<label class="poll-option">
+					<input type="radio" name="barrier" value="I'm not sure what can and can't be recycled" />
+					<span>I'm not sure what can and can't be recycled</span>
+				</label>
+
+				<div style="margin-top: 14px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+					<button type="submit" class="go" id="poll-submit-btn">Submit vote</button>
+					<div id="poll-status" style="font-weight: 400; opacity: 0.75;"></div>
 				</div>
-				<div class="x-axis-labels" id="quiz-x-axis">
-					<!-- Dynamically populated 1 to 10 -->
-				</div>
-				<div class="x-axis-title">Score (Out of 10)</div>
+			</form>
+
+			<div id="poll-results" class="poll-results hidden">
+				<h3 class="poll-results-title">Results</h3>
+				<div id="poll-total" class="poll-total"></div>
+				<div id="poll-bars" class="poll-bars"></div>
 			</div>
-			
-			<a href="/quiz" class="go outline-go mt-4">
-				Take the Quiz
-				<ArrowRight class="inline-icon" size={18} />
-			</a>
 		</div>
 	</section>
 </BaseLayout>
 
-<style>
-	.header-title {
-		font-size: 3.25rem;
-		font-weight: 700;
-		color: var(--ink);
-		margin-bottom: 0.5rem;
-		letter-spacing: -0.02em;
-		font-family: "Caprasimo", serif;
-		text-align: center;
-	}
-
-	.header-subtitle {
-		font-size: 1.25rem;
-		color: var(--ink);
-		opacity: 0.7;
-		font-weight: 500;
-		margin-bottom: 3rem;
-		text-align: center;
-	}
-
-	.stats-overview {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-		gap: 1.5rem;
-		margin-bottom: 4rem;
-	}
-
-	.stat-card {
-		background: #ffffff;
-		border: 1px solid var(--cloud);
-		border-radius: 12px;
-		padding: 2rem;
-		text-align: center;
-		box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-	}
-
-	.stat-icon {
-		color: var(--go);
-		width: 32px;
-		height: 32px;
-		margin: 0 auto 1rem auto;
-	}
-
-	.stat-value {
-		font-size: 2.5rem;
-		font-weight: 700;
-		font-family: "Caprasimo", serif;
-		color: var(--ink);
-		margin-bottom: 0.25rem;
-	}
-
-	.stat-label {
-		font-size: 0.95rem;
-		color: var(--ink);
-		opacity: 0.7;
-		font-weight: 500;
-	}
-
-	.content-block {
-		background: #ffffff;
-		border: 1px solid var(--cloud);
-		border-radius: 16px;
-		padding: 3rem;
-		margin-bottom: 3rem;
-		box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-		text-align: left;
-	}
-
-	.section-title {
-		font-size: 2rem;
-		font-family: "Caprasimo", serif;
-		color: var(--ink);
-		margin-bottom: 0.5rem;
-	}
-
-	.section-subtitle {
-		font-size: 1.1rem;
-		color: var(--ink);
-		opacity: 0.7;
-		margin-bottom: 2rem;
-	}
-
-	/* Poll Styles */
-	.poll-form {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-
-	.poll-option {
-		display: flex;
-		align-items: center;
-		padding: 1rem 1.25rem;
-		border: 1px solid var(--cloud);
-		border-radius: 8px;
-		cursor: pointer;
-		transition: all 0.2s;
-		font-weight: 500;
-	}
-
-	.poll-option:hover {
-		border-color: var(--go);
-	}
-
-	.poll-option input {
-		display: none;
-	}
-
-	.radio-custom {
-		width: 20px;
-		height: 20px;
-		border: 2px solid var(--cloud);
-		border-radius: 50%;
-		margin-right: 1rem;
-		position: relative;
-		transition: all 0.2s;
-	}
-
-	.poll-option input:checked + .radio-custom {
-		border-color: var(--go);
-	}
-
-	.poll-option input:checked + .radio-custom::after {
-		content: '';
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		width: 10px;
-		height: 10px;
-		background: var(--go);
-		border-radius: 50%;
-	}
-
-	.poll-submit {
-		margin-top: 1rem;
-		align-self: flex-start;
-	}
-
-	.results-heading {
-		font-size: 1.25rem;
-		font-weight: 700;
-		margin-bottom: 1.5rem;
-	}
-
-	.poll-bars {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
-	}
-
-	.bar-row {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	.bar-label-container {
-		display: flex;
-		justify-content: space-between;
-		font-weight: 500;
-		font-size: 0.95rem;
-	}
-
-	.bar-track {
-		width: 100%;
-		height: 12px;
-		background: var(--cloud);
-		border-radius: 6px;
-		overflow: hidden;
-	}
-
-	.bar-fill {
-		height: 100%;
-		background: var(--go);
-		border-radius: 6px;
-		transition: width 1s ease-out;
-	}
-
-	/* Quiz Results Styles */
-	.quiz-chart-container {
-		width: 100%;
-		margin-top: 2rem;
-	}
-
-	.quiz-bars {
-		display: flex;
-		align-items: flex-end;
-		justify-content: space-between;
-		height: 200px;
-		gap: 0.5rem;
-		border-bottom: 2px solid var(--cloud);
-		padding-bottom: 0.5rem;
-	}
-
-	.quiz-bar-wrapper {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: flex-end;
-		height: 100%;
-	}
-
-	.quiz-bar {
-		width: 100%;
-		max-width: 40px;
-		background: var(--go);
-		border-radius: 4px 4px 0 0;
-		transition: height 1s ease-out;
-		min-height: 4px;
-	}
-
-	.quiz-count {
-		font-size: 0.8rem;
-		font-weight: 600;
-		margin-bottom: 0.25rem;
-		color: var(--ink);
-	}
-
-	.x-axis-labels {
-		display: flex;
-		justify-content: space-between;
-		padding-top: 0.5rem;
-		gap: 0.5rem;
-	}
-
-	.x-axis-label {
-		flex: 1;
-		text-align: center;
-		font-size: 0.85rem;
-		font-weight: 600;
-		color: var(--ink);
-		opacity: 0.7;
-	}
-
-	.x-axis-title {
-		text-align: center;
-		margin-top: 1rem;
-		font-size: 0.9rem;
-		font-weight: 600;
-		color: var(--ink);
-		opacity: 0.7;
-	}
-
-	.mt-4 {
-		margin-top: 1.5rem;
-		display: inline-flex;
-	}
-
-	.inline-icon {
-		margin-left: 0.5rem;
-	}
-
-	.hidden {
-		display: none !important;
-	}
-</style>
-
 <script>
-	document.addEventListener('DOMContentLoaded', async () => {
-		// 1. Fetch Global Stats
-		fetch('/api/get-community-stats')
-			.then(r => r.json())
-			.then(data => {
-				const statTotal = document.getElementById('stat-total');
-				const statQuiz = document.getElementById('stat-quiz');
-				const statPoll = document.getElementById('stat-poll');
-				if(statTotal) statTotal.textContent = data.total || '0';
-				if(statQuiz) statQuiz.textContent = data.quiz || '0';
-				if(statPoll) statPoll.textContent = data.poll || '0';
-			})
-			.catch(console.error);
+	// Generate a simple device fingerprint
+	function getDeviceFingerprint() {
+		// Check if we already have a stored device ID
+		 let deviceId = localStorage.getItem('wastewise_device_id');
+		 if (!deviceId) {
+			 // Create a simple unique ID based on timestamp + random
+			 deviceId = 'dev_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+			 localStorage.setItem('wastewise_device_id', deviceId);
+		 }
+		 return deviceId;
+	}
 
-		// 2. Fetch Quiz Stats and render histogram
-		fetch('/api/get-quiz-stats')
-			.then(r => r.json())
-			.then(data => {
-				const quizBars = document.getElementById('quiz-bars');
-				const xAxis = document.getElementById('quiz-x-axis');
-				
-				if(quizBars && xAxis) {
-					let maxCount = 0;
-					for (let i = 1; i <= 10; i++) {
-						if (data[`score_${i}`] > maxCount) maxCount = data[`score_${i}`];
-					}
+	async function loadCommunityStats() {
+		try {
+			const res = await fetch('/api/get-community-stats');
+			if (!res.ok) return;
+			const data = await res.json();
 
-					quizBars.innerHTML = '';
-					xAxis.innerHTML = '';
+			const quizEl = document.getElementById('stat-quiz');
+			const pollEl = document.getElementById('stat-poll');
+			const contactEl = document.getElementById('stat-contact');
 
-					for (let i = 1; i <= 10; i++) {
-						const count = data[`score_${i}`] || 0;
-						const heightPercent = maxCount > 0 ? (count / maxCount) * 100 : 0;
-						
-						const barWrapper = document.createElement('div');
-						barWrapper.className = 'quiz-bar-wrapper';
-						
-						const countLabel = document.createElement('div');
-						countLabel.className = 'quiz-count';
-						countLabel.textContent = count > 0 ? String(count) : '';
-						
-						const bar = document.createElement('div');
-						bar.className = 'quiz-bar';
-						bar.style.height = '0%';
-						
-						setTimeout(() => {
-							bar.style.height = `${heightPercent}%`;
-						}, 100);
+			if (quizEl) quizEl.textContent = String(data.quiz ?? 0);
+			if (pollEl) pollEl.textContent = String(data.poll ?? 0);
+			if (contactEl) contactEl.textContent = String(data.contact ?? 0);
+		} catch (_) {}
+	}
 
-						barWrapper.appendChild(countLabel);
-						barWrapper.appendChild(bar);
-						quizBars.appendChild(barWrapper);
+	function setPollStatus(msg: string) {
+		const el = document.getElementById('poll-status');
+		if (el) el.textContent = msg || '';
+	}
 
-						const xLabel = document.createElement('div');
-						xLabel.className = 'x-axis-label';
-						xLabel.textContent = i.toString();
-						xAxis.appendChild(xLabel);
-					}
-				}
-			})
-			.catch(console.error);
+	function hasVotedOnDevice() {
+		return localStorage.getItem('wastewise_poll_voted') === 'true';
+	}
 
-		// 3. Handle Poll
-		const pollForm = document.getElementById('poll-form') as HTMLFormElement;
-		const pollInterface = document.getElementById('poll-interface');
-		const pollResults = document.getElementById('poll-results');
-		const pollBarsContainer = document.getElementById('poll-bars-container');
-		const pollTotalVotes = document.getElementById('poll-total-votes');
+	function markVotedOnDevice() {
+		localStorage.setItem('wastewise_poll_voted', 'true');
+	}
 
-		const renderPollResults = (data: any) => {
-			if(pollTotalVotes) pollTotalVotes.textContent = String(data.total || 0);
-			if(pollBarsContainer) {
-				pollBarsContainer.innerHTML = '';
-				
-				const standardOptions = [
-					"Lack of accessible bins",
-					"Confusing recycling rules",
-					"Not enough time or effort",
-					"No curbside pickup",
-					"Other"
-				];
+	async function loadPollResults() {
+		try {
+			const res = await fetch('/api/submit-poll');
+			if (!res.ok) return;
+			const data = await res.json();
 
-				const resultsMap = new Map();
-				if (data.results) {
-					data.results.forEach((r: any) => resultsMap.set(r.barrier, { count: r.count, percentage: r.percentage }));
-				}
+			const resultsWrap = document.getElementById('poll-results');
+			const totalEl = document.getElementById('poll-total');
+			const barsEl = document.getElementById('poll-bars');
+			const form = document.getElementById('poll-form');
 
-				standardOptions.forEach(opt => {
-					const metric = resultsMap.get(opt) || { count: 0, percentage: 0 };
-					
-					const row = document.createElement('div');
-					row.className = 'bar-row';
-					
-					row.innerHTML = `
-						<div class="bar-label-container">
-							<span>${opt}</span>
-							<span>${metric.percentage}% (${metric.count})</span>
-						</div>
-						<div class="bar-track">
-							<div class="bar-fill" style="width: 0%"></div>
-						</div>
-					`;
+			if (!resultsWrap || !totalEl || !barsEl) return;
 
-					pollBarsContainer.appendChild(row);
+			const total = Number(data.total || 0);
+			totalEl.textContent = `Total votes: ${total}`;
 
-					// Animate fill
-					setTimeout(() => {
-						const fill = row.querySelector('.bar-fill') as HTMLElement;
-						if (fill) fill.style.width = `${metric.percentage}%`;
-					}, 100);
-				});
-			}
-			
-			if(pollInterface && pollResults) {
-				pollInterface.classList.add('hidden');
-				pollResults.classList.remove('hidden');
-			}
-		};
-
-		// Check local storage
-		const hasVoted = localStorage.getItem('poll_submitted');
-		if (hasVoted) {
-			fetch('/api/submit-poll')
-				.then(r => r.json())
-				.then(data => renderPollResults(data))
-				.catch(console.error);
-		} else if(pollForm) {
-			pollForm.addEventListener('submit', async (e) => {
-				e.preventDefault();
-
-				const formData = new FormData(pollForm);
-				const barrier = formData.get('barrier');
-
-				if (!barrier) return;
-
-				const btn = pollForm.querySelector('.poll-submit') as HTMLButtonElement;
-				if (btn) {
-					btn.textContent = 'Submitting...';
-					btn.disabled = true;
-				}
-
-				try {
-					await fetch('/api/submit-poll', {
-						method: 'POST',
-						headers: { 'Content-Type': 'application/json' },
-						body: JSON.stringify({ barrier })
-					});
-
-					localStorage.setItem('poll_submitted', 'true');
-
-					const r = await fetch('/api/submit-poll');
-					const data = await r.json();
-					renderPollResults(data);
-
-					// Update global stat DOM element immediately
-					const statPoll = document.getElementById('stat-poll');
-					if (statPoll) {
-						let currentVal = parseInt(statPoll.textContent || '0');
-						if (isNaN(currentVal)) currentVal = 0;
-						statPoll.textContent = String(currentVal + 1);
-					}
-					const statTotal = document.getElementById('stat-total');
-					if (statTotal) {
-						let currentVal = parseInt(statTotal.textContent || '0');
-						if (isNaN(currentVal)) currentVal = 0;
-						statTotal.textContent = String(currentVal + 1);
-					}
-
-				} catch (err) {
-					if (btn) {
-						btn.textContent = 'Error. Try again';
-						btn.disabled = false;
-					}
-				}
+			barsEl.innerHTML = '';
+			(data.results || []).forEach((r: { barrier: string; count: number; percentage: number }) => {
+				const row = document.createElement('div');
+				row.className = 'poll-bar-row';
+				row.innerHTML = `
+					<div class="poll-bar-label">${r.barrier}</div>
+					<div class="poll-bar-track">
+						<div class="poll-bar-fill" style="width:${r.percentage || 0}%"></div>
+					</div>
+					<div class="poll-bar-meta">${r.count} (${r.percentage || 0}%)</div>
+				`;
+				barsEl.appendChild(row);
 			});
+
+			resultsWrap.classList.remove('hidden');
+
+			// Hide form if already voted
+			if (hasVotedOnDevice() && form) {
+				form.style.display = 'none';
+				setPollStatus('You have already voted on this device.');
+			}
+		} catch (_) {}
+	}
+
+	function bindPoll() {
+		const form = document.getElementById('poll-form');
+		if (!form) return;
+
+		// Check if already voted
+		if (hasVotedOnDevice()) {
+			form.style.display = 'none';
+			setPollStatus('You have already voted on this device.');
 		}
-	});
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			setPollStatus('');
+
+			if (hasVotedOnDevice()) {
+				setPollStatus('You have already voted on this device.');
+				return;
+			}
+
+			const fd = new FormData(form as HTMLFormElement);
+			const barrier = fd.get('barrier');
+			if (!barrier) {
+				setPollStatus('Please select an option.');
+				return;
+			}
+
+			const deviceFingerprint = getDeviceFingerprint();
+
+			try {
+				setPollStatus('Submitting...');
+				const res = await fetch('/api/submit-poll', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ 
+						barrier: String(barrier),
+						deviceFingerprint: deviceFingerprint
+					}),
+				});
+
+				const data = await res.json().catch(() => ({}));
+				if (!res.ok || data.ok === false) {
+					setPollStatus(data.error || 'Failed to submit.');
+					return;
+				}
+
+				// Mark as voted on this device
+				markVotedOnDevice();
+
+				setPollStatus('Thanks! Loading results...');
+				await loadPollResults();
+				await loadCommunityStats();
+				setPollStatus('Vote recorded.');
+			} catch (_) {
+				setPollStatus('Failed to submit.');
+			}
+		});
+	}
+
+	loadCommunityStats();
+	loadPollResults();
+	bindPoll();
 </script>

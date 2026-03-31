@@ -23,7 +23,19 @@
 	let placeMarkers = [];
 	let photonBias = { lat: -33.8688, lng: 151.2093 };
 
-// Geolocation tracking removed per request
+	// Marker color constants - blue for user, green for locations
+	const USER_ICON_COLOR = '#3b82f6';
+	const PLACE_ICON_COLOR = '#3ea63b';
+
+	function makePinIcon(color) {
+		return window.L.divIcon({
+			className: '',
+			iconSize: [18, 18],
+			iconAnchor: [9, 9],
+			popupAnchor: [0, -9],
+			html: `<div style="width:18px;height:18px;border-radius:50%;background:${color};border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.25)"></div>`
+		});
+	}
 
 	function normalizeText(s) {
 		return String(s || '')
@@ -443,7 +455,7 @@
 			markersLayer.removeLayer(userMarker);
 			userMarker = null;
 		}
-		userMarker = window.L.marker([userLocation.lat, userLocation.lng]);
+		userMarker = window.L.marker([userLocation.lat, userLocation.lng], { icon: makePinIcon(USER_ICON_COLOR) });
 		userMarker.bindPopup('Your location');
 		markersLayer.addLayer(userMarker);
 	}
@@ -473,16 +485,7 @@
 			const coords = place.location?.coordinates;
 			if (!coords || coords.length !== 2) return;
 			const [lng, lat] = coords;
-			const marker = window.L.marker([lat, lng], {
-				icon: window.L.icon({
-					iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-					shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-					iconSize: [25, 41],
-					iconAnchor: [12, 41],
-					popupAnchor: [1, -34],
-					shadowSize: [41, 41]
-				})
-			});
+			const marker = window.L.marker([lat, lng], { icon: makePinIcon(PLACE_ICON_COLOR) });
 			marker.bindPopup(`<strong>${place.name || 'Location'}</strong><br/>${place.address || ''}`);
 			markersLayer.addLayer(marker);
 			placeMarkers[idx] = marker;
@@ -494,6 +497,6 @@
 				map.invalidateSize();
 				map.fitBounds(bounds.pad(0.2));
 			} catch (_) {}
-		}, 300);
+		}, 0);
 	}
 })();
