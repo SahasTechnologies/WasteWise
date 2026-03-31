@@ -32,8 +32,30 @@ export async function POST(context) {
 			throw new Error('Invalid request');
 		}
 		const body = await request.json();
-		const { Name, Email, Message, 'User IP': ip, City, ISP } = body;
+		const { Name, Email, Message, 'User IP': ip, City, ISP, 'cf-turnstile-response': turnstileToken } = body;
 
+		// 1. Verify Turnstile Token
+		if (process.env.TURNSTILE_SECRET_KEY && turnstileToken) {
+			const cfData = new URLSearchParams();
+			cfData.append('secret', process.env.TURNSTILE_SECRET_KEY);
+			cfData.append('response', turnstileToken);
+
+			try {
+				const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+					body: cfData.toString(),
+				});
+				const verifyJson = await verifyRes.json();
+				if (!verifyJson.success) {
+					return new Response(JSON.stringify({ ok: false, error: 'Invalid CAPTCHA' }), { status: 400 });
+				}
+			} catch (e) {
+				console.error('Turnstile verification error:', e);
+			}
+		}
+
+		// 2. Save to DB
 		const fullIpDetails = `${String(ip || 'unknown')} - ${String(City || 'unknown')}, ${String(ISP || 'unknown')}`.slice(0, 255);
 
 		await ensureTable();
@@ -47,6 +69,40 @@ export async function POST(context) {
 				${fullIpDetails}
 			)
 		`;
+
+		// 3. Try forwarding to FormSubmit and Submify
+		const targetEmail = process.env.EMAIL;
+		if (targetEmail) {
+			const forwardPayload = { ...body, _captcha: "false" };
+
+			// Try FormSubmit
+			try {
+				await fetch(`https://formsubmit.co/ajax/${targetEmail}`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Accept': 'application/json',
+					},
+					body: JSON.stringify(forwardPayload),
+				});
+			} catch (err) {
+				console.error('FormSubmit forwarding failed:', err);
+			}
+
+			// Try Submify
+			try {
+				await fetch(`https://submify.vercel.app/${targetEmail}`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Accept': 'application/json',
+					},
+					body: JSON.stringify(forwardPayload),
+				});
+			} catch (err) {
+				console.error('Submify forwarding failed:', err);
+			}
+		}
 
 		return new Response(JSON.stringify({ ok: true }), { status: 200 });
 	} catch (err) {

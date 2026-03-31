@@ -11,12 +11,8 @@ import BaseLayout from '../components/BaseLayout.astro';
 			<form
 				class="contact-form"
 				id="native-contact"
-				action="https://submify.vercel.app/sahas.shimpi@education.nsw.gov.au"
-				method="POST"
 			>
-				<!-- submify config -->
 				<input type="hidden" name="_subject" value="New WasteWise Contact Form Message" />
-				<input type="hidden" name="_next" id="next-url-field" value="" />
 				<!-- IP address and Geo fields — filled by JS -->
 				<input type="hidden" name="User IP" id="user-ip-field" value="unknown" />
 				<input type="hidden" name="City" id="user-city-field" value="unknown" />
@@ -57,6 +53,10 @@ import BaseLayout from '../components/BaseLayout.astro';
 						required
 					></textarea>
 				</div>
+
+				<!-- Cloudflare Turnstile -->
+				<div class="cf-turnstile" data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITEKEY || "1x00000000000000000000AA"}></div>
+				<br/>
 
 				<button type="submit" class="go contact-submit">Send Message</button>
 			</form>
@@ -117,12 +117,6 @@ import BaseLayout from '../components/BaseLayout.astro';
 	const formView = document.getElementById('form-view');
 	const successView = document.getElementById('success-view');
 
-	// Set the _next URL for Submify dynamically
-	const nextUrlField = document.getElementById('next-url-field') as HTMLInputElement;
-	if (nextUrlField) {
-		nextUrlField.value = window.location.origin + window.location.pathname + '?finished=true';
-	}
-
 	// Handle URL parameter for success view
 	const urlParams = new URLSearchParams(window.location.search);
 	if (urlParams.get('finished') === 'true') {
@@ -134,28 +128,46 @@ import BaseLayout from '../components/BaseLayout.astro';
 
 	if (form) {
 		form.addEventListener('submit', async (e) => {
-			e.preventDefault(); // Stop standard redirect temporarily
+			e.preventDefault();
 
 			const formData = new FormData(form);
 			const payload = Object.fromEntries(formData.entries());
 			
+			// Must complete CAPTCHA before submitting
+			if (!payload['cf-turnstile-response']) {
+				alert('Please complete the security check.');
+				return;
+			}
+			
 			// Show sending state
 			const btn = form.querySelector('.contact-submit') as HTMLButtonElement;
-			if (btn) btn.textContent = 'Loading Security Check...';
+			if (btn) btn.textContent = 'Sending...';
 
 			try {
-				// Submit to our Vercel DB first
-				await fetch('/api/submit-contact', {
+				// Submit to our native Vercel function
+				const response = await fetch('/api/submit-contact', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify(payload)
-				}).catch(() => {});
+				});
 
-				// Now actually submit the form to Submify to trigger CAPTCHA and email
-				form.submit();
+				const result = await response.json();
+
+				if (result.ok) {
+					// Show success view
+					if (formView && successView) {
+						formView.classList.add('hidden');
+						successView.classList.remove('hidden');
+					}
+				} else {
+					if (btn) btn.textContent = 'Error - Try Again';
+					alert(result.error || 'Submission failed');
+				}
 			} catch (err) {
 				if (btn) btn.textContent = 'Error - Try Again';
 			}
 		});
 	}
 </script>
+<!-- Cloudflare Turnstile API -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
