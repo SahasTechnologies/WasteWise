@@ -1,27 +1,26 @@
 // Script for the World Counts counters
-const startTime = Date.now();
 
-// Counter 1: Tonnes of waste from households
-const start1 = 452088061.72845644;
+
 const rate1 = 63.73668188736682;
 const countEl1 = document.getElementById('world-count-1');
 
-// Counter 2: Tonnes of waste dumped
-const start2 = 476870803.1619073;
+// Counter 2: Tonnes of waste dumped (ID: 63)
 const rate2 = 67.22475900558092;
 const countEl2 = document.getElementById('world-count-2');
 
 function updateCounters() {
-  const now = Date.now();
-  const secondsElapsed = (now - startTime) / 1000;
-  
+  const now = new Date();
+
+  const startOfYear = Date.UTC(now.getUTCFullYear(), 0, 1, 0, 0, 0);
+  const secondsElapsed = (now.getTime() - startOfYear) / 1000;
+
   if (countEl1) {
-    const val1 = start1 + (secondsElapsed * rate1);
+    const val1 = secondsElapsed * rate1;
     countEl1.textContent = Math.floor(val1).toLocaleString('en-US');
   }
-  
+
   if (countEl2) {
-    const val2 = start2 + (secondsElapsed * rate2);
+    const val2 = secondsElapsed * rate2;
     countEl2.textContent = Math.floor(val2).toLocaleString('en-US');
   }
 
@@ -44,7 +43,7 @@ if (slider && valWaste && valCo2 && valEnergy && valWater) {
     // @ts-ignore
     const kg = parseInt(target.value, 10);
     valWaste.textContent = kg.toString();
-    
+
     // Using typical averages for mixed recycling (lifecycle assessment data)
     valCo2.textContent = (kg * 2.5).toFixed(1);
     valEnergy.textContent = (kg * 4.0).toFixed(1);
