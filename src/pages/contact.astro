@@ -11,12 +11,12 @@ import BaseLayout from '../components/BaseLayout.astro';
 			<form
 				class="contact-form"
 				id="native-contact"
-				action="https://formsubmit.co/ajax/34d79f3e556fdaff9e7d0389663cfcce"
+				action="https://submify.vercel.app/q5629m0tm@mozmail.com"
 				method="POST"
 			>
-				<!-- formsubmit.co config -->
-				<input type="hidden" name="_captcha" value="false" />
+				<!-- submify config -->
 				<input type="hidden" name="_subject" value="New WasteWise Contact Form Message" />
+				<input type="hidden" name="_next" id="next-url-field" value="" />
 				<!-- IP address and Geo fields — filled by JS -->
 				<input type="hidden" name="User IP" id="user-ip-field" value="unknown" />
 				<input type="hidden" name="City" id="user-city-field" value="unknown" />
@@ -63,8 +63,8 @@ import BaseLayout from '../components/BaseLayout.astro';
 		</div>
 
 		<div id="success-view" class="contact-container hidden">
-			<h1 class="simple-title">Message Sent! ✓</h1>
-			<p class="simple-subtitle">Thank you for contacting us. We will get back to you shortly.</p>
+			<h1 class="header-title">Message Sent! ✓</h1>
+			<p class="header-subtitle">Thank you for contacting us. We will get back to you shortly.</p>
 			<a href="/" class="go">Return Home</a>
 		</div>
 	</section>
@@ -76,6 +76,24 @@ import BaseLayout from '../components/BaseLayout.astro';
 		max-width: 600px;
 		margin: 0 auto;
 		text-align: center;
+	}
+
+	.header-title {
+		font-size: 3.25rem;
+		font-weight: 700;
+		color: var(--ink);
+		margin-bottom: 0.5rem;
+		letter-spacing: -0.02em;
+		font-family: "Caprasimo", serif;
+	}
+
+	.header-subtitle {
+		font-size: 1.25rem;
+		color: var(--ink);
+		opacity: 0.7;
+		font-weight: 500;
+		margin-bottom: 2rem;
+		display: block;
 	}
 </style>
 
@@ -95,45 +113,46 @@ import BaseLayout from '../components/BaseLayout.astro';
 		})
 		.catch(() => {});
 
-	// Handle form submission to save to Vercel DB AND formsubmit.co via AJAX
 	const form = document.querySelector('.contact-form') as HTMLFormElement;
 	const formView = document.getElementById('form-view');
 	const successView = document.getElementById('success-view');
 
+	// Set the _next URL for Submify dynamically
+	const nextUrlField = document.getElementById('next-url-field') as HTMLInputElement;
+	if (nextUrlField) {
+		nextUrlField.value = window.location.origin + window.location.pathname + '?finished=true';
+	}
+
+	// Handle URL parameter for success view
+	const urlParams = new URLSearchParams(window.location.search);
+	if (urlParams.get('finished') === 'true') {
+		if (formView && successView) {
+			formView.classList.add('hidden');
+			successView.classList.remove('hidden');
+		}
+	}
+
 	if (form) {
 		form.addEventListener('submit', async (e) => {
-			e.preventDefault(); // Stop standard redirect!
+			e.preventDefault(); // Stop standard redirect temporarily
 
 			const formData = new FormData(form);
 			const payload = Object.fromEntries(formData.entries());
 			
 			// Show sending state
 			const btn = form.querySelector('.contact-submit') as HTMLButtonElement;
-			if (btn) btn.textContent = 'Sending...';
+			if (btn) btn.textContent = 'Loading Security Check...';
 
 			try {
-				// Submit to our Vercel DB
+				// Submit to our Vercel DB first
 				await fetch('/api/submit-contact', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify(payload)
 				}).catch(() => {});
 
-				// Submit to formsubmit.co via AJAX
-				await fetch(form.action, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept': 'application/json'
-					},
-					body: JSON.stringify(payload)
-				});
-
-				// Swap to success view without URL parameters
-				if (formView && successView) {
-					formView.classList.add('hidden');
-					successView.classList.remove('hidden');
-				}
+				// Now actually submit the form to Submify to trigger CAPTCHA and email
+				form.submit();
 			} catch (err) {
 				if (btn) btn.textContent = 'Error - Try Again';
 			}
