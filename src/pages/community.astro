@@ -72,17 +72,7 @@ import BaseLayout from '../components/BaseLayout.astro';
 </BaseLayout>
 
 <script>
-	// Generate a simple device fingerprint
-	function getDeviceFingerprint() {
-		// Check if we already have a stored device ID
-		 let deviceId = localStorage.getItem('wastewise_device_id');
-		 if (!deviceId) {
-			 // Create a simple unique ID based on timestamp + random
-			 deviceId = 'dev_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-			 localStorage.setItem('wastewise_device_id', deviceId);
-		 }
-		 return deviceId;
-	}
+
 
 	async function loadCommunityStats() {
 		try {
@@ -106,14 +96,16 @@ import BaseLayout from '../components/BaseLayout.astro';
 	}
 
 	function hasVotedOnDevice() {
-		return localStorage.getItem('wastewise_poll_voted') === 'true';
+		return localStorage.getItem('form') === 'true';
 	}
 
 	function markVotedOnDevice() {
-		localStorage.setItem('wastewise_poll_voted', 'true');
+		localStorage.setItem('form', 'true');
 	}
 
 	async function loadPollResults() {
+		if (!hasVotedOnDevice()) return;
+
 		try {
 			const res = await fetch('/api/submit-poll');
 			if (!res.ok) return;
@@ -179,16 +171,13 @@ import BaseLayout from '../components/BaseLayout.astro';
 				return;
 			}
 
-			const deviceFingerprint = getDeviceFingerprint();
-
 			try {
 				setPollStatus('Submitting...');
 				const res = await fetch('/api/submit-poll', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({ 
-						barrier: String(barrier),
-						deviceFingerprint: deviceFingerprint
+						barrier: String(barrier)
 					}),
 				});
 

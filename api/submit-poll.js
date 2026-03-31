@@ -16,7 +16,6 @@ async function ensureTable() {
 			id SERIAL PRIMARY KEY,
 			barrier VARCHAR(255),
 			ip VARCHAR(64),
-			device_fingerprint VARCHAR(255),
 			submitted_at TIMESTAMPTZ DEFAULT NOW()
 		)
 	`;
@@ -28,7 +27,7 @@ export async function POST(context) {
 	try {
 		const request = context?.request ?? context;
 		const body = await request.json();
-		const { barrier, deviceFingerprint } = body;
+		const { barrier } = body;
 
 		if (!barrier) return new Response(JSON.stringify({ ok: false, error: 'Missing barrier option' }), { status: 400 });
 
@@ -39,22 +38,11 @@ export async function POST(context) {
 
 		await ensureTable();
 
-		// Check if this device has already voted (one vote per device forever)
-		if (deviceFingerprint) {
-			const existing = await sql`
-				SELECT id FROM poll_submissions 
-				WHERE device_fingerprint = ${String(deviceFingerprint).slice(0, 255)}
-				LIMIT 1
-			`;
-			if (existing.length > 0) {
-				return new Response(JSON.stringify({ ok: false, error: 'You have already voted on this device' }), { status: 403 });
-			}
-		}
-
 		await sql`
-			INSERT INTO poll_submissions (barrier, ip, device_fingerprint)
-			VALUES (${String(barrier).slice(0, 255)}, ${String(ip).slice(0, 64)}, ${deviceFingerprint ? String(deviceFingerprint).slice(0, 255) : null})
+			INSERT INTO poll_submissions (barrier, ip)
+			VALUES (${String(barrier).slice(0, 255)}, ${String(ip).slice(0, 64)})
 		`;
+
 
 		return new Response(JSON.stringify({ ok: true }), { status: 200 });
 	} catch (err) {
