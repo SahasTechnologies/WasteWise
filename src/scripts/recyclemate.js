@@ -23,7 +23,7 @@
 	let placeMarkers = [];
 	let photonBias = { lat: -33.8688, lng: 151.2093 };
 
-	// Geolocation removed completely as per user request
+// Geolocation tracking removed per request
 
 	function normalizeText(s) {
 		return String(s || '')
@@ -264,9 +264,6 @@
 			// Display item information
 			displayItemInfo(selectedItem);
 
-			// Unhide container EARLY so the map dimension calculation doesn't glitch and leave trailing bezel
-			resultsContainer.classList.remove('hidden');
-
 			// Get item ID for places search
 			let itemId = selectedItem.id;
 			
@@ -337,6 +334,7 @@
 				`;
 			}
 
+			resultsContainer.classList.remove('hidden');
 		} catch (err) {
 			console.error('Search error:', err);
 			locationsList.innerHTML = '<p class="no-results">An error occurred while searching. Please try again.</p>';
@@ -471,20 +469,20 @@
 
 		const bounds = window.L.latLngBounds([[userLocation.lat, userLocation.lng]]);
 
-		const greenIcon = new window.L.Icon({
-			iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-			shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-			iconSize: [25, 41],
-			iconAnchor: [12, 41],
-			popupAnchor: [1, -34],
-			shadowSize: [41, 41]
-		});
-
 		places.forEach((place, idx) => {
 			const coords = place.location?.coordinates;
 			if (!coords || coords.length !== 2) return;
 			const [lng, lat] = coords;
-			const marker = window.L.marker([lat, lng], { icon: greenIcon });
+			const marker = window.L.marker([lat, lng], {
+				icon: window.L.icon({
+					iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+					shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+					iconSize: [25, 41],
+					iconAnchor: [12, 41],
+					popupAnchor: [1, -34],
+					shadowSize: [41, 41]
+				})
+			});
 			marker.bindPopup(`<strong>${place.name || 'Location'}</strong><br/>${place.address || ''}`);
 			markersLayer.addLayer(marker);
 			placeMarkers[idx] = marker;
@@ -496,6 +494,6 @@
 				map.invalidateSize();
 				map.fitBounds(bounds.pad(0.2));
 			} catch (_) {}
-		}, 100);
+		}, 300);
 	}
 })();

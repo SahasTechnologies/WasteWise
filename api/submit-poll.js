@@ -15,10 +15,15 @@ async function ensureTable() {
 		CREATE TABLE IF NOT EXISTS poll_submissions (
 			id SERIAL PRIMARY KEY,
 			barrier VARCHAR(255),
-			ip VARCHAR(255),
-			submitted_at TIMESTAMPTZ DEFAULT NOW()
+			submitted_at TIMESTAMPTZ DEFAULT NOW(),
+			ip_address VARCHAR(45)
 		)
 	`;
+	try {
+		await sql`ALTER TABLE poll_submissions ADD COLUMN IF NOT EXISTS ip_address VARCHAR(45)`;
+	} catch (e) {
+		console.warn('Could not alter poll_submissions table:', e);
+	}
 }
 
 export const prerender = false;
@@ -26,7 +31,6 @@ export const prerender = false;
 export async function POST(context) {
 	try {
 		const request = context?.request ?? context;
-		const ip = request.headers?.get('x-forwarded-for') || request.headers?.get('x-real-ip') || 'unknown';
 		const body = await request.json();
 		const { barrier } = body;
 
@@ -34,9 +38,11 @@ export async function POST(context) {
 
 		await ensureTable();
 
+		const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+
 		await sql`
-			INSERT INTO poll_submissions (barrier, ip)
-			VALUES (${String(barrier).slice(0, 255)}, ${String(ip).slice(0, 255)})
+			INSERT INTO poll_submissions (barrier, ip_address)
+			VALUES (${String(barrier).slice(0, 255)}, ${ip})
 		`;
 
 		return new Response(JSON.stringify({ ok: true }), { status: 200 });
