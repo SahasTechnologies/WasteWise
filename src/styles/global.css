@@ -1455,7 +1455,7 @@ input {
 	border: 1px solid rgba(11, 19, 32, 0.12);
 	border-radius: 12px;
 	box-shadow: 0 12px 28px rgba(11, 19, 32, 0.15);
-	z-index: 100;
+	z-index: 9999;
 	display: none;
 }
 
@@ -2116,6 +2116,19 @@ input {
 	margin-right: 0;
 }
 
+/* Find page results layout: always column so map stays above list */
+.find-results-layout {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	margin-top: 24px;
+}
+
+/* Ensure autocomplete suggestions float above the Leaflet map */
+.recyclemate-search-container {
+	position: relative;
+}
+
 
 /* Contact Page Styles */
 .contact-container {
@@ -2277,3 +2290,395 @@ input {
 	color: var(--go);
 	font-weight: 600;
 }
+
+/* ──────────────────────────────────────────────────────────────
+   Impact Calculator Section (separated from stats widgets)
+────────────────────────────────────────────────────────────── */
+.impact-calculator-section {
+	width: min(var(--page-max), calc(100vw - 2 * var(--gutter)));
+	margin: 32px auto 0;
+	padding: 0 var(--gutter);
+}
+
+.impact-calculator-inner {
+	background: var(--glass);
+	border-radius: 22px;
+	padding: 40px;
+	box-shadow: 0 16px 34px rgba(11, 19, 32, 0.08);
+	border: 1px solid var(--glass-border);
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+}
+
+.impact-calc-title {
+	text-align: center;
+	font-size: 26px;
+	margin: 0 0 8px 0;
+	color: var(--ink);
+}
+
+.impact-calc-subtitle {
+	text-align: center;
+	color: rgba(11, 19, 32, 0.6);
+	margin: 0 0 32px 0;
+	font-size: 15px;
+	font-weight: 400;
+}
+
+.impact-bin-top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.impact-bin-info {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.impact-bin-label {
+	font-size: 14px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: rgba(11, 19, 32, 0.55);
+}
+
+.impact-bin-kg {
+	font-size: 22px;
+	font-weight: 400;
+	font-family: "Caprasimo", "Lato", ui-sans-serif, system-ui;
+	color: var(--green-2);
+}
+
+.impact-reset-btn {
+	background: rgba(11, 19, 32, 0.06);
+	border: 1px solid rgba(11, 19, 32, 0.12);
+	border-radius: 10px;
+	padding: 8px 16px;
+	font-size: 14px;
+	font-weight: 700;
+	color: rgba(11, 19, 32, 0.75);
+	cursor: pointer;
+	font-family: inherit;
+	transition: background 0.15s, border-color 0.15s;
+}
+
+.impact-reset-btn:hover {
+	background: rgba(11, 19, 32, 0.1);
+	border-color: rgba(11, 19, 32, 0.2);
+}
+
+/* Material sliders */
+.material-sliders {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	margin-bottom: 28px;
+}
+
+.material-slider-row {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.material-slider-header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.material-icon-wrap {
+	font-size: 20px;
+	line-height: 1;
+	width: 28px;
+	text-align: center;
+	flex-shrink: 0;
+}
+
+.material-name {
+	font-size: 15px;
+	font-weight: 700;
+	flex: 1;
+	color: var(--ink);
+}
+
+.material-pct {
+	font-size: 15px;
+	font-weight: 800;
+	color: var(--green-2);
+	min-width: 40px;
+	text-align: right;
+}
+
+.material-slider-track-wrap {
+	padding-left: 38px;
+}
+
+.material-range {
+	width: 100%;
+	height: 8px;
+	border-radius: 4px;
+	outline: none;
+	cursor: pointer;
+	margin-bottom: 4px;
+	/* Custom track fill via CSS variable */
+	background: linear-gradient(
+		to right,
+		var(--green-1) 0%,
+		var(--green-1) var(--fill-pct, 50%),
+		rgba(11, 19, 32, 0.12) var(--fill-pct, 50%),
+		rgba(11, 19, 32, 0.12) 100%
+	);
+	-webkit-appearance: none;
+	appearance: none;
+	border: none;
+}
+
+.material-range::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: #fff;
+	border: 3px solid var(--green-1);
+	cursor: pointer;
+	box-shadow: 0 2px 8px rgba(43, 161, 54, 0.35);
+	transition: box-shadow 0.15s;
+}
+
+.material-range::-webkit-slider-thumb:hover {
+	box-shadow: 0 4px 14px rgba(43, 161, 54, 0.5);
+}
+
+.material-range::-moz-range-thumb {
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: #fff;
+	border: 3px solid var(--green-1);
+	cursor: pointer;
+	box-shadow: 0 2px 8px rgba(43, 161, 54, 0.35);
+}
+
+.slider-labels-small {
+	display: flex;
+	justify-content: space-between;
+	font-size: 12px;
+	font-weight: 600;
+	color: rgba(11, 19, 32, 0.4);
+}
+
+.pct-warning {
+	padding: 10px 16px;
+	background: rgba(255, 200, 0, 0.1);
+	border: 1px solid rgba(255, 200, 0, 0.4);
+	border-radius: 10px;
+	font-size: 14px;
+	font-weight: 400;
+	color: rgba(11, 19, 32, 0.8);
+	margin-bottom: 20px;
+}
+
+/* Impact Results */
+.impact-results-new {
+	border-top: 1px solid rgba(11, 19, 32, 0.08);
+	padding-top: 28px;
+	margin-top: 8px;
+}
+
+.impact-results-title {
+	font-size: 16px;
+	font-weight: 700;
+	color: rgba(11, 19, 32, 0.75);
+	margin: 0 0 20px 0;
+	text-align: center;
+}
+
+.impact-results-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+	gap: 16px;
+	margin-bottom: 20px;
+}
+
+.impact-result-card {
+	background: rgba(11, 19, 32, 0.85);
+	border-radius: 14px;
+	padding: 20px 16px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	text-align: center;
+}
+
+.impact-result-icon {
+	font-size: 26px;
+	line-height: 1;
+}
+
+.impact-result-value {
+	font-size: 28px;
+	font-weight: 400;
+	font-family: "Caprasimo", "Lato", ui-sans-serif, system-ui;
+	color: var(--green-1);
+	line-height: 1;
+}
+
+.impact-result-unit {
+	font-size: 13px;
+	font-weight: 400;
+	color: rgba(255, 255, 255, 0.75);
+}
+
+.impact-source-note {
+	text-align: center;
+	font-size: 12px;
+	font-weight: 400;
+	color: rgba(11, 19, 32, 0.5);
+	margin: 0;
+}
+
+.impact-source-note a {
+	color: var(--green-2);
+	text-decoration: none;
+}
+
+.impact-source-note a:hover {
+	text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+	.impact-calculator-inner {
+		padding: 24px;
+	}
+	.impact-results-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+	.impact-bin-top {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Privacy Policy Page
+────────────────────────────────────────────────────────────── */
+.privacy-section {
+	max-width: 780px;
+}
+
+.privacy-content {
+	background: rgba(255, 255, 255, 0.95);
+	border-radius: 18px;
+	padding: 36px 40px;
+	box-shadow: 0 8px 24px rgba(11, 19, 32, 0.06);
+	border: 1px solid rgba(11, 19, 32, 0.08);
+	margin-top: 8px;
+}
+
+.privacy-intro {
+	font-size: 16px;
+	line-height: 1.7;
+	font-weight: 400;
+	color: rgba(11, 19, 32, 0.8);
+	margin: 0 0 16px 0;
+}
+
+.privacy-h2 {
+	font-size: 20px;
+	font-weight: 700;
+	color: var(--ink);
+	margin: 32px 0 12px 0;
+	border-bottom: 2px solid rgba(102, 194, 74, 0.3);
+	padding-bottom: 6px;
+}
+
+.privacy-h3 {
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--ink);
+	margin: 20px 0 8px 0;
+}
+
+.privacy-content p {
+	font-size: 15px;
+	line-height: 1.65;
+	font-weight: 400;
+	color: rgba(11, 19, 32, 0.78);
+	margin: 0 0 12px 0;
+}
+
+.privacy-list {
+	margin: 8px 0 16px 0;
+	padding-left: 22px;
+}
+
+.privacy-list li {
+	font-size: 15px;
+	line-height: 1.65;
+	font-weight: 400;
+	color: rgba(11, 19, 32, 0.78);
+	margin-bottom: 6px;
+}
+
+.privacy-dl {
+	margin: 12px 0 16px 0;
+}
+
+.privacy-dl dt {
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--ink);
+	margin-top: 14px;
+}
+
+.privacy-dl dd {
+	font-size: 15px;
+	font-weight: 400;
+	color: rgba(11, 19, 32, 0.75);
+	margin-left: 16px;
+	line-height: 1.55;
+}
+
+.privacy-link {
+	color: var(--green-2);
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.privacy-link:hover {
+	text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+	.privacy-content {
+		padding: 24px 20px;
+	}
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Community poll form fixes
+────────────────────────────────────────────────────────────── */
+.poll-submit-row {
+	margin-top: 16px;
+	display: flex;
+	gap: 14px;
+	align-items: center;
+	flex-wrap: wrap;
+	width: 100%;
+}
+
+.poll-status-text {
+	font-weight: 400;
+	opacity: 0.75;
+	font-size: 14px;
+}
+

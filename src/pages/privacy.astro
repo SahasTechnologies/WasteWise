@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+---
+
+<BaseLayout title="Privacy Policy | WasteWise">
+	<section class="simple-section privacy-section">
+		<h1 class="simple-title">Privacy Policy</h1>
+		<p class="simple-subtitle">Last updated: 2 April 2026</p>
+
+		<div class="privacy-content">
+			<p class="privacy-intro">
+				WasteWise is an educational website designed to help people learn about recycling in
+				Australia. We aim to keep things simple, safe, and transparent. This Privacy Policy
+				explains what information we collect, how it is used, and which third‑party services
+				help us operate features like our contact form, quizzes, polls, and Find tool.
+			</p>
+			<p class="privacy-intro">
+				We do not sell personal information, and we do not use advertising or
+				tracking‑based analytics. Using our website is optional, and you may choose not to
+				use features that send information to external services.
+			</p>
+
+			<h2 class="privacy-h2">1. Definitions</h2>
+			<dl class="privacy-dl">
+				<dt>"Personal Information"</dt>
+				<dd>Any information that can reasonably identify an individual, such as an IP address when linked with other data.</dd>
+				<dt>"Technical Information"</dt>
+				<dd>Non‑identifying data such as browser type, device type, performance metrics, or general location based on IP.</dd>
+				<dt>"Third‑Party Services"</dt>
+				<dd>External tools or APIs we use to run features on the site, such as form delivery, location lookup, or analytics.</dd>
+				<dt>"Find Feature"</dt>
+				<dd>The tool on WasteWise that helps users identify how to recycle items based on their location.</dd>
+			</dl>
+
+			<h2 class="privacy-h2">2. Information We Collect</h2>
+			<p>We collect the following information when you use our website:</p>
+
+			<h3 class="privacy-h3">2.1 Contact Form, Quiz, and Poll</h3>
+			<ul class="privacy-list">
+				<li>Information you enter (e.g., your message or answers)</li>
+				<li>Your IP address, used for security, spam prevention, and basic functionality</li>
+			</ul>
+
+			<h3 class="privacy-h3">2.2 Find Feature</h3>
+			<ul class="privacy-list">
+				<li>The location you enter (e.g., suburb or address)</li>
+				<li>Your IP address (to determine your region for recycling rules)</li>
+			</ul>
+
+			<h3 class="privacy-h3">2.3 Technical Information</h3>
+			<p>Collected automatically by certain services:</p>
+			<ul class="privacy-list">
+				<li>Browser and device details</li>
+				<li>Performance metrics</li>
+				<li>General region based on IP</li>
+			</ul>
+			<p>We do not collect personal information anywhere else on the site.</p>
+
+			<h2 class="privacy-h2">3. How Your Information Is Processed</h2>
+			<h3 class="privacy-h3">3.1 Contact Form Services</h3>
+			<p>We use FormSubmit.co or Submify to deliver your message to our email inbox. These services may process:</p>
+			<ul class="privacy-list">
+				<li>Your form message</li>
+				<li>Your IP address (for abuse prevention)</li>
+			</ul>
+
+			<h3 class="privacy-h3">3.2 Cloudflare Turnstile</h3>
+			<p>Used to protect our forms from bots and spam. Cloudflare may collect:</p>
+			<ul class="privacy-list">
+				<li>IP address</li>
+				<li>Browser details</li>
+				<li>Interaction data</li>
+			</ul>
+
+			<h3 class="privacy-h3">3.3 Profanity‑Checker API</h3>
+			<p>Used to filter inappropriate content in contact form messages. Only the message text is sent to this service.</p>
+
+			<h2 class="privacy-h2">4. Find Feature (Location Search)</h2>
+			<p>When you use the Find tool:</p>
+			<h3 class="privacy-h3">4.1 Nominatim (OpenStreetMap)</h3>
+			<p>Your entered location is sent to Nominatim to convert it into coordinates.</p>
+			<h3 class="privacy-h3">4.2 RecycleMate</h3>
+			<p>The converted location is sent to RecycleMate to determine correct recycling instructions.</p>
+			<h3 class="privacy-h3">4.3 Leaflet</h3>
+			<p>RecycleMate may use Leaflet (their map renderer) to display results.</p>
+			<h3 class="privacy-h3">4.4 We do not store your location</h3>
+			<p>WasteWise does not save or retain your address or coordinates.</p>
+
+			<h2 class="privacy-h2">5. IP Lookup Services</h2>
+			<p>We use the following services to determine your region and show correct recycling information:</p>
+			<ul class="privacy-list">
+				<li>ip-api.com</li>
+				<li>ipify.com</li>
+			</ul>
+			<p>These services receive your IP address to return general location data (e.g., state or region).</p>
+
+			<h2 class="privacy-h2">6. Analytics</h2>
+			<p>We use Vercel Analytics and Vercel Speed Insights to understand how the site performs. These tools may collect:</p>
+			<ul class="privacy-list">
+				<li>IP address</li>
+				<li>Browser and device type</li>
+				<li>Page load times</li>
+				<li>General traffic patterns</li>
+			</ul>
+			<p>We do not use advertising, tracking cookies, or behavioural profiling.</p>
+
+			<h2 class="privacy-h2">7. Why We Collect Information</h2>
+			<p>We collect and process information to:</p>
+			<ul class="privacy-list">
+				<li>Deliver your messages to us</li>
+				<li>Run quizzes and polls</li>
+				<li>Provide accurate recycling information</li>
+				<li>Prevent spam and automated abuse</li>
+				<li>Improve site performance and reliability</li>
+			</ul>
+			<p>We do not use your information for marketing or advertising.</p>
+
+			<h2 class="privacy-h2">8. How Long We Keep Information</h2>
+			<p>We keep IP addresses and form/quiz/poll logs only as long as needed for security and troubleshooting. After that, they are deleted automatically or removed during routine clean‑ups.</p>
+			<p>We do not store location data from the Find feature.</p>
+
+			<h2 class="privacy-h2">9. Who We Share Information With</h2>
+			<p>We do not sell or share your information with advertisers or data brokers. Your data is only processed by the services listed in this policy for the purposes described.</p>
+
+			<h2 class="privacy-h2">10. Your Choices</h2>
+			<p>Using the contact form, quiz, poll, or Find feature is optional. If you prefer not to share information, you may choose not to use these features.</p>
+
+			<h2 class="privacy-h2">11. Contact Us</h2>
+			<p>If you have questions about this Privacy Policy or how we handle information, you can reach us through the <a href="/contact" class="privacy-link">contact form</a> on our website.</p>
+		</div>
+	</section>
+</BaseLayout>

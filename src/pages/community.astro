@@ -30,18 +30,28 @@ import BaseLayout from '../components/BaseLayout.astro';
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
-	}
-	.quiz-option {
-		box-sizing: border-box;
 		width: 100%;
 	}
-	.quiz-option:has(input:checked) {
+	.community-poll .quiz-option {
+		box-sizing: border-box;
+		width: 100%;
+		max-width: 100%;
+	}
+	.community-poll .quiz-option:has(input:checked) {
 		background: rgba(102, 194, 74, 0.05) !important;
 		border-color: var(--green-1) !important;
 	}
-	.quiz-option:has(input:checked) .quiz-option-label {
+	.community-poll .quiz-option:has(input:checked) .quiz-option-label {
 		background: var(--green-1);
 		color: #fff;
+	}
+	/* Community chart uses bright green bars */
+	#quiz-results-chart .chart-bar {
+		background: linear-gradient(180deg, var(--green-1), var(--green-2)) !important;
+		box-shadow: 0 4px 12px rgba(102, 194, 74, 0.3) !important;
+	}
+	#quiz-results-chart .chart-count {
+		color: var(--green-1);
 	}
 </style>
 
@@ -82,9 +92,9 @@ import BaseLayout from '../components/BaseLayout.astro';
 					<span class="quiz-option-text">I'm not sure what can and can't be recycled</span>
 				</label>
 
-				<div style="margin-top: 14px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+				<div class="poll-submit-row">
 					<button type="submit" class="go" id="poll-submit-btn">Submit vote</button>
-					<div id="poll-status" style="font-weight: 400; opacity: 0.75;"></div>
+					<div id="poll-status" class="poll-status-text"></div>
 				</div>
 			</form>
 			<script>

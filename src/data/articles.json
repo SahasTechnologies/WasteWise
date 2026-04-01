@@ -1,12 +1,6 @@
 [
     {
         "type": "article",
-        "title": "ABC News - Forget recycling, we need to fix wish-cycling",
-        "url": "https://www.abc.net.au/news/2019-03-02/forget-recycling-we-need-to-fix-wish-cycling/10829542",
-        "extract": "In a Senate Environment Committee report handed down last June, one of Australia's largest recycling companies, Visy, lamented a household habit that it said \"may doom tonnes of other recyclable items to waste\". They called it 'wish-cycling'."
-    },
-    {
-        "type": "article",
         "title": "OurSC - Your most-asked recycling questions answered",
         "url": "https://oursc.com.au/environment/your-most-asked-recycling-questions-answered",
         "extract": "Can batteries be binned, what to do with greasy pizza boxes, what is a scrunch test, can takeaway coffee cups go in the recycling bin and should recycling be bagged? Discover the answers to these questions and more."
@@ -38,6 +32,12 @@
         "title": "Return and Earn - About",
         "url": "https://returnandearn.org.au/about",
         "extract": "Whether you're doing your part for the environment, teaching kids about recycling or fundraising for a cause, Return and Earn has become part of life in New South Wales."
+    },
+    {
+        "type": "article",
+        "title": "ABC News - Forget recycling, we need to fix wish-cycling",
+        "url": "https://www.abc.net.au/news/2019-03-02/forget-recycling-we-need-to-fix-wish-cycling/10829542",
+        "extract": "In a Senate Environment Committee report handed down last June, one of Australia's largest recycling companies, Visy, lamented a household habit that it said \"may doom tonnes of other recyclable items to waste\". They called it 'wish-cycling'."
     },
     {
         "type": "article",

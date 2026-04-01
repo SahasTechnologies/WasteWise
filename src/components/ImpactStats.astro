@@ -32,38 +32,145 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <div class="impact-slider-section">
-      <h3 class="impact-title">See Your Impact</h3>
-      <p class="impact-subtitle">Move the slider to see what you save</p>
-      
-      <div class="slider-wrapper">
-        <input type="range" min="1" max="100" value="1" class="impact-slider" id="impact-slider" aria-label="Waste recycled in kg">
-        <div class="slider-labels">
-          <span>1 kg</span>
-          <span>100 kg</span>
+<!-- Separate Impact Calculator Section -->
+<section class="impact-calculator-section" aria-labelledby="impact-heading">
+  <div class="impact-calculator-inner">
+    <h2 id="impact-heading" class="impact-calc-title">See Your Recycling Impact</h2>
+    <p class="impact-calc-subtitle">Adjust the sliders to match your bin's contents — see how much CO₂ you save by recycling</p>
+
+    <div class="impact-bin-top">
+      <div class="impact-bin-info">
+        <span class="impact-bin-label">Total bin weight</span>
+        <span class="impact-bin-kg" id="total-kg-display">20 kg</span>
+      </div>
+      <button class="impact-reset-btn" id="impact-reset-btn" type="button">Reset to default bin</button>
+    </div>
+
+    <!-- Material sliders -->
+    <div class="material-sliders" id="material-sliders">
+      <div class="material-slider-row" data-material="food_waste">
+        <div class="material-slider-header">
+          <span class="material-icon-wrap">🍎</span>
+          <span class="material-name">Food Waste</span>
+          <span class="material-pct" id="pct-food_waste">50%</span>
+        </div>
+        <div class="material-slider-track-wrap">
+          <input type="range" min="0" max="100" value="50" class="material-range" id="slider-food_waste" data-key="food_waste" aria-label="Food waste percentage" />
+          <div class="slider-labels-small">
+            <span>0%</span>
+            <span>100%</span>
+          </div>
         </div>
       </div>
-      
-      <div class="impact-results">
-        <p class="impact-text">Recycling <span id="val-waste" class="impact-highlight">1</span> kg of waste saves:</p>
-        <div class="impact-grid">
-          <div class="impact-card">
-            <span id="val-co2" class="impact-number">2.5</span>
-            <span class="impact-unit">kg CO₂ Eq</span>
-          </div>
-          <div class="impact-card">
-            <span id="val-energy" class="impact-number">4.0</span>
-            <span class="impact-unit">kWh Energy</span>
-          </div>
-          <div class="impact-card">
-            <span id="val-water" class="impact-number">10.0</span>
-            <span class="impact-unit">Liters Water</span>
+
+      <div class="material-slider-row" data-material="paper_cardboard">
+        <div class="material-slider-header">
+          <span class="material-icon-wrap">📦</span>
+          <span class="material-name">Paper &amp; Cardboard</span>
+          <span class="material-pct" id="pct-paper_cardboard">23%</span>
+        </div>
+        <div class="material-slider-track-wrap">
+          <input type="range" min="0" max="100" value="23" class="material-range" id="slider-paper_cardboard" data-key="paper_cardboard" aria-label="Paper and cardboard percentage" />
+          <div class="slider-labels-small">
+            <span>0%</span>
+            <span>100%</span>
           </div>
         </div>
       </div>
-      <p class="stats-source">
-        Impact metrics based on <a href="https://www.epa.gov/warm" target="_blank" rel="noopener noreferrer">EPA WARM</a> averages.
+
+      <div class="material-slider-row" data-material="plastics">
+        <div class="material-slider-header">
+          <span class="material-icon-wrap">🧴</span>
+          <span class="material-name">Plastics</span>
+          <span class="material-pct" id="pct-plastics">13%</span>
+        </div>
+        <div class="material-slider-track-wrap">
+          <input type="range" min="0" max="100" value="13" class="material-range" id="slider-plastics" data-key="plastics" aria-label="Plastics percentage" />
+          <div class="slider-labels-small">
+            <span>0%</span>
+            <span>100%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="material-slider-row" data-material="glass">
+        <div class="material-slider-header">
+          <span class="material-icon-wrap">🍾</span>
+          <span class="material-name">Glass</span>
+          <span class="material-pct" id="pct-glass">2%</span>
+        </div>
+        <div class="material-slider-track-wrap">
+          <input type="range" min="0" max="100" value="2" class="material-range" id="slider-glass" data-key="glass" aria-label="Glass percentage" />
+          <div class="slider-labels-small">
+            <span>0%</span>
+            <span>100%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="material-slider-row" data-material="metals">
+        <div class="material-slider-header">
+          <span class="material-icon-wrap">🥫</span>
+          <span class="material-name">Metals</span>
+          <span class="material-pct" id="pct-metals">4%</span>
+        </div>
+        <div class="material-slider-track-wrap">
+          <input type="range" min="0" max="100" value="4" class="material-range" id="slider-metals" data-key="metals" aria-label="Metals percentage" />
+          <div class="slider-labels-small">
+            <span>0%</span>
+            <span>100%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="material-slider-row" data-material="garden_waste">
+        <div class="material-slider-header">
+          <span class="material-icon-wrap">🌿</span>
+          <span class="material-name">Garden Waste</span>
+          <span class="material-pct" id="pct-garden_waste">8%</span>
+        </div>
+        <div class="material-slider-track-wrap">
+          <input type="range" min="0" max="100" value="8" class="material-range" id="slider-garden_waste" data-key="garden_waste" aria-label="Garden waste percentage" />
+          <div class="slider-labels-small">
+            <span>0%</span>
+            <span>100%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pct-warning hidden" id="pct-warning">⚠ Percentages must add to 100%. Currently at <strong id="pct-total-val">100</strong>%</div>
+
+    <!-- CO2 Savings Results -->
+    <div class="impact-results-new" id="impact-results-new">
+      <h3 class="impact-results-title">Recycling this bin saves approximately:</h3>
+      <div class="impact-results-grid">
+        <div class="impact-result-card">
+          <span class="impact-result-icon">🌍</span>
+          <span class="impact-result-value" id="res-co2">0.0</span>
+          <span class="impact-result-unit">kg CO₂ saved</span>
+        </div>
+        <div class="impact-result-card">
+          <span class="impact-result-icon">🚗</span>
+          <span class="impact-result-value" id="res-car">0.0</span>
+          <span class="impact-result-unit">km not driven</span>
+        </div>
+        <div class="impact-result-card">
+          <span class="impact-result-icon">💡</span>
+          <span class="impact-result-value" id="res-led">0</span>
+          <span class="impact-result-unit">hours of LED light</span>
+        </div>
+        <div class="impact-result-card">
+          <span class="impact-result-icon">📱</span>
+          <span class="impact-result-value" id="res-phone">0</span>
+          <span class="impact-result-unit">phone charges</span>
+        </div>
+      </div>
+      <p class="impact-source-note">
+        Based on Australian recycling emissions data &amp; <a href="https://data.nsw.gov.au" target="_blank" rel="noopener noreferrer">NSW EPA averages</a>. Default bin composition from <a href="https://www.dcceew.gov.au/environment/protection/waste/publications/national-waste-reports" target="_blank" rel="noopener noreferrer">DCCEEW National Waste Report</a>.
       </p>
     </div>
   </div>
