@@ -1,21 +1,5 @@
 ---
 import { GitFork, Recycle } from '@lucide/astro';
-
-// Fetch the current year dynamically
-let currentYear = new Date().getFullYear();
-try {
-    const response = await fetch('https://api.datesapi.net/today');
-    if (response.ok) {
-        const data = await response.json();
-        // data.result is in format YYYY-MM-DD
-        if (data && data.result) {
-            currentYear = data.result.split('-')[0];
-        }
-    }
-} catch (error) {
-    console.error("Failed to fetch date:", error);
-}
-
 ---
 
 <footer class="footer" aria-label="WasteWise Footer">
@@ -50,9 +34,11 @@ try {
     </div>
     
     <div class="footer-bottom">
-        <p class="copyright">&copy; {currentYear} WasteWise. All rights reserved.</p>
+        <p class="copyright">&copy; <span id="current-year">...</span> WasteWise. All rights reserved.</p>
         <div class="social-links">
             <a href="https://github.com/SahasTechnologies/WasteWise" aria-label="GitHub"><GitFork class="social-icon" /></a>
         </div>
     </div>
 </footer>
+
+<script define:vars={{}} src="../scripts/footer-year.js" />
