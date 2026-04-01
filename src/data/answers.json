@@ -57,7 +57,7 @@
       "A": "The yellow recycling bin.",
       "B": "The green FOGO (Food Organics and Garden Organics) bin.",
       "C": "The red landfill bin.",
-      "D": "Either B or C, depending on your council."
+      "D": "Either FOGO or landfill, depending on your council."
     },
     "correctAnswer": "D",
     "explanations": {

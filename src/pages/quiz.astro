@@ -11,6 +11,18 @@ import { Trophy, Star } from '@lucide/astro';
 			<div class="quiz-progress-bar" id="quiz-progress-bar" style="width: 0%"></div>
 		</div>
 
+		<style>
+			.quiz-stage {
+				animation: none !important;
+				opacity: 0;
+				transition: opacity 0.3s ease, transform 0.3s ease;
+				transform: translateY(16px);
+			}
+			.quiz-stage.ready {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		</style>
 		<!-- Question step container -->
 		<div class="quiz-stage" id="quiz-stage" data-total={answersData.length}>
 			{answersData.map((q, index) => (

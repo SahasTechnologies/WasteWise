@@ -4,23 +4,23 @@ import BaseLayout from '../components/BaseLayout.astro';
 
 <BaseLayout title="Community | WasteWise">
 	<section class="simple-section">
-		<div class="community-stats-bar" id="community-stats-bar">
+		<h1 class="simple-title" style="font-family: 'Caprasimo', serif;">Community</h1>
+		<p class="simple-subtitle">See what others are doing and share your thoughts.</p>
+
+		<div class="community-stats-bar" id="community-stats-bar" style="margin: 24px 0 32px;">
 			<div class="community-stat">
 				<div class="community-stat-label">Quiz submissions</div>
-				<div class="community-stat-value" id="stat-quiz">0</div>
+				<div class="community-stat-value" id="stat-quiz" style="font-family: 'Caprasimo', serif; color: var(--green-1);">0</div>
 			</div>
 			<div class="community-stat">
 				<div class="community-stat-label">Poll submissions</div>
-				<div class="community-stat-value" id="stat-poll">0</div>
+				<div class="community-stat-value" id="stat-poll" style="font-family: 'Caprasimo', serif; color: var(--green-1);">0</div>
 			</div>
 			<div class="community-stat">
 				<div class="community-stat-label">Contact messages</div>
-				<div class="community-stat-value" id="stat-contact">0</div>
+				<div class="community-stat-value" id="stat-contact" style="font-family: 'Caprasimo', serif; color: var(--green-1);">0</div>
 			</div>
 		</div>
-
-		<h1 class="simple-title">Community</h1>
-		<p class="simple-subtitle">See what others are doing and share your thoughts.</p>
 
 		<div class="community-card">
 			<h2 class="community-card-title">Poll: What's the biggest barrier to recycling in your area?</h2>
@@ -31,12 +31,16 @@ import BaseLayout from '../components/BaseLayout.astro';
 		flex-direction: column;
 		gap: 12px;
 	}
+	.quiz-option {
+		box-sizing: border-box;
+		width: 100%;
+	}
 	.quiz-option:has(input:checked) {
-		background: rgba(34, 197, 94, 0.05) !important;
-		border-color: #22c55e !important;
+		background: rgba(102, 194, 74, 0.05) !important;
+		border-color: var(--green-1) !important;
 	}
 	.quiz-option:has(input:checked) .quiz-option-label {
-		background: #22c55e;
+		background: var(--green-1);
 		color: #fff;
 	}
 </style>
@@ -95,6 +99,84 @@ import BaseLayout from '../components/BaseLayout.astro';
 				<div id="poll-bars" class="poll-bars"></div>
 			</div>
 		</div>
+
+		<!-- Global Quiz Scores Chart -->
+		<div class="quiz-results-chart" id="quiz-results-chart" style="margin-top: 32px;">
+			<h3 class="chart-title">Global Quiz Scores</h3>
+			<div class="chart-bars">
+				<div class="chart-bar-group">
+					<div class="chart-bar-wrapper">
+						<div class="chart-bar" id="bar-1" style="height: 0%"></div>
+					</div>
+					<span class="chart-label">1/10</span>
+					<span class="chart-count" id="count-1">0</span>
+				</div>
+				<div class="chart-bar-group">
+					<div class="chart-bar-wrapper">
+						<div class="chart-bar" id="bar-2" style="height: 0%"></div>
+					</div>
+					<span class="chart-label">2/10</span>
+					<span class="chart-count" id="count-2">0</span>
+				</div>
+				<div class="chart-bar-group">
+					<div class="chart-bar-wrapper">
+						<div class="chart-bar" id="bar-3" style="height: 0%"></div>
+					</div>
+					<span class="chart-label">3/10</span>
+					<span class="chart-count" id="count-3">0</span>
+				</div>
+				<div class="chart-bar-group">
+					<div class="chart-bar-wrapper">
+						<div class="chart-bar" id="bar-4" style="height: 0%"></div>
+					</div>
+					<span class="chart-label">4/10</span>
+					<span class="chart-count" id="count-4">0</span>
+				</div>
+				<div class="chart-bar-group">
+					<div class="chart-bar-wrapper">
+						<div class="chart-bar" id="bar-5" style="height: 0%"></div>
+					</div>
+					<span class="chart-label">5/10</span>
+					<span class="chart-count" id="count-5">0</span>
+				</div>
+				<div class="chart-bar-group">
+					<div class="chart-bar-wrapper">
+						<div class="chart-bar" id="bar-6" style="height: 0%"></div>
+					</div>
+					<span class="chart-label">6/10</span>
+					<span class="chart-count" id="count-6">0</span>
+				</div>
+				<div class="chart-bar-group">
+					<div class="chart-bar-wrapper">
+						<div class="chart-bar" id="bar-7" style="height: 0%"></div>
+					</div>
+					<span class="chart-label">7/10</span>
+					<span class="chart-count" id="count-7">0</span>
+				</div>
+				<div class="chart-bar-group">
+					<div class="chart-bar-wrapper">
+						<div class="chart-bar" id="bar-8" style="height: 0%"></div>
+					</div>
+					<span class="chart-label">8/10</span>
+					<span class="chart-count" id="count-8">0</span>
+				</div>
+				<div class="chart-bar-group">
+					<div class="chart-bar-wrapper">
+						<div class="chart-bar" id="bar-9" style="height: 0%"></div>
+					</div>
+					<span class="chart-label">9/10</span>
+					<span class="chart-count" id="count-9">0</span>
+				</div>
+				<div class="chart-bar-group">
+					<div class="chart-bar-wrapper">
+						<div class="chart-bar" id="bar-10" style="height: 0%"></div>
+					</div>
+					<span class="chart-label">10/10</span>
+					<span class="chart-count" id="count-10">0</span>
+				</div>
+			</div>
+		</div>
+		
 	</section>
 </BaseLayout>
 
@@ -114,6 +196,30 @@ import BaseLayout from '../components/BaseLayout.astro';
 			if (quizEl) quizEl.textContent = String(data.quiz ?? 0);
 			if (pollEl) pollEl.textContent = String(data.poll ?? 0);
 			if (contactEl) contactEl.textContent = String(data.contact ?? 0);
+		} catch (_) {}
+	}
+
+	async function loadQuizChart() {
+		try {
+			const res = await fetch('/api/get-quiz-stats');
+			if (!res.ok) return;
+			const stats = await res.json();
+			const scoreCounts = [];
+			for (let i = 1; i <= 10; i++) {
+				scoreCounts.push({ score: i, count: parseInt(stats['score_' + i] || 0) });
+			}
+			const total = scoreCounts.reduce((sum, item) => sum + item.count, 0);
+			if (total > 0) {
+				const maxCount = Math.max(...scoreCounts.map(s => s.count));
+				scoreCounts.forEach(item => {
+					const barEl = document.getElementById('bar-' + item.score);
+					const countEl = document.getElementById('count-' + item.score);
+					if (barEl && countEl) {
+						barEl.style.height = (item.count / maxCount) * 100 + '%';
+						countEl.textContent = item.count;
+					}
+				});
+			}
 		} catch (_) {}
 	}
 
@@ -238,5 +344,6 @@ import BaseLayout from '../components/BaseLayout.astro';
 
 	loadCommunityStats();
 	loadPollResults();
+	loadQuizChart();
 	bindPoll();
 </script>

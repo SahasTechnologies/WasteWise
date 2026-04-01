@@ -1,5 +1,0 @@
-{
-  "locations": [],
-  "lastUpdated": "2024-01-01",
-  "instructions": "To update this data: 1) Visit recyclematqe.com.au, 2) Open Network tab, 3) Search for items, 4) Copy responses from /v2/places/item/ endpoints, 5) Paste the 'places' array into the 'locations' array below"
-}

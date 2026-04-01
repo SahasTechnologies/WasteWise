@@ -291,5 +291,9 @@
 		shuffleQuestionOptions();
 		bindLogic();
 		updateProgress();
+		
+		requestAnimationFrame(() => {
+			if (stage) stage.classList.add('ready');
+		});
 	});
 })();
