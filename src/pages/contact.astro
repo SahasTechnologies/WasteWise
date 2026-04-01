@@ -5,22 +5,17 @@ import { CheckCircle } from '@lucide/astro';
 
 <BaseLayout title="Contact | WasteWise">
 	<section class="simple-section simple-section-centered">
-		<div id="form-view" class="w-full max-w-2xl mx-auto text-center">
+		<div id="form-view" class="contact-container">
 			<h1 class="simple-title">Contact Us</h1>
 			<p class="simple-subtitle">We'd love to hear from you. Fill out the form below.</p>
 
-			<!-- Email alternative -->
-			<p class="text-sm opacity-75 mb-6">
+			<p class="email-alt-hint">
 				Don't want to contact us by this form? You can also email us here:
 				<button class="email-reveal-btn" id="open-email-popup" type="button">See email address</button>
 			</p>
 
-			<form
-				class="contact-form"
-				id="native-contact"
-			>
+			<form class="contact-form" id="native-contact">
 				<input type="hidden" name="_subject" value="New WasteWise Contact Form Message" />
-				<!-- IP address and Geo fields — filled by JS -->
 				<input type="hidden" name="User IP" id="user-ip-field" value="unknown" />
 				<input type="hidden" name="City" id="user-city-field" value="unknown" />
 				<input type="hidden" name="ISP" id="user-isp-field" value="unknown" />
@@ -61,7 +56,6 @@ import { CheckCircle } from '@lucide/astro';
 					></textarea>
 				</div>
 
-				<!-- Cloudflare Turnstile -->
 				<div class="cf-turnstile" data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITEKEY} data-theme="light"></div>
 				<br/>
 
@@ -69,8 +63,8 @@ import { CheckCircle } from '@lucide/astro';
 			</form>
 		</div>
 
-		<div id="success-view" class="w-full max-w-2xl mx-auto text-center hidden">
-			<div class="flex justify-center mb-4 text-[var(--go)]">
+		<div id="success-view" class="contact-container hidden">
+			<div class="success-icon-wrap">
 				<CheckCircle size={64} />
 			</div>
 			<h1 class="header-title">Message Sent!</h1>
@@ -79,15 +73,13 @@ import { CheckCircle } from '@lucide/astro';
 		</div>
 	</section>
 
-	<!-- Email reveal popup -->
 	<div id="email-popup-overlay" class="popup-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="popup-title">
 		<div class="popup-box">
 			<button class="popup-close" id="close-email-popup" aria-label="Close">&times;</button>
 			<h2 class="popup-title" id="popup-title">Verify to see our email</h2>
 			<p class="popup-subtitle">Complete the quick check below to reveal our email address.</p>
 
-			<!-- Turnstile widget for popup — separate instance -->
-			<div id="email-turnstile-widget" class="flex justify-center mb-4"
+			<div id="email-turnstile-widget" class="email-turnstile-container cf-turnstile"
 				data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITEKEY}
 				data-theme="light"
 				data-callback="onEmailTurnstileSuccess"
@@ -103,5 +95,4 @@ import { CheckCircle } from '@lucide/astro';
 
 <script src="../scripts/contact.js"></script>
 <script src="../scripts/contact-form.js"></script>
-<!-- Cloudflare Turnstile API -->
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

@@ -2118,6 +2118,20 @@ input {
 
 
 /* Contact Page Styles */
+.contact-container {
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.email-alt-hint {
+	font-size: 0.95rem;
+	color: var(--ink);
+	opacity: 0.75;
+	margin-bottom: 1.5rem;
+}
+
 .email-reveal-btn {
 	background: none;
 	border: none;
@@ -2131,6 +2145,13 @@ input {
 
 .email-reveal-btn:hover {
 	opacity: 0.8;
+}
+
+.success-icon-wrap {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 1rem;
+	color: var(--go);
 }
 
 .header-title {
@@ -2206,6 +2227,16 @@ input {
 	color: var(--ink);
 	opacity: 0.65;
 	margin-bottom: 1.25rem;
+}
+
+.email-turnstile-container {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 1rem;
+}
+
+.email-reveal {
+	margin-top: 1rem;
 }
 
 .email-reveal.hidden { 
