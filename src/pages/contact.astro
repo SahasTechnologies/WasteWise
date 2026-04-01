@@ -5,9 +5,15 @@ import { CheckCircle } from '@lucide/astro';
 
 <BaseLayout title="Contact | WasteWise">
 	<section class="simple-section simple-section-centered">
-		<div id="form-view" class="contact-container">
+		<div id="form-view" class="w-full max-w-2xl mx-auto text-center">
 			<h1 class="simple-title">Contact Us</h1>
 			<p class="simple-subtitle">We'd love to hear from you. Fill out the form below.</p>
+
+			<!-- Email alternative -->
+			<p class="text-sm opacity-75 mb-6">
+				Don't want to contact us by this form? You can also email us here:
+				<button class="email-reveal-btn" id="open-email-popup" type="button">See email address</button>
+			</p>
 
 			<form
 				class="contact-form"
@@ -63,8 +69,8 @@ import { CheckCircle } from '@lucide/astro';
 			</form>
 		</div>
 
-		<div id="success-view" class="contact-container hidden">
-			<div style="display: flex; justify-content: center; margin-bottom: 1rem; color: var(--go);">
+		<div id="success-view" class="w-full max-w-2xl mx-auto text-center hidden">
+			<div class="flex justify-center mb-4 text-[var(--go)]">
 				<CheckCircle size={64} />
 			</div>
 			<h1 class="header-title">Message Sent!</h1>
@@ -72,106 +78,30 @@ import { CheckCircle } from '@lucide/astro';
 			<a href="/" class="go">Return Home</a>
 		</div>
 	</section>
+
+	<!-- Email reveal popup -->
+	<div id="email-popup-overlay" class="popup-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+		<div class="popup-box">
+			<button class="popup-close" id="close-email-popup" aria-label="Close">&times;</button>
+			<h2 class="popup-title" id="popup-title">Verify to see our email</h2>
+			<p class="popup-subtitle">Complete the quick check below to reveal our email address.</p>
+
+			<!-- Turnstile widget for popup — separate instance -->
+			<div id="email-turnstile-widget" class="flex justify-center mb-4"
+				data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITEKEY}
+				data-theme="light"
+				data-callback="onEmailTurnstileSuccess"
+			></div>
+
+			<div id="email-reveal" class="email-reveal hidden">
+				<p class="email-reveal-text">Message us via</p>
+				<a href="#" id="email-reveal-address" class="email-reveal-address">Loading...</a>
+			</div>
+		</div>
+	</div>
 </BaseLayout>
 
-<style>
-	.contact-container {
-		width: 100%;
-		max-width: 600px;
-		margin: 0 auto;
-		text-align: center;
-	}
-
-	.header-title {
-		font-size: 3.25rem;
-		font-weight: 700;
-		color: var(--ink);
-		margin-bottom: 0.5rem;
-		letter-spacing: -0.02em;
-		font-family: "Caprasimo", serif;
-	}
-
-	.header-subtitle {
-		font-size: 1.25rem;
-		color: var(--ink);
-		opacity: 0.7;
-		font-weight: 500;
-		margin-bottom: 2rem;
-		display: block;
-	}
-</style>
-
 <script src="../scripts/contact.js"></script>
-<script>
-	// Fetch visitor's IP and Geo info via our API and populate hidden fields
-	fetch('/api/get-ip')
-		.then(r => r.json())
-		.then(data => {
-			const ipField = document.getElementById('user-ip-field') as HTMLInputElement;
-			const cityField = document.getElementById('user-city-field') as HTMLInputElement;
-			const ispField = document.getElementById('user-isp-field') as HTMLInputElement;
-			
-			if (ipField) ipField.value = data.ip || 'unknown';
-			if (cityField) cityField.value = data.city || 'unknown';
-			if (ispField) ispField.value = data.isp || 'unknown';
-		})
-		.catch(() => {});
-
-	const form = document.querySelector('.contact-form') as HTMLFormElement;
-	const formView = document.getElementById('form-view');
-	const successView = document.getElementById('success-view');
-
-	// Handle URL parameter for success view
-	const urlParams = new URLSearchParams(window.location.search);
-	if (urlParams.get('finished') === 'true') {
-		if (formView && successView) {
-			formView.classList.add('hidden');
-			successView.classList.remove('hidden');
-		}
-	}
-
-	if (form) {
-		form.addEventListener('submit', async (e) => {
-			e.preventDefault();
-
-			const formData = new FormData(form);
-			const payload = Object.fromEntries(formData.entries());
-			
-			// Must complete CAPTCHA before submitting
-			if (!payload['cf-turnstile-response']) {
-				alert('Please complete the security check.');
-				return;
-			}
-			
-			// Show sending state
-			const btn = form.querySelector('.contact-submit') as HTMLButtonElement;
-			if (btn) btn.textContent = 'Sending...';
-
-			try {
-				// Submit to our native Vercel function
-				const response = await fetch('/api/submit-contact', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(payload)
-				});
-
-				const result = await response.json();
-
-				if (result.ok) {
-					// Show success view
-					if (formView && successView) {
-						formView.classList.add('hidden');
-						successView.classList.remove('hidden');
-					}
-				} else {
-					if (btn) btn.textContent = 'Error - Try Again';
-					alert(result.error || 'Submission failed');
-				}
-			} catch (err) {
-				if (btn) btn.textContent = 'Error - Try Again';
-			}
-		});
-	}
-</script>
+<script src="../scripts/contact-form.js"></script>
 <!-- Cloudflare Turnstile API -->
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

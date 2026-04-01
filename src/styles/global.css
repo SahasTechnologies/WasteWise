@@ -2116,3 +2116,133 @@ input {
 	margin-right: 0;
 }
 
+
+/* Contact Page Styles */
+.email-reveal-btn {
+	background: none;
+	border: none;
+	color: var(--go);
+	font-weight: 600;
+	cursor: pointer;
+	text-decoration: underline;
+	font-size: inherit;
+	padding: 0;
+}
+
+.email-reveal-btn:hover {
+	opacity: 0.8;
+}
+
+.header-title {
+	font-size: 3.25rem;
+	font-weight: 700;
+	color: var(--ink);
+	margin-bottom: 0.5rem;
+	letter-spacing: -0.02em;
+	font-family: "Caprasimo", serif;
+}
+
+.header-subtitle {
+	font-size: 1.25rem;
+	color: var(--ink);
+	opacity: 0.7;
+	font-weight: 500;
+	margin-bottom: 2rem;
+	display: block;
+}
+
+/* Popup overlay */
+.popup-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+}
+
+.popup-overlay.hidden {
+	display: none;
+}
+
+.popup-box {
+	background: var(--surface, #fff);
+	border-radius: 1rem;
+	padding: 2rem;
+	max-width: 420px;
+	width: 90%;
+	position: relative;
+	text-align: center;
+	box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.popup-close {
+	position: absolute;
+	top: 0.75rem;
+	right: 1rem;
+	background: none;
+	border: none;
+	font-size: 1.5rem;
+	cursor: pointer;
+	color: var(--ink);
+	opacity: 0.5;
+	line-height: 1;
+}
+
+.popup-close:hover { 
+	opacity: 1; 
+}
+
+.popup-title {
+	font-size: 1.4rem;
+	font-weight: 700;
+	margin-bottom: 0.4rem;
+	color: var(--ink);
+}
+
+.popup-subtitle {
+	font-size: 0.9rem;
+	color: var(--ink);
+	opacity: 0.65;
+	margin-bottom: 1.25rem;
+}
+
+.email-reveal.hidden { 
+	display: none; 
+}
+
+.email-reveal-text {
+	font-size: 0.9rem;
+	color: var(--ink);
+	opacity: 0.7;
+	margin-bottom: 0.25rem;
+}
+
+.email-reveal-address {
+	font-size: 1.15rem;
+	font-weight: 700;
+	color: var(--go);
+	text-decoration: none;
+}
+
+.email-reveal-address:hover { 
+	text-decoration: underline; 
+}
+
+/* Profanity notice */
+.profanity-notice {
+	background: #fff8e1;
+	border: 1px solid #ffe082;
+	border-radius: 0.6rem;
+	padding: 0.85rem 1rem;
+	margin-bottom: 1rem;
+	font-size: 0.92rem;
+	color: #5d4037;
+	text-align: left;
+}
+
+.profanity-notice a {
+	color: var(--go);
+	font-weight: 600;
+}
