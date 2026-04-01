@@ -15,7 +15,7 @@ async function ensureTable() {
 		CREATE TABLE IF NOT EXISTS poll_submissions (
 			id SERIAL PRIMARY KEY,
 			barrier VARCHAR(255),
-			ip VARCHAR(64),
+			ip VARCHAR(255),
 			submitted_at TIMESTAMPTZ DEFAULT NOW()
 		)
 	`;
@@ -27,20 +27,17 @@ export async function POST(context) {
 	try {
 		const request = context?.request ?? context;
 		const body = await request.json();
-		const { barrier } = body;
+		const { barrier, ip, city, isp } = body;
 
 		if (!barrier) return new Response(JSON.stringify({ ok: false, error: 'Missing barrier option' }), { status: 400 });
 
-		// Get IP from headers
-		const forwarded = request.headers.get('x-forwarded-for');
-		const real = request.headers.get('x-real-ip');
-		const ip = forwarded ? forwarded.split(',')[0].trim() : (real ? real.trim() : 'unknown');
+		const fullIpDetails = `${String(ip || 'unknown')} - ${String(city || 'unknown')}, ${String(isp || 'unknown')}`.slice(0, 255);
 
 		await ensureTable();
 
 		await sql`
 			INSERT INTO poll_submissions (barrier, ip)
-			VALUES (${String(barrier).slice(0, 255)}, ${String(ip).slice(0, 64)})
+			VALUES (${String(barrier).slice(0, 255)}, ${fullIpDetails})
 		`;
 
 

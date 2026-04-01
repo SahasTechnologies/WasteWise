@@ -333,15 +333,15 @@
 				displayLocations(places);
 				displayMap(places, currentLocation);
 			} else {
+				// Hide map explicitly
+				mapContainer.classList.add('hidden');
+				
 				// Show helpful message with link to RecycleMate
 				locationsList.innerHTML = `
-					<div class="no-results-card">
-						<h3>Find Recycling Locations</h3>
-						<p>To find specific recycling locations for <strong>${selectedItem.name}</strong> near you, please visit RecycleMate directly:</p>
-						<a href="https://recyclemate.com.au" target="_blank" rel="noopener noreferrer" class="recyclemate-link">
-							Visit RecycleMate →
-						</a>
-						<p class="help-text">RecycleMate provides detailed information about recycling locations, collection services, and disposal options in your area.</p>
+					<div class="no-results-card" style="padding: 24px; background: rgba(255, 255, 255, 0.95); border-radius: 16px; border: 1px solid rgba(11, 19, 32, 0.08); box-shadow: 0 4px 16px rgba(11, 19, 32, 0.06);">
+						<h3 style="color: #ef4444; margin-top: 0;">No recycling options available</h3>
+						<p>Unfortunately, we couldn't find any local recycling options for <strong>${selectedItem.name}</strong>.</p>
+						<p class="help-text" style="opacity: 0.8; font-size: 14px;">Please check with your local council for safe disposal or specialised collections.</p>
 					</div>
 				`;
 			}
@@ -384,27 +384,34 @@
 	}
 
 	function displayLocations(places) {
-		let html = '<h3>Nearby Recycling Locations</h3>';
+		let html = `
+			<details class="locations-dropdown" open style="background: rgba(255, 255, 255, 0.95); border-radius: 16px; border: 1px solid rgba(11, 19, 32, 0.08); box-shadow: 0 4px 16px rgba(11, 19, 32, 0.06); padding: 0; overflow: hidden;">
+				<summary style="padding: 16px 24px; font-weight: bold; cursor: pointer; background: #f9fafb; font-size: 18px; border-bottom: 1px solid rgba(11, 19, 32, 0.08); display: flex; align-items: center; justify-content: space-between;">
+					Nearby Recycling Locations (${places.length})
+				</summary>
+				<div style="padding: 24px; max-height: 480px; overflow-y: auto;">
+		`;
 		
 		places.forEach((place, index) => {
 			html += `
-				<div class="location-card" data-place-id="${place._id}" data-index="${index}">
-					<h4>${index + 1}. ${place.name}</h4>
-					<p class="location-address">${place.address}</p>
+				<div class="location-card" data-place-id="${place._id}" data-index="${index}" style="margin-bottom: 16px; padding: 16px; border: 1px solid #eee; border-radius: 8px;">
+					<h4 style="margin: 0 0 8px 0;">${index + 1}. ${place.name}</h4>
+					<p class="location-address" style="margin: 0 0 8px 0; color: #555;">${place.address}</p>
 					${place.openingHours ? `
-						<details class="location-hours">
-							<summary>Opening Hours</summary>
-							<ul>
+						<details class="location-hours" style="margin-bottom: 8px;">
+							<summary style="cursor: pointer; color: #66c24a; font-weight: 600; font-size: 14px;">Opening Hours</summary>
+							<ul style="margin: 8px 0; padding-left: 20px; font-size: 14px;">
 								${place.openingHours.map(h => `<li>${h}</li>`).join('')}
 							</ul>
 						</details>
 					` : ''}
-					${place.website ? `<p><a href="${place.website}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Visit Website</a></p>` : ''}
-					${place.facilityMessage ? `<p class="facility-message">${place.facilityMessage}</p>` : ''}
+					${place.website ? `<p style="margin: 0 0 8px 0;"><a href="${place.website}" target="_blank" rel="noopener" style="color: #3b82f6; text-decoration: none;" onclick="event.stopPropagation()">Visit Website</a></p>` : ''}
+					${place.facilityMessage ? `<p class="facility-message" style="margin: 0; font-size: 14px; background: #f0fdf4; padding: 8px; border-radius: 6px;">${place.facilityMessage}</p>` : ''}
 				</div>
 			`;
 		});
 
+		html += `</div></details>`;
 		locationsList.innerHTML = html;
 		
 		// Add click handlers to location cards
@@ -486,7 +493,13 @@
 			if (!coords || coords.length !== 2) return;
 			const [lng, lat] = coords;
 			const marker = window.L.marker([lat, lng], { icon: makePinIcon(PLACE_ICON_COLOR) });
-			marker.bindPopup(`<strong>${place.name || 'Location'}</strong><br/>${place.address || ''}`);
+			
+			let hoursHtml = '';
+			if (place.openingHours && place.openingHours.length > 0) {
+				hoursHtml = `<br/><br/><strong style="color: #3ea63b; font-size: 13px;">Opening Hours:</strong><br/><span style="font-size: 13px; color: #555;">${place.openingHours.join('<br/>')}</span>`;
+			}
+			
+			marker.bindPopup(`<strong>${place.name || 'Location'}</strong><br/>${place.address || ''}${hoursHtml}`);
 			markersLayer.addLayer(marker);
 			placeMarkers[idx] = marker;
 			bounds.extend([lat, lng]);
