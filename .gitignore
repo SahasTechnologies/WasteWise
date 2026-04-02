@@ -32,3 +32,7 @@ node_modules
 build.log
 .vercel/
 build_log.txt
+
+# my files that i have for requirements
+documentation.md
+requirements.md

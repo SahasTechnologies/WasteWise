@@ -1,59 +1,36 @@
 ---
 import BaseLayout from '../components/BaseLayout.astro';
+import ShareCard from '../components/ShareCard.astro';
 ---
 
 <BaseLayout title="Community | WasteWise">
 	<section class="simple-section">
-		<h1 class="simple-title" style="font-family: 'Caprasimo', serif;">Community</h1>
+		<h1 class="simple-title community-title">Community</h1>
 		<p class="simple-subtitle">See what others are doing and share your thoughts.</p>
 
-		<div class="community-stats-bar" id="community-stats-bar" style="margin: 24px 0 32px;">
+		<div class="community-stats-bar" id="community-stats-bar">
 			<div class="community-stat">
 				<div class="community-stat-label">Quiz submissions</div>
-				<div class="community-stat-value" id="stat-quiz" style="font-family: 'Caprasimo', serif; color: var(--green-1);">0</div>
+				<div class="community-stat-value stat-display" id="stat-quiz">
+					<span class="loading-spinner"></span>
+				</div>
 			</div>
 			<div class="community-stat">
 				<div class="community-stat-label">Poll submissions</div>
-				<div class="community-stat-value" id="stat-poll" style="font-family: 'Caprasimo', serif; color: var(--green-1);">0</div>
+				<div class="community-stat-value stat-display" id="stat-poll">
+					<span class="loading-spinner"></span>
+				</div>
 			</div>
 			<div class="community-stat">
 				<div class="community-stat-label">Contact messages</div>
-				<div class="community-stat-value" id="stat-contact" style="font-family: 'Caprasimo', serif; color: var(--green-1);">0</div>
+				<div class="community-stat-value stat-display" id="stat-contact">
+					<span class="loading-spinner"></span>
+				</div>
 			</div>
 		</div>
 
 		<div class="community-card">
 			<h2 class="community-card-title">Poll: What's the biggest barrier to recycling in your area?</h2>
-
-<style>
-	.community-poll {
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-		width: 100%;
-	}
-	.community-poll .quiz-option {
-		box-sizing: border-box;
-		width: 100%;
-		max-width: 100%;
-	}
-	.community-poll .quiz-option:has(input:checked) {
-		background: rgba(102, 194, 74, 0.05) !important;
-		border-color: var(--green-1) !important;
-	}
-	.community-poll .quiz-option:has(input:checked) .quiz-option-label {
-		background: var(--green-1);
-		color: #fff;
-	}
-	/* Community chart uses bright green bars */
-	#quiz-results-chart .chart-bar {
-		background: linear-gradient(180deg, var(--green-1), var(--green-2)) !important;
-		box-shadow: 0 4px 12px rgba(102, 194, 74, 0.3) !important;
-	}
-	#quiz-results-chart .chart-count {
-		color: var(--green-1);
-	}
-</style>
 
 			<form id="poll-form" class="community-poll">
 				<label class="quiz-option">
@@ -97,11 +74,6 @@ import BaseLayout from '../components/BaseLayout.astro';
 					<div id="poll-status" class="poll-status-text"></div>
 				</div>
 			</form>
-			<script>
-				if (localStorage.getItem('form') === 'true') {
-					document.getElementById('poll-form').style.display = 'none';
-				}
-			</script>
 
 			<div id="poll-results" class="poll-results hidden">
 				<h3 class="poll-results-title">Results</h3>
@@ -111,249 +83,19 @@ import BaseLayout from '../components/BaseLayout.astro';
 		</div>
 
 		<!-- Global Quiz Scores Chart -->
-		<div class="quiz-results-chart" id="quiz-results-chart" style="margin-top: 32px;">
+		<div class="quiz-results-chart" id="quiz-results-chart">
 			<h3 class="chart-title">Global Quiz Scores</h3>
-			<div class="chart-bars">
-				<div class="chart-bar-group">
-					<div class="chart-bar-wrapper">
-						<div class="chart-bar" id="bar-1" style="height: 0%"></div>
-					</div>
-					<span class="chart-label">1/10</span>
-					<span class="chart-count" id="count-1">0</span>
-				</div>
-				<div class="chart-bar-group">
-					<div class="chart-bar-wrapper">
-						<div class="chart-bar" id="bar-2" style="height: 0%"></div>
-					</div>
-					<span class="chart-label">2/10</span>
-					<span class="chart-count" id="count-2">0</span>
-				</div>
-				<div class="chart-bar-group">
-					<div class="chart-bar-wrapper">
-						<div class="chart-bar" id="bar-3" style="height: 0%"></div>
-					</div>
-					<span class="chart-label">3/10</span>
-					<span class="chart-count" id="count-3">0</span>
-				</div>
-				<div class="chart-bar-group">
-					<div class="chart-bar-wrapper">
-						<div class="chart-bar" id="bar-4" style="height: 0%"></div>
-					</div>
-					<span class="chart-label">4/10</span>
-					<span class="chart-count" id="count-4">0</span>
-				</div>
-				<div class="chart-bar-group">
-					<div class="chart-bar-wrapper">
-						<div class="chart-bar" id="bar-5" style="height: 0%"></div>
-					</div>
-					<span class="chart-label">5/10</span>
-					<span class="chart-count" id="count-5">0</span>
-				</div>
-				<div class="chart-bar-group">
-					<div class="chart-bar-wrapper">
-						<div class="chart-bar" id="bar-6" style="height: 0%"></div>
-					</div>
-					<span class="chart-label">6/10</span>
-					<span class="chart-count" id="count-6">0</span>
-				</div>
-				<div class="chart-bar-group">
-					<div class="chart-bar-wrapper">
-						<div class="chart-bar" id="bar-7" style="height: 0%"></div>
-					</div>
-					<span class="chart-label">7/10</span>
-					<span class="chart-count" id="count-7">0</span>
-				</div>
-				<div class="chart-bar-group">
-					<div class="chart-bar-wrapper">
-						<div class="chart-bar" id="bar-8" style="height: 0%"></div>
-					</div>
-					<span class="chart-label">8/10</span>
-					<span class="chart-count" id="count-8">0</span>
-				</div>
-				<div class="chart-bar-group">
-					<div class="chart-bar-wrapper">
-						<div class="chart-bar" id="bar-9" style="height: 0%"></div>
-					</div>
-					<span class="chart-label">9/10</span>
-					<span class="chart-count" id="count-9">0</span>
-				</div>
-				<div class="chart-bar-group">
-					<div class="chart-bar-wrapper">
-						<div class="chart-bar" id="bar-10" style="height: 0%"></div>
-					</div>
-					<span class="chart-label">10/10</span>
-					<span class="chart-count" id="count-10">0</span>
-				</div>
+			<div class="chart-bars" id="chart-bars-container">
+				<div class="loading-spinner-large"></div>
 			</div>
+		</div>
+
+		<div class="community-share-section">
+			<ShareCard />
 		</div>
 		
 	</section>
 </BaseLayout>
 
-<script>
-
-
-	async function loadCommunityStats() {
-		try {
-			const res = await fetch('/api/get-community-stats');
-			if (!res.ok) return;
-			const data = await res.json();
-
-			const quizEl = document.getElementById('stat-quiz');
-			const pollEl = document.getElementById('stat-poll');
-			const contactEl = document.getElementById('stat-contact');
-
-			if (quizEl) quizEl.textContent = String(data.quiz ?? 0);
-			if (pollEl) pollEl.textContent = String(data.poll ?? 0);
-			if (contactEl) contactEl.textContent = String(data.contact ?? 0);
-		} catch (_) {}
-	}
-
-	async function loadQuizChart() {
-		try {
-			const res = await fetch('/api/get-quiz-stats');
-			if (!res.ok) return;
-			const stats = await res.json();
-			const scoreCounts = [];
-			for (let i = 1; i <= 10; i++) {
-				scoreCounts.push({ score: i, count: parseInt(stats['score_' + i] || 0) });
-			}
-			const total = scoreCounts.reduce((sum, item) => sum + item.count, 0);
-			if (total > 0) {
-				const maxCount = Math.max(...scoreCounts.map(s => s.count));
-				scoreCounts.forEach(item => {
-					const barEl = document.getElementById('bar-' + item.score);
-					const countEl = document.getElementById('count-' + item.score);
-					if (barEl && countEl) {
-						barEl.style.height = (item.count / maxCount) * 100 + '%';
-						countEl.textContent = item.count;
-					}
-				});
-			}
-		} catch (_) {}
-	}
-
-	function setPollStatus(msg: string) {
-		const el = document.getElementById('poll-status');
-		if (el) el.textContent = msg || '';
-	}
-
-	function hasVotedOnDevice() {
-		return localStorage.getItem('form') === 'true';
-	}
-
-	function markVotedOnDevice() {
-		localStorage.setItem('form', 'true');
-	}
-
-	async function loadPollResults() {
-		if (!hasVotedOnDevice()) return;
-
-		try {
-			const res = await fetch('/api/submit-poll');
-			if (!res.ok) return;
-			const data = await res.json();
-
-			const resultsWrap = document.getElementById('poll-results');
-			const totalEl = document.getElementById('poll-total');
-			const barsEl = document.getElementById('poll-bars');
-			const form = document.getElementById('poll-form');
-
-			if (!resultsWrap || !totalEl || !barsEl) return;
-
-			const total = Number(data.total || 0);
-			totalEl.textContent = `Total votes: ${total}`;
-
-			barsEl.innerHTML = '';
-			(data.results || []).forEach((r: { barrier: string; count: number; percentage: number }) => {
-				const row = document.createElement('div');
-				row.className = 'poll-bar-row';
-				row.innerHTML = `
-					<div class="poll-bar-label">${r.barrier}</div>
-					<div class="poll-bar-track">
-						<div class="poll-bar-fill" style="width:${r.percentage || 0}%"></div>
-					</div>
-					<div class="poll-bar-meta">${r.count} (${r.percentage || 0}%)</div>
-				`;
-				barsEl.appendChild(row);
-			});
-
-			resultsWrap.classList.remove('hidden');
-
-			// Hide form if already voted
-			if (hasVotedOnDevice() && form) {
-				form.style.display = 'none';
-				setPollStatus('You have already voted on this device.');
-			}
-		} catch (_) {}
-	}
-
-	function bindPoll() {
-		const form = document.getElementById('poll-form');
-		if (!form) return;
-
-		// Check if already voted
-		if (hasVotedOnDevice()) {
-			// Pre-emptively add a class to hide to prevent flashing
-			// This class handles display: none
-		}
-
-		form.addEventListener('submit', async (e) => {
-			e.preventDefault();
-			setPollStatus('');
-
-			if (hasVotedOnDevice()) {
-				setPollStatus('You have already voted on this device.');
-				return;
-			}
-
-			const fd = new FormData(form as HTMLFormElement);
-			const barrier = fd.get('barrier');
-			if (!barrier) {
-				setPollStatus('Please select an option.');
-				return;
-			}
-
-			try {
-				setPollStatus('Submitting...');
-				let ipdata = { ip: 'unknown', city: 'unknown', isp: 'unknown' };
-				try {
-					const ipres = await fetch('/api/get-ip');
-					if (ipres.ok) ipdata = await ipres.json();
-				} catch (_) {}
-
-				const res = await fetch('/api/submit-poll', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ 
-						barrier: String(barrier),
-						ip: ipdata.ip,
-						city: ipdata.city,
-						isp: ipdata.isp
-					}),
-				});
-
-				const data = await res.json().catch(() => ({}));
-				if (!res.ok || data.ok === false) {
-					setPollStatus(data.error || 'Failed to submit.');
-					return;
-				}
-
-				// Mark as voted on this device
-				markVotedOnDevice();
-
-				setPollStatus('Thanks! Loading results...');
-				await loadPollResults();
-				await loadCommunityStats();
-				setPollStatus('Vote recorded.');
-			} catch (_) {
-				setPollStatus('Failed to submit.');
-			}
-		});
-	}
-
-	loadCommunityStats();
-	loadPollResults();
-	loadQuizChart();
-	bindPoll();
-</script>
+<script src="../scripts/community.js"></script>
+<script src="../scripts/poll.js"></script>

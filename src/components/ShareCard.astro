@@ -1,0 +1,176 @@
+---
+import { Share2, Link2 } from '@lucide/astro';
+---
+
+<div class="share-card">
+    <div class="share-card-header">
+        <Share2 size={32} />
+        <h3 class="share-card-title">Share WasteWise</h3>
+    </div>
+    <p class="share-card-text">
+        Help others discover better recycling practices. Share on your favorite platform:
+    </p>
+    <div class="share-buttons">
+        <button class="share-button share-facebook" id="share-facebook" aria-label="Share on Facebook">
+            <img src="/facebook-f-brands-solid-full.svg" alt="Facebook" class="share-svg-icon" />
+        </button>
+        <button class="share-button share-whatsapp" id="share-whatsapp" aria-label="Share on WhatsApp">
+            <img src="/whatsapp-brands-solid-full.svg" alt="WhatsApp" class="share-svg-icon" />
+        </button>
+        <button class="share-button share-linkedin" id="share-linkedin" aria-label="Share on LinkedIn">
+            <img src="/linkedin-in-brands-solid-full.svg" alt="LinkedIn" class="share-svg-icon" />
+        </button>
+        <button class="share-button share-copy" id="share-copy" aria-label="Copy Link">
+            <Link2 size={24} />
+        </button>
+    </div>
+    <div id="share-toast" class="share-toast">Link copied to clipboard!</div>
+</div>
+
+<script src="../scripts/share-card.js"></script>
+
+<style>
+    .share-card {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 40px;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 18px;
+        box-shadow: 0 8px 24px rgba(11, 19, 32, 0.08);
+        text-align: center;
+        position: relative;
+    }
+
+    .share-card-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+        color: var(--green-2);
+    }
+
+    .share-card-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--ink);
+        margin: 0;
+    }
+
+    .share-card-text {
+        font-size: 17px;
+        line-height: 1.6;
+        color: rgba(11, 19, 32, 0.75);
+        margin: 0 0 32px 0;
+        font-weight: 400;
+    }
+
+    .share-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .share-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 16px;
+        border: none;
+        border-radius: 12px;
+        font-family: var(--font-ui);
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        color: #ffffff;
+        width: 64px;
+        height: 64px;
+    }
+
+    .share-button:hover {
+        transform: translateY(-2px);
+    }
+
+    .share-svg-icon {
+        width: 28px;
+        height: 28px;
+        filter: brightness(0) invert(1);
+    }
+
+    .share-facebook {
+        background: #1877f2;
+        box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
+    }
+
+    .share-facebook:hover {
+        box-shadow: 0 6px 16px rgba(24, 119, 242, 0.4);
+    }
+
+    .share-whatsapp {
+        background: #25D366;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+    }
+
+    .share-whatsapp:hover {
+        box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+    }
+
+    .share-linkedin {
+        background: #0a66c2;
+        box-shadow: 0 4px 12px rgba(10, 102, 194, 0.3);
+    }
+
+    .share-linkedin:hover {
+        box-shadow: 0 6px 16px rgba(10, 102, 194, 0.4);
+    }
+
+    .share-copy {
+        background: #6c757d;
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+    }
+
+    .share-copy:hover {
+        box-shadow: 0 6px 16px rgba(108, 117, 125, 0.4);
+    }
+
+    .share-toast {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: #333;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+        pointer-events: none;
+    }
+
+    .share-toast.visible {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 768px) {
+        .share-card {
+            padding: 28px 24px;
+        }
+
+        .share-button {
+            width: 56px;
+            height: 56px;
+            padding: 12px;
+        }
+
+        .share-svg-icon {
+            width: 24px;
+            height: 24px;
+        }
+    }
+</style>

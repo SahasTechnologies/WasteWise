@@ -49,8 +49,9 @@ export const prerender = true;
 <style>
     .articles-page-wrapper {
         max-width: 1200px;
+        width: calc(100% - 2 * var(--hero-inset));
         margin: 0 auto;
-        padding: 4rem 1.5rem;
+        padding: 104px var(--hero-inset) 40px;
     }
 
     .articles-header {
@@ -64,7 +65,7 @@ export const prerender = true;
         color: var(--ink);
         margin-bottom: 0.5rem;
         letter-spacing: -0.02em;
-        font-family: "Caprasimo", serif;
+        font-family: var(--font-display);
     }
 
     .header-subtitle {
@@ -116,12 +117,13 @@ export const prerender = true;
         font-weight: 400;
     }
 
-    .visit-btn {
+.visit-btn {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
         background: linear-gradient(180deg, var(--green-1), var(--green-2));
         color: #ffffff;
+        font-family: var(--font-ui);
         font-weight: 700;
         font-size: 0.95rem;
         padding: 0.6rem 1.25rem;

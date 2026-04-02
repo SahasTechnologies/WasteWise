@@ -1,0 +1,121 @@
+---
+import chartsData from '../data/charts.json';
+---
+
+<div class="home-charts-container" data-charts>
+    <div class="charts-stack">
+        <!-- Waste Trend Chart -->
+        <div class="chart-card">
+            <h3 class="chart-title">{chartsData.wasteTrend.title}</h3>
+            <p class="chart-subtitle">{chartsData.wasteTrend.subtitle}</p>
+            <div class="chart-canvas-wrapper">
+                <canvas id="waste-trend-chart"></canvas>
+            </div>
+            <p class="chart-source">Source: <a href={chartsData.wasteTrend.sourceUrl} target="_blank" rel="noopener noreferrer">{chartsData.wasteTrend.source}</a></p>
+        </div>
+
+        <!-- Waste Fate Chart -->
+        <div class="chart-card">
+            <h3 class="chart-title">{chartsData.wasteFate.title}</h3>
+            <p class="chart-subtitle">{chartsData.wasteFate.subtitle}</p>
+            <div class="chart-canvas-wrapper">
+                <canvas id="waste-fate-chart"></canvas>
+            </div>
+            <p class="chart-source">Source: <a href={chartsData.wasteFate.sourceUrl} target="_blank" rel="noopener noreferrer">{chartsData.wasteFate.source}</a></p>
+        </div>
+
+        <!-- Material Recycling Rates -->
+        <div class="chart-card">
+            <h3 class="chart-title">{chartsData.materialRecyclingRates.title}</h3>
+            <p class="chart-subtitle">{chartsData.materialRecyclingRates.subtitle}</p>
+            <div class="chart-canvas-wrapper">
+                <canvas id="material-rates-chart"></canvas>
+            </div>
+            <p class="chart-source">Source: <a href={chartsData.materialRecyclingRates.sourceUrl} target="_blank" rel="noopener noreferrer">{chartsData.materialRecyclingRates.source}</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="../scripts/home-charts.js"></script>
+
+<style>
+    .home-charts-container {
+        margin: 0 auto;
+        max-width: var(--page-max);
+    }
+    
+    .charts-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+    }
+    
+    .chart-card {
+        background: var(--glass);
+        padding: 32px;
+        border-radius: 18px;
+        box-shadow: 0 8px 24px rgba(11, 19, 32, 0.08);
+        border: 1px solid var(--glass-border);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chart-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--ink);
+        text-align: center;
+        font-family: var(--font-body);
+    }
+
+    .chart-subtitle {
+        font-size: 15px;
+        color: rgba(11, 19, 32, 0.6);
+        margin-bottom: 24px;
+        text-align: center;
+        font-weight: 400;
+    }
+
+    .chart-canvas-wrapper {
+        flex: 1;
+        position: relative;
+        min-height: 300px;
+    }
+
+    .chart-source {
+        font-size: 12px;
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 16px;
+        color: rgba(11, 19, 32, 0.5);
+        border-top: 1px solid rgba(11, 19, 32, 0.08);
+    }
+    
+    .chart-source a {
+        color: var(--green-2);
+        text-decoration: none;
+    }
+    
+    .chart-source a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .chart-card {
+            padding: 24px 20px;
+        }
+
+        .chart-title {
+            font-size: 20px;
+        }
+
+        .chart-subtitle {
+            font-size: 14px;
+        }
+
+        .chart-canvas-wrapper {
+            min-height: 250px;
+        }
+    }
+</style>

@@ -1,5 +1,5 @@
 ---
-import {ArrowRight, Recycle} from '@lucide/astro';
+import {ArrowRight, Recycle, Menu, X} from '@lucide/astro';
 type Props = { active?: 'home' | 'find' | 'quiz';
 };
 const {active} = Astro.props;
@@ -15,11 +15,31 @@ const {active} = Astro.props;
             <a href="/find" class="nav-link">Find</a>
             <a href="/contact" class="nav-link">Contact</a>
             <a href="/articles" class="nav-link">Articles</a>
+            <a href="/about" class="nav-link">About</a>
             <a href="/community" class="nav-link">Community</a>
         </nav>
         <a class="quiz" href="/quiz" aria-label="Take the Quiz">
             <span>Take the Quiz!</span>
             <ArrowRight class="icon" aria-hidden="true" />
         </a>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open navigation menu" aria-expanded="false">
+            <Menu class="menu-icon-open" size={24} />
+            <X class="menu-icon-close hidden" size={24} />
+        </button>
     </div>
 </header>
+
+<!-- Full-screen mobile menu overlay -->
+<div class="mobile-nav-overlay" id="mobile-nav-overlay" aria-hidden="true">
+    <nav class="mobile-nav-inner" aria-label="Mobile navigation">
+        <a href="/" class="mobile-nav-link">Home</a>
+        <a href="/find" class="mobile-nav-link">Find</a>
+        <a href="/contact" class="mobile-nav-link">Contact</a>
+        <a href="/articles" class="mobile-nav-link">Articles</a>
+        <a href="/about" class="mobile-nav-link">About</a>
+        <a href="/community" class="mobile-nav-link">Community</a>
+        <a href="/quiz" class="mobile-nav-link mobile-nav-quiz">Take the Quiz!</a>
+    </nav>
+</div>
+
+<script src="../scripts/mobile-menu.js"></script>

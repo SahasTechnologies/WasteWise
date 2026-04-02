@@ -4,7 +4,13 @@ async function updateYear() {
     if (!yearSpan) return;
 
     try {
-        const response = await fetch('https://api.datesapi.net/today');
+        const response = await fetch('https://api.datesapi.net/today', {
+            cache: 'no-store',
+            headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache'
+            }
+        });
         if (response.ok) {
             const data = await response.json();
             if (data && data.result) {

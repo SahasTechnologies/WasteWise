@@ -17,6 +17,7 @@ import { GitFork, Recycle } from '@lucide/astro';
                 <a href="/quiz" class="footer-link">Quiz</a>
                 <a href="/articles" class="footer-link">Articles</a>
                 <a href="/find" class="footer-link">Find</a>
+                <a href="/about" class="footer-link">About</a>
                 <a href="/community" class="footer-link">Community</a>
                 <a href="/contact" class="footer-link">Contact</a>
                 <a href="/privacy" class="footer-link">Privacy Policy</a>
@@ -37,9 +38,50 @@ import { GitFork, Recycle } from '@lucide/astro';
     <div class="footer-bottom">
         <p class="copyright">&copy; <span id="current-year">...</span> WasteWise. All rights reserved.</p>
         <div class="social-links">
-            <a href="https://github.com/SahasTechnologies/WasteWise" aria-label="GitHub"><GitFork class="social-icon" /></a>
+            <a href="https://github.com/SahasTechnologies/WasteWise" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><GitFork class="social-icon" /></a>
+            <button class="footer-social-btn" id="footer-share-facebook" aria-label="Share on Facebook">
+                <img src="/facebook-f-brands-solid-full.svg" alt="" class="social-svg-icon" />
+            </button>
+            <button class="footer-social-btn" id="footer-share-instagram" aria-label="Share on Instagram">
+                <img src="/instagram-brands-solid-full.svg" alt="" class="social-svg-icon" />
+            </button>
+            <button class="footer-social-btn" id="footer-share-linkedin" aria-label="Share on LinkedIn">
+                <img src="/linkedin-in-brands-solid-full.svg" alt="" class="social-svg-icon" />
+            </button>
         </div>
     </div>
 </footer>
+
+<script>
+    function initializeFooterShare() {
+        const shareUrl = window.location.origin;
+        const shareTitle = 'WasteWise - Recycling made easy for everyone';
+        const shareText = 'Check out WasteWise to learn about recycling! #Sustainability #Recycling';
+
+        document.getElementById('footer-share-facebook')?.addEventListener('click', () => {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
+        });
+
+        document.getElementById('footer-share-instagram')?.addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
+                } catch (err) {
+                    navigator.clipboard.writeText(shareUrl);
+                }
+            } else {
+                navigator.clipboard.writeText(shareUrl);
+                alert('Link copied to clipboard!');
+            }
+        });
+
+        document.getElementById('footer-share-linkedin')?.addEventListener('click', () => {
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
+        });
+    }
+
+    initializeFooterShare();
+    document.addEventListener('astro:after-swap', initializeFooterShare);
+</script>
 
 <script define:vars={{}} src="../scripts/footer-year.js" />

@@ -1,0 +1,47 @@
+{
+  "wasteTrend": {
+    "title": "Australia's Waste Generation Trend",
+    "subtitle": "Total waste generated (million tonnes)",
+    "source": "National Waste & Resource Recovery Database 2024",
+    "sourceUrl": "https://data.gov.au/data/dataset/32412c88-2a44-4aeb-856b-b717e34e0d27",
+    "data": [
+      { "year": "2006-07", "value": 52.4 },
+      { "year": "2008-09", "value": 56.9 },
+      { "year": "2010-11", "value": 59.3 },
+      { "year": "2012-13", "value": 61.5 },
+      { "year": "2014-15", "value": 64.0 },
+      { "year": "2016-17", "value": 69.0 },
+      { "year": "2018-19", "value": 75.8 },
+      { "year": "2020-21", "value": 75.6 },
+      { "year": "2022-23", "value": 75.6 }
+    ]
+  },
+
+  "wasteFate": {
+    "title": "Where Australia's Waste Actually Goes",
+    "subtitle": "Breakdown of waste fate (million tonnes)",
+    "source": "ABS Waste Account 2018–19",
+    "sourceUrl": "https://www.abs.gov.au/statistics/environment/environmental-accounts/waste-account-australia-experimental-estimates/latest-release",
+    "data": [
+      { "category": "Recycled", "value": 38.5 },
+      { "category": "Landfilled", "value": 20.5 },
+      { "category": "Energy Recovery", "value": 2.5 },
+      { "category": "Exported", "value": 4.6 },
+      { "category": "Other Disposal", "value": 9.7 }
+    ]
+  },
+
+  "materialRecyclingRates": {
+    "title": "Recycling Rates by Material Type",
+    "subtitle": "Percentage of material recovered",
+    "source": "National Waste Report 2024",
+    "sourceUrl": "https://www.dcceew.gov.au/environment/protection/waste/publications/2024",
+    "data": [
+      { "material": "Metals", "rate": 90 },
+      { "material": "Paper & Cardboard", "rate": 60 },
+      { "material": "Glass", "rate": 59 },
+      { "material": "Organics", "rate": 52 },
+      { "material": "Plastics", "rate": 13 }
+    ]
+  }
+}
