@@ -2,7 +2,6 @@
 @import url('https://fonts.bunny.net/css?family=caprasimo:400|sora:400,500,600,700,800&display=swap');
 
 :root {
-	--page-max: 1800px;
 	--gutter: 4px;
 	--hero-gutter: 10px;
 	--hero-inset: 8px;

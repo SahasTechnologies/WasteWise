@@ -41,9 +41,6 @@ import { Recycle } from '@lucide/astro';
             <button class="footer-social-btn" id="footer-share-facebook" aria-label="Share on Facebook">
                 <img src="/facebook-f-brands-solid-full.svg" alt="" class="social-svg-icon" />
             </button>
-            <button class="footer-social-btn" id="footer-share-instagram" aria-label="Share on Instagram">
-                <img src="/instagram-brands-solid-full.svg" alt="" class="social-svg-icon" />
-            </button>
             <button class="footer-social-btn" id="footer-share-linkedin" aria-label="Share on LinkedIn">
                 <img src="/linkedin-in-brands-solid-full.svg" alt="" class="social-svg-icon" />
             </button>
@@ -59,19 +56,6 @@ import { Recycle } from '@lucide/astro';
 
         document.getElementById('footer-share-facebook')?.addEventListener('click', () => {
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
-        });
-
-        document.getElementById('footer-share-instagram')?.addEventListener('click', async () => {
-            if (navigator.share) {
-                try {
-                    await navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
-                } catch (err) {
-                    navigator.clipboard.writeText(shareUrl);
-                }
-            } else {
-                navigator.clipboard.writeText(shareUrl);
-                alert('Link copied to clipboard!');
-            }
         });
 
         document.getElementById('footer-share-linkedin')?.addEventListener('click', () => {
