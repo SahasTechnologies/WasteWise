@@ -165,7 +165,6 @@ input {
 .hero {
 	position: relative;
 	width: calc(100% - 2 * var(--hero-inset));
-	max-width: var(--page-max);
 	height: min(560px, calc(100vh - 86px));
 	border-radius: 18px;
 	overflow: hidden;
@@ -238,7 +237,7 @@ input {
 }
 
 .below {
-	width: min(var(--page-max), calc(100vw - 2 * var(--hero-inset)));
+	width: calc(100vw - 2 * var(--hero-inset));
 	display: flex;
 	justify-content: center;
 	margin: 14px auto 0;
@@ -484,7 +483,6 @@ input {
 }
 
 .simple-section {
-	max-width: 1400px;
 	width: calc(100% - 2 * var(--hero-inset));
 	margin: 0 auto;
 	padding: 104px var(--hero-inset) 40px;
@@ -684,7 +682,6 @@ input {
 }
 
 .footer-inner {
-	max-width: var(--page-max);
 	margin: 0 auto;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -749,7 +746,6 @@ input {
 }
 
 .footer-bottom {
-	max-width: var(--page-max);
 	margin: 24px auto 0;
 	padding: 0 var(--hero-inset);
 	display: flex;
@@ -1145,7 +1141,6 @@ input {
 /* Home Stats Section */
 .home-stats {
 	width: 100%;
-	max-width: var(--page-max);
 	margin: 64px auto 0;
 	padding: 0 var(--hero-inset);
 	box-sizing: border-box;
@@ -1831,7 +1826,6 @@ input {
 
 /* Footer Acknowledgement Section */
 .footer-acknowledgement {
-	max-width: var(--page-max);
 	margin: 32px auto 24px;
 	padding: 24px var(--hero-inset);
 	display: flex;
@@ -2406,7 +2400,6 @@ input {
 ────────────────────────────────────────────────────────────── */
 .impact-calculator-section {
 	width: 100%;
-	max-width: var(--page-max);
 	margin: 32px auto 0;
 	padding: 0 var(--hero-inset);
 	box-sizing: border-box;
@@ -2862,7 +2855,6 @@ margin-bottom: 34px;
 }
 .story-section, .simple-section, .recyclemate-section, .articles-page-wrapper {
 padding: 89px var(--hero-inset);
-max-width: var(--page-max);
 margin: 0 auto;
 text-align: center;
 width: calc(100% - 2 * var(--hero-inset));
@@ -2881,7 +2873,6 @@ margin-bottom: 34px;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 16px;
 	margin: 24px auto 32px;
-	max-width: 900px;
 	width: calc(100% - 2 * var(--hero-inset));
 	padding: 0 var(--hero-inset);
 }
@@ -2923,7 +2914,6 @@ margin-bottom: 34px;
 	padding: 32px;
 	box-shadow: 0 10px 18px rgba(10, 16, 28, 0.06);
 	margin: 0 auto 32px;
-	max-width: 900px;
 	width: calc(100% - 2 * var(--hero-inset));
 }
 
@@ -3038,7 +3028,6 @@ margin-bottom: 34px;
 
 .community-share-section {
 	margin-top: 48px;
-	max-width: 900px;
 	margin-left: auto;
 	margin-right: auto;
 	width: calc(100% - 2 * var(--hero-inset));
@@ -3046,7 +3035,6 @@ margin-bottom: 34px;
 
 .quiz-results-chart {
 	margin-top: 32px;
-	max-width: 900px;
 	margin-left: auto;
 	margin-right: auto;
 	width: calc(100% - 2 * var(--hero-inset));
