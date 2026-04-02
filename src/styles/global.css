@@ -1765,8 +1765,7 @@ input {
 	border-radius: 16px;
 	overflow: hidden;
 	box-shadow: 0 8px 24px rgba(11, 19, 32, 0.12);
-	position: sticky;
-	top: 20px;
+	position: relative;
 }
 
 .recyclemate-map {
@@ -2228,9 +2227,31 @@ input {
 	margin-top: 24px;
 }
 
-/* Ensure autocomplete suggestions float above the Leaflet map */
+/* Ensure map and locations list are completely separate */
+.find-results-layout .map-container {
+	position: relative;
+	z-index: 1;
+	margin-bottom: 24px;
+}
+
+.find-results-layout .locations-list {
+	position: relative;
+	z-index: 1;
+}
+
+.find-results-layout .locations-dropdown {
+	position: relative;
+	z-index: 1;
+}
+
+/* Ensure autocomplete suggestions float above everything */
 .recyclemate-search-container {
 	position: relative;
+	z-index: 10000;
+}
+
+.autocomplete-suggestions {
+	z-index: 10001;
 }
 
 
