@@ -1145,9 +1145,11 @@ input {
 
 /* Home Stats Section */
 .home-stats {
-	width: min(var(--page-max), calc(100vw - 2 * var(--hero-inset)));
+	width: 100%;
+	max-width: var(--page-max);
 	margin: 64px auto 0;
 	padding: 0 var(--hero-inset);
+	box-sizing: border-box;
 }
 
 .stats-container {
@@ -1158,6 +1160,7 @@ input {
 	border: 1px solid var(--glass-border);
 	backdrop-filter: blur(20px);
 	-webkit-backdrop-filter: blur(20px);
+	box-sizing: border-box;
 }
 
 .stats-title {
@@ -2281,7 +2284,7 @@ input {
 	color: var(--ink);
 	margin-bottom: 0.5rem;
 	letter-spacing: -0.02em;
-	font-family: var(--font-display);
+	font-family: var(--font-body);
 }
 
 .header-subtitle {
@@ -2403,9 +2406,11 @@ input {
    Impact Calculator Section (separated from stats widgets)
 ────────────────────────────────────────────────────────────── */
 .impact-calculator-section {
-	width: min(var(--page-max), calc(100vw - 2 * var(--hero-inset)));
+	width: 100%;
+	max-width: var(--page-max);
 	margin: 32px auto 0;
 	padding: 0 var(--hero-inset);
+	box-sizing: border-box;
 }
 
 .impact-calculator-inner {
@@ -2416,6 +2421,7 @@ input {
 	border: 1px solid var(--glass-border);
 	backdrop-filter: blur(20px);
 	-webkit-backdrop-filter: blur(20px);
+	box-sizing: border-box;
 }
 
 .impact-calc-title {

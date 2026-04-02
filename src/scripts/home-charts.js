@@ -35,8 +35,7 @@ function initCharts() {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
-                aspectRatio: 2,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
@@ -76,55 +75,58 @@ function initCharts() {
         });
     }
 
-    // Waste Fate Bar Chart
+    // Waste Fate Pie Chart
     const wasteFateCtx = document.getElementById('waste-fate-chart');
     if (wasteFateCtx instanceof HTMLCanvasElement) {
         new Chart(wasteFateCtx, {
-            type: 'bar',
+            type: 'pie',
             data: {
                 labels: chartsData.wasteFate.data.map(d => d.category),
                 datasets: [{
-                    label: 'Million Tonnes',
                     data: chartsData.wasteFate.data.map(d => d.value),
-                    backgroundColor: '#66C24A',
-                    borderRadius: 8,
-                    borderSkipped: false
+                    backgroundColor: [
+                        '#66C24A',
+                        '#3EA63B',
+                        '#2B8A2E',
+                        '#1F6E23',
+                        '#145218'
+                    ],
+                    borderColor: '#ffffff',
+                    borderWidth: 2
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
-                aspectRatio: 2,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        display: false
+                        display: true,
+                        position: 'right',
+                        align: 'center',
+                        labels: {
+                            font: { ...chartDefaults.font, size: 14 },
+                            color: 'rgba(11, 19, 32, 0.8)',
+                            padding: 12,
+                            boxWidth: 16,
+                            boxHeight: 16,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
                     },
                     tooltip: {
                         backgroundColor: 'rgba(11, 19, 32, 0.95)',
                         padding: 14,
                         titleFont: { ...chartDefaults.font, size: 14, weight: '600' },
                         bodyFont: { ...chartDefaults.font, size: 13 },
-                        cornerRadius: 10
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(11, 19, 32, 0.08)'
-                        },
-                        ticks: {
-                            font: chartDefaults.font,
-                            color: 'rgba(11, 19, 32, 0.7)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            font: chartDefaults.font,
-                            color: 'rgba(11, 19, 32, 0.7)'
+                        cornerRadius: 10,
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${label}: ${value}M tonnes (${percentage}%)`;
+                            }
                         }
                     }
                 }
@@ -150,8 +152,7 @@ function initCharts() {
             options: {
                 indexAxis: 'y',
                 responsive: true,
-                maintainAspectRatio: true,
-                aspectRatio: 1.5,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
