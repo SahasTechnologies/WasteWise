@@ -7,18 +7,27 @@ async function loadCommunityStats() {
         const quizEl = document.getElementById('stat-quiz');
         const pollEl = document.getElementById('stat-poll');
         const contactEl = document.getElementById('stat-contact');
+        const totalEl = document.getElementById('total-submissions');
 
-        if (quizEl) quizEl.textContent = String(data.quiz ?? 0);
-        if (pollEl) pollEl.textContent = String(data.poll ?? 0);
-        if (contactEl) contactEl.textContent = String(data.contact ?? 0);
+        const quiz = data.quiz ?? 0;
+        const poll = data.poll ?? 0;
+        const contact = data.contact ?? 0;
+        const total = quiz + poll + contact;
+
+        if (quizEl) quizEl.textContent = String(quiz);
+        if (pollEl) pollEl.textContent = String(poll);
+        if (contactEl) contactEl.textContent = String(contact);
+        if (totalEl) totalEl.textContent = String(total);
     } catch (_) {
         // On error, show 0
         const quizEl = document.getElementById('stat-quiz');
         const pollEl = document.getElementById('stat-poll');
         const contactEl = document.getElementById('stat-contact');
+        const totalEl = document.getElementById('total-submissions');
         if (quizEl) quizEl.textContent = '0';
         if (pollEl) pollEl.textContent = '0';
         if (contactEl) contactEl.textContent = '0';
+        if (totalEl) totalEl.textContent = '0';
     }
 }
 

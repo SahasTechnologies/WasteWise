@@ -5,27 +5,32 @@ import ShareCard from '../components/ShareCard.astro';
 
 <BaseLayout title="Community | WasteWise">
 	<section class="simple-section">
-		<h1 class="simple-title community-title">Community</h1>
-		<p class="simple-subtitle">See what others are doing and share your thoughts.</p>
+		<h1 class="header-title">Community</h1>
+		<p class="header-subtitle">See what others are doing and share your thoughts.</p>
 
-		<div class="community-stats-bar" id="community-stats-bar">
-			<div class="community-stat">
-				<div class="community-stat-label">Quiz submissions</div>
-				<div class="community-stat-value stat-display" id="stat-quiz">
-					<span class="loading-spinner"></span>
+		<div class="community-stats-wrapper">
+			<div class="community-stats-bar" id="community-stats-bar">
+				<div class="community-stat">
+					<div class="community-stat-label">Quiz submissions</div>
+					<div class="community-stat-value stat-display" id="stat-quiz">
+						<span class="loading-spinner"></span>
+					</div>
+				</div>
+				<div class="community-stat">
+					<div class="community-stat-label">Poll submissions</div>
+					<div class="community-stat-value stat-display" id="stat-poll">
+						<span class="loading-spinner"></span>
+					</div>
+				</div>
+				<div class="community-stat">
+					<div class="community-stat-label">Contact messages</div>
+					<div class="community-stat-value stat-display" id="stat-contact">
+						<span class="loading-spinner"></span>
+					</div>
 				</div>
 			</div>
-			<div class="community-stat">
-				<div class="community-stat-label">Poll submissions</div>
-				<div class="community-stat-value stat-display" id="stat-poll">
-					<span class="loading-spinner"></span>
-				</div>
-			</div>
-			<div class="community-stat">
-				<div class="community-stat-label">Contact messages</div>
-				<div class="community-stat-value stat-display" id="stat-contact">
-					<span class="loading-spinner"></span>
-				</div>
+			<div class="community-total">
+				Total Submissions: <span id="total-submissions">0</span>
 			</div>
 		</div>
 
