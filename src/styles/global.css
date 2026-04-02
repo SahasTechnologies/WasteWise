@@ -2,7 +2,7 @@
 @import url('https://fonts.bunny.net/css?family=caprasimo:400|sora:400,500,600,700,800&display=swap');
 
 :root {
-	--page-max: 1240px;
+	--page-max: 1600px;
 	--gutter: 4px;
 	--hero-gutter: 10px;
 	--hero-inset: 8px;
@@ -485,7 +485,7 @@ input {
 }
 
 .simple-section {
-	max-width: 900px;
+	max-width: 1100px;
 	width: calc(100% - 2 * var(--hero-inset));
 	margin: 0 auto;
 	padding: 104px var(--hero-inset) 40px;
@@ -3087,5 +3087,39 @@ margin-bottom: 34px;
 
 	.poll-bar-meta {
 		text-align: left;
+	}
+}
+
+/* Large screen optimizations */
+@media (min-width: 1440px) {
+	:root {
+		--hero-inset: 24px;
+	}
+	
+	.hero {
+		height: min(640px, calc(100vh - 86px));
+	}
+	
+	.story-section {
+		padding: 100px 0;
+	}
+}
+
+@media (min-width: 1920px) {
+	:root {
+		--hero-inset: 48px;
+	}
+	
+	.hero {
+		height: min(720px, calc(100vh - 86px));
+	}
+	
+	.story-section {
+		padding: 120px 0;
+	}
+	
+	.chart-canvas-wrapper {
+		min-height: 450px;
+		height: 500px;
 	}
 }
