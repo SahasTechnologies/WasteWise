@@ -102,8 +102,8 @@ export async function POST(context) {
 					},
 					body: JSON.stringify(forwardPayload),
 				});
-				const formSubmitData = await formSubmitRes.json();
-				console.log(`[submit-contact] FormSubmit response status: ${formSubmitRes.status}, data:`, formSubmitData);
+				// FormSubmit returns HTML, not JSON - check status only
+				console.log(`[submit-contact] FormSubmit response status: ${formSubmitRes.status} (${formSubmitRes.ok ? 'OK' : 'FAILED'})`);
 			} catch (err) {
 				console.error(`[submit-contact] FormSubmit forwarding failed:`, err);
 			}
@@ -119,8 +119,8 @@ export async function POST(context) {
 					},
 					body: JSON.stringify(forwardPayload),
 				});
-				const submifyData = await submifyRes.json();
-				console.log(`[submit-contact] Submify response status: ${submifyRes.status}, data:`, submifyData);
+				// Submify returns HTML, not JSON - check status only
+				console.log(`[submit-contact] Submify response status: ${submifyRes.status} (${submifyRes.ok ? 'OK' : 'FAILED'})`);
 			} catch (err) {
 				console.error(`[submit-contact] Submify forwarding failed:`, err);
 			}
