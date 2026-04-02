@@ -2,7 +2,7 @@
 @import url('https://fonts.bunny.net/css?family=caprasimo:400|sora:400,500,600,700,800&display=swap');
 
 :root {
-	--page-max: 1600px;
+	--page-max: 1800px;
 	--gutter: 4px;
 	--hero-gutter: 10px;
 	--hero-inset: 8px;
@@ -485,7 +485,7 @@ input {
 }
 
 .simple-section {
-	max-width: 1100px;
+	max-width: 1400px;
 	width: calc(100% - 2 * var(--hero-inset));
 	margin: 0 auto;
 	padding: 104px var(--hero-inset) 40px;

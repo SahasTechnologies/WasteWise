@@ -55,10 +55,25 @@ export async function POST(context) {
 			}
 		}
 
-		// 2. Save to DB
-		const fullIpDetails = `${String(ip || 'unknown')} - ${String(City || 'unknown')}, ${String(ISP || 'unknown')}`.slice(0, 255);
-
+		// 2. Rate limiting: Check submissions from this IP in the last minute
 		await ensureTable();
+		
+		const recentSubmissions = await sql`
+			SELECT COUNT(*) as count
+			FROM contact_submissions
+			WHERE ip LIKE ${(String(ip || 'unknown') + '%')}
+			AND submitted_at > NOW() - INTERVAL '1 minute'
+		`;
+		
+		if (recentSubmissions[0]?.count >= 2) {
+			return new Response(
+				JSON.stringify({ ok: false, error: 'Rate limit exceeded. Please wait a minute before submitting again.' }), 
+				{ status: 429 }
+			);
+		}
+
+		// 3. Save to DB
+		const fullIpDetails = `${String(ip || 'unknown')} - ${String(City || 'unknown')}, ${String(ISP || 'unknown')}`.slice(0, 255);
 
 		await sql`
 			INSERT INTO contact_submissions (name, email, message, ip)
@@ -70,7 +85,7 @@ export async function POST(context) {
 			)
 		`;
 
-		// 3. Try forwarding to FormSubmit and Submify
+		// 4. Try forwarding to FormSubmit and Submify
 		const targetEmail = process.env.EMAIL;
 		if (targetEmail) {
 			const forwardPayload = { ...body, _captcha: "false" };
