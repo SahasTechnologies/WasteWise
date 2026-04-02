@@ -74,16 +74,20 @@ window.onEmailTurnstileSuccess = async (token) => {
 if (form) {
 	form.addEventListener('submit', async (e) => {
 		e.preventDefault();
+		console.log('[contact-form] Form submitted');
 
 		const formData = new FormData(form);
 		const payload = Object.fromEntries(formData.entries());
+		console.log('[contact-form] Payload:', payload);
 		
 		// Must complete CAPTCHA before submitting
 		const turnstileToken = payload['cf-turnstile-response'];
 		if (!turnstileToken) {
+			console.error('[contact-form] Missing Turnstile token');
 			alert('Please complete the security check.');
 			return;
 		}
+		console.log('[contact-form] Turnstile token present');
 		
 		const btn = form.querySelector('.contact-submit');
 		if (btn) btn.textContent = 'Checking…';
@@ -131,6 +135,7 @@ if (form) {
 		if (btn) btn.textContent = 'Sending…';
 
 		try {
+			console.log('[contact-form] Sending to /api/submit-contact');
 			const response = await fetch('/api/submit-contact', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -138,17 +143,21 @@ if (form) {
 			});
 
 			const result = await response.json();
+			console.log('[contact-form] API response:', response.status, result);
 
 			if (result.ok) {
+				console.log('[contact-form] Submission successful');
 				if (formView && successView) {
 					formView.classList.add('hidden');
 					successView.classList.remove('hidden');
 				}
 			} else {
+				console.error('[contact-form] Submission failed:', result.error);
 				if (btn) btn.textContent = 'Error - Try Again';
 				alert(result.error || 'Submission failed');
 			}
 		} catch (err) {
+			console.error('[contact-form] Submission error:', err);
 			if (btn) btn.textContent = 'Error - Try Again';
 		}
 	});

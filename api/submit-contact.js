@@ -89,10 +89,12 @@ export async function POST(context) {
 		const targetEmail = process.env.EMAIL;
 		if (targetEmail) {
 			const forwardPayload = { ...body, _captcha: "false" };
+			console.log(`[submit-contact] Forwarding to target email: ${targetEmail}`);
 
 			// Try FormSubmit
 			try {
-				await fetch(`https://formsubmit.co/ajax/${targetEmail}`, {
+				console.log(`[submit-contact] Attempting FormSubmit forwarding to ${targetEmail}`);
+				const formSubmitRes = await fetch(`https://formsubmit.co/ajax/${targetEmail}`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -100,13 +102,16 @@ export async function POST(context) {
 					},
 					body: JSON.stringify(forwardPayload),
 				});
+				const formSubmitData = await formSubmitRes.json();
+				console.log(`[submit-contact] FormSubmit response status: ${formSubmitRes.status}, data:`, formSubmitData);
 			} catch (err) {
-				console.error('FormSubmit forwarding failed:', err);
+				console.error(`[submit-contact] FormSubmit forwarding failed:`, err);
 			}
 
 			// Try Submify
 			try {
-				await fetch(`https://submify.vercel.app/${targetEmail}`, {
+				console.log(`[submit-contact] Attempting Submify forwarding to ${targetEmail}`);
+				const submifyRes = await fetch(`https://submify.vercel.app/${targetEmail}`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -114,9 +119,13 @@ export async function POST(context) {
 					},
 					body: JSON.stringify(forwardPayload),
 				});
+				const submifyData = await submifyRes.json();
+				console.log(`[submit-contact] Submify response status: ${submifyRes.status}, data:`, submifyData);
 			} catch (err) {
-				console.error('Submify forwarding failed:', err);
+				console.error(`[submit-contact] Submify forwarding failed:`, err);
 			}
+		} else {
+			console.log(`[submit-contact] No EMAIL env var set, skipping external forwarding`);
 		}
 
 		return new Response(JSON.stringify({ ok: true }), { status: 200 });
