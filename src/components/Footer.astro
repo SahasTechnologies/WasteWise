@@ -67,4 +67,13 @@ import { Recycle } from '@lucide/astro';
     document.addEventListener('astro:after-swap', initializeFooterShare);
 </script>
 
-<script define:vars={{}} src="../scripts/footer-year.js" />
+<script>
+    function updateYear() {
+        const yearSpan = document.getElementById('current-year');
+        if (!yearSpan) return;
+        yearSpan.textContent = String(new Date().getFullYear());
+    }
+
+    updateYear();
+    document.addEventListener('astro:after-swap', updateYear);
+</script>
