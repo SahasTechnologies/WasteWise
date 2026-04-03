@@ -1,7 +1,7 @@
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel)](https://wastewise.shimpi.dev)
 [![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
 
-# EasteWise
+# WasteWise
 
 WasteWise is a site built to help Australians understand, learn and take action on recycling. The site has multiple features such as find, contact, community and more to engage the user and enourage them to recycle. Below is my UX documentation and overall evaluation of the project (but it's quite long, so the essential parts are here)
 
