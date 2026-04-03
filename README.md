@@ -1,6 +1,36 @@
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel)](https://wastewise.shimpi.dev)
 [![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
 
+# EasteWise
+
+WasteWise is a site built to help Australians understand, learn and take action on recycling. The site has multiple features such as find, contact, community and more to engage the user and enourage them to recycle. Below is my UX documentation and overall evaluation of the project (but it's quite long, so the essential parts are here)
+
+## How to run
+just go to https://wastewise.shimpi.dev
+If you want to improve the site, please send a PR!
+
+### Find Feature
+This uses RecycleMate's API to find locations and Nomination + Photon Komoot for the locations and GeoJSON. The end map uses leaflet to plot the points
+
+### Contact form
+This uses CLoudflare's captcha, Profanity API and many other things to prevent abuse, but this is where uses can contact me about the stie
+
+### Poll and Quiz
+Data is saved in a custom NeonDB integration that is linked with Vercel to ensure that it is fast and reliable
+
+All the other pages aren't as complex and the documentation below explains everything in a lot of detail.
+
+
+
+
+
+
+
+
+
+
+
+
 # UX DOCUMENTATION
 
 ##### WASTEWISE
