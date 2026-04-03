@@ -1,0 +1,185 @@
+---
+---
+
+<div class="poll-card">
+    <h3 class="poll-card-title">Poll: What's the biggest barrier to recycling in your area?</h3>
+
+    <form id="poll-form" class="poll-form">
+        <label class="quiz-option">
+            <input type="radio" name="barrier" value="Confusing or unclear recycling rules" class="hidden" required />
+            <span class="quiz-option-label">1</span>
+            <span class="quiz-option-text">Confusing or unclear recycling rules</span>
+        </label>
+
+        <label class="quiz-option">
+            <input type="radio" name="barrier" value="Not enough public recycling bins" class="hidden" required />
+            <span class="quiz-option-label">2</span>
+            <span class="quiz-option-text">Not enough public recycling bins</span>
+        </label>
+
+        <label class="quiz-option">
+            <input type="radio" name="barrier" value="Inconvenient or far-away drop-off locations" class="hidden" required />
+            <span class="quiz-option-label">3</span>
+            <span class="quiz-option-text">Inconvenient or far-away drop-off locations</span>
+        </label>
+
+        <label class="quiz-option">
+            <input type="radio" name="barrier" value="Lack of motivation or time" class="hidden" required />
+            <span class="quiz-option-label">4</span>
+            <span class="quiz-option-text">Lack of motivation or time</span>
+        </label>
+
+        <label class="quiz-option">
+            <input type="radio" name="barrier" value="No local recycling services" class="hidden" required />
+            <span class="quiz-option-label">5</span>
+            <span class="quiz-option-text">No local recycling services</span>
+        </label>
+
+        <label class="quiz-option">
+            <input type="radio" name="barrier" value="I'm not sure what can and can't be recycled" class="hidden" required />
+            <span class="quiz-option-label">6</span>
+            <span class="quiz-option-text">I'm not sure what can and can't be recycled</span>
+        </label>
+
+        <div class="poll-submit-row">
+            <button type="submit" class="go" id="poll-submit-btn">Submit vote</button>
+            <div id="poll-status" class="poll-status-text"></div>
+        </div>
+    </form>
+
+    <div id="poll-results" class="poll-results hidden">
+        <h4 class="poll-results-title">Results</h4>
+        <div id="poll-total" class="poll-total"></div>
+        <div id="poll-bars" class="poll-bars"></div>
+    </div>
+</div>
+
+<script src="../scripts/poll.js"></script>
+
+<style>
+    .poll-card {
+        max-width: 800px;
+        margin: 32px auto 0;
+        padding: 32px;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 18px;
+        box-shadow: 0 8px 24px rgba(11, 19, 32, 0.08);
+    }
+
+    .poll-card-title {
+        margin: 0 0 24px;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--ink);
+        text-align: center;
+        font-family: var(--font-body);
+    }
+
+    .poll-form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .poll-submit-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .poll-status-text {
+        font-size: 14px;
+        color: rgba(11, 19, 32, 0.7);
+    }
+
+    .poll-results {
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(11, 19, 32, 0.1);
+    }
+
+    .poll-results-title {
+        font-size: 20px;
+        margin: 0 0 12px;
+        color: var(--ink);
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .poll-total {
+        font-size: 15px;
+        color: rgba(11, 19, 32, 0.7);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .poll-bars {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .poll-bar-row {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .poll-bar-label {
+        font-size: 14px;
+        color: rgba(11, 19, 32, 0.8);
+        font-weight: 500;
+    }
+
+    .poll-bar-track {
+        width: 200px;
+        height: 10px;
+        background: rgba(11, 19, 32, 0.1);
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .poll-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--green-1), var(--green-2));
+        border-radius: 999px;
+        transition: width 0.3s ease;
+    }
+
+    .poll-bar-meta {
+        font-size: 13px;
+        color: rgba(11, 19, 32, 0.6);
+        min-width: 100px;
+        text-align: right;
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        .poll-card {
+            padding: 24px 20px;
+        }
+
+        .poll-card-title {
+            font-size: 19px;
+        }
+
+        .poll-bar-row {
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .poll-bar-track {
+            width: 100%;
+        }
+
+        .poll-bar-meta {
+            text-align: left;
+        }
+    }
+</style>

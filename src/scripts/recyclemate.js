@@ -15,16 +15,117 @@
 	let currentLocation = null;
 	let selectedItem = null;
 	let debounceTimer = null;
+	let photonSelected = null;
+	let map = null;
+	let tileLayer = null;
+	let markersLayer = null;
+	let userMarker = null;
+	let placeMarkers = [];
+	let photonBias = { lat: -33.8688, lng: 151.2093 };
 
-	// Geocode address using Nominatim
-	async function geocodeAddress(address) {
+	// Marker color constants - blue for user, green for locations
+	const USER_ICON_COLOR = '#3b82f6';
+	const PLACE_ICON_COLOR = '#3ea63b';
+
+	function makePinIcon(color) {
+		return window.L.divIcon({
+			className: '',
+			iconSize: [18, 18],
+			iconAnchor: [9, 9],
+			popupAnchor: [0, -9],
+			html: `<div style="width:18px;height:18px;border-radius:50%;background:${color};border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.25)"></div>`
+		});
+	}
+
+	function normalizeText(s) {
+		return String(s || '')
+			.toLowerCase()
+			.normalize('NFD')
+			.replace(/\p{Diacritic}/gu, '')
+			.trim();
+	}
+
+	function calculateDistance(lat1, lon1, lat2, lon2) {
+		const R = 6371;
+		const dLat = (lat2 - lat1) * Math.PI / 180;
+		const dLon = (lon2 - lon1) * Math.PI / 180;
+		const a =
+			Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+			Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+			Math.sin(dLon / 2) * Math.sin(dLon / 2);
+		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		return R * c;
+	}
+
+	function featureLabel(f) {
+		const p = f?.properties || {};
+		const parts = [];
+		const name = p.name || p.street || '';
+		if (name) parts.push(name);
+		if (p.housenumber) parts.push(p.housenumber);
+		if (p.postcode) parts.push(p.postcode);
+		if (p.city) parts.push(p.city);
+		if (p.state) parts.push(p.state);
+		if (p.country) parts.push(p.country);
+		return parts.filter(Boolean).join(', ').replace(/\s+,/g, ',').trim();
+	}
+
+	function featureTypeWeight(f) {
+		const p = f?.properties || {};
+		const osmKey = String(p.osm_key || '');
+		const osmValue = String(p.osm_value || '');
+		const type = String(p.type || '');
+
+		const v = `${osmKey}:${osmValue}:${type}`;
+		if (/building|house|address/.test(v)) return 3.0;
+		if (/residential|street/.test(v)) return 2.3;
+		if (/suburb|neighbourhood|district/.test(v)) return 1.6;
+		if (/city|town|village/.test(v)) return 1.2;
+		if (/state|country/.test(v)) return 0.6;
+		return 1.0;
+	}
+
+	function textMatchScore(query, label) {
+		const q = normalizeText(query);
+		const l = normalizeText(label);
+		if (!q || !l) return 0;
+		if (l === q) return 3;
+		if (l.startsWith(q)) return 2;
+		if (l.includes(q)) return 1;
+		return 0;
+	}
+
+	function scoreFeature(f, query) {
+		const coords = f?.geometry?.coordinates;
+		const lng = Array.isArray(coords) ? Number(coords[0]) : NaN;
+		const lat = Array.isArray(coords) ? Number(coords[1]) : NaN;
+		const distKm = Number.isFinite(lat) && Number.isFinite(lng)
+			? calculateDistance(photonBias.lat, photonBias.lng, lat, lng)
+			: 9999;
+
+		const label = featureLabel(f);
+		const match = textMatchScore(query, label);
+		const typeW = featureTypeWeight(f);
+		const distW = 1 / (1 + distKm / 3);
+		return match * 2.2 + typeW * 1.4 + distW * 2.0;
+	}
+
+	async function photonSearch(address) {
 		try {
-			const url = `https://nominatim.openstreetmap.org/search?format=json&limit=5&q=${encodeURIComponent(address)}`;
-			const response = await fetch(url, {
-				headers: { 'User-Agent': 'WasteWise/1.0' }
-			});
+			const url = new URL('https://photon.komoot.io/api/');
+			url.searchParams.set('q', address);
+			url.searchParams.set('limit', '6');
+			url.searchParams.set('lang', 'en');
+			url.searchParams.set('lat', String(photonBias.lat));
+			url.searchParams.set('lon', String(photonBias.lng));
+			const response = await fetch(url.toString());
+			if (!response.ok) return [];
 			const data = await response.json();
-			return data;
+			const features = Array.isArray(data?.features) ? data.features : [];
+			return features
+				.map((f) => ({ f, s: scoreFeature(f, address) }))
+				.sort((a, b) => b.s - a.s)
+				.map((x) => x.f);
 		} catch (err) {
 			console.error('Geocoding error:', err);
 			return [];
@@ -35,6 +136,7 @@
 	addressInput.addEventListener('input', () => {
 		clearTimeout(debounceTimer);
 		const query = addressInput.value.trim();
+		photonSelected = null;
 		
 		if (query.length < 3) {
 			addressSuggestions.innerHTML = '';
@@ -47,17 +149,20 @@
 		addressLoading.classList.remove('hidden');
 
 		debounceTimer = setTimeout(async () => {
-			const results = await geocodeAddress(query);
+			const results = await photonSearch(query);
 			
 			// Hide loading indicator
 			addressLoading.classList.add('hidden');
 			
 			if (results.length > 0) {
-				addressSuggestions.innerHTML = results.map(r => 
-					`<div class="suggestion-item" data-lat="${r.lat}" data-lon="${r.lon}" data-display="${r.display_name}">
-						${r.display_name}
-					</div>`
-				).join('');
+				addressSuggestions.innerHTML = results.map((r) => {
+					const coords = r?.geometry?.coordinates;
+					const lon = Array.isArray(coords) ? coords[0] : '';
+					const lat = Array.isArray(coords) ? coords[1] : '';
+					const label = featureLabel(r);
+					const safeLabel = String(label || '').replace(/"/g, '&quot;');
+					return `<div class="suggestion-item" data-lat="${lat}" data-lon="${lon}" data-display="${safeLabel}">${label}</div>`;
+				}).join('');
 				addressSuggestions.classList.add('active');
 				
 				// Bind click events
@@ -68,8 +173,19 @@
 							lat: parseFloat(item.getAttribute('data-lat')),
 							lng: parseFloat(item.getAttribute('data-lon'))
 						};
+						photonSelected = {
+							label: item.getAttribute('data-display'),
+							lat: currentLocation.lat,
+							lng: currentLocation.lng
+						};
 						addressSuggestions.innerHTML = '';
 						addressSuggestions.classList.remove('active');
+						try {
+							if (map && currentLocation) {
+								setUserMarker(currentLocation);
+								map.setView([currentLocation.lat, currentLocation.lng], 14);
+							}
+						} catch (_) {}
 					});
 				});
 			} else {
@@ -217,15 +333,15 @@
 				displayLocations(places);
 				displayMap(places, currentLocation);
 			} else {
+				// Hide map explicitly
+				mapContainer.classList.add('hidden');
+				
 				// Show helpful message with link to RecycleMate
 				locationsList.innerHTML = `
-					<div class="no-results-card">
-						<h3>Find Recycling Locations</h3>
-						<p>To find specific recycling locations for <strong>${selectedItem.name}</strong> near you, please visit RecycleMate directly:</p>
-						<a href="https://recyclemate.com.au" target="_blank" rel="noopener noreferrer" class="recyclemate-link">
-							Visit RecycleMate →
-						</a>
-						<p class="help-text">RecycleMate provides detailed information about recycling locations, collection services, and disposal options in your area.</p>
+					<div class="no-results-card" style="padding: 24px; background: rgba(255, 255, 255, 0.95); border-radius: 16px; border: 1px solid rgba(11, 19, 32, 0.08); box-shadow: 0 4px 16px rgba(11, 19, 32, 0.06);">
+						<h3 style="color: #ef4444; margin-top: 0;">No recycling options available</h3>
+						<p>Unfortunately, we couldn't find any local recycling options for <strong>${selectedItem.name}</strong>.</p>
+						<p class="help-text" style="opacity: 0.8; font-size: 14px;">Please check with your local council for safe disposal or specialised collections.</p>
 					</div>
 				`;
 			}
@@ -240,19 +356,6 @@
 			searchBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg> Search';
 		}
 	});
-
-	// Calculate distance between two coordinates (Haversine formula)
-	function calculateDistance(lat1, lon1, lat2, lon2) {
-		const R = 6371; // Earth's radius in km
-		const dLat = (lat2 - lat1) * Math.PI / 180;
-		const dLon = (lon2 - lon1) * Math.PI / 180;
-		const a = 
-			Math.sin(dLat/2) * Math.sin(dLat/2) +
-			Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-			Math.sin(dLon/2) * Math.sin(dLon/2);
-		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-		return R * c;
-	}
 
 	function displayItemInfo(item) {
 		let html = `<h2>${item.name}</h2>`;
@@ -281,98 +384,132 @@
 	}
 
 	function displayLocations(places) {
-		let html = '<h3>Nearby Recycling Locations</h3>';
+		let html = `
+			<details class="locations-dropdown" open style="background: rgba(255, 255, 255, 0.95); border-radius: 16px; border: 1px solid rgba(11, 19, 32, 0.08); box-shadow: 0 4px 16px rgba(11, 19, 32, 0.06); padding: 0; overflow: hidden;">
+				<summary style="padding: 16px 24px; font-weight: bold; cursor: pointer; background: #f9fafb; font-size: 18px; border-bottom: 1px solid rgba(11, 19, 32, 0.08); display: flex; align-items: center; justify-content: space-between;">
+					Nearby Recycling Locations (${places.length})
+				</summary>
+				<div style="padding: 24px; max-height: 480px; overflow-y: auto;">
+		`;
 		
-		places.slice(0, 10).forEach((place, index) => {
+		places.forEach((place, index) => {
 			html += `
-				<div class="location-card" data-place-id="${place._id}" data-index="${index}">
-					<h4>${index + 1}. ${place.name}</h4>
-					<p class="location-address">${place.address}</p>
+				<div class="location-card" data-place-id="${place._id}" data-index="${index}" style="margin-bottom: 16px; padding: 16px; border: 1px solid #eee; border-radius: 8px;">
+					<h4 style="margin: 0 0 8px 0;">${index + 1}. ${place.name}</h4>
+					<p class="location-address" style="margin: 0 0 8px 0; color: #555;">${place.address}</p>
 					${place.openingHours ? `
-						<details class="location-hours">
-							<summary>Opening Hours</summary>
-							<ul>
+						<details class="location-hours" style="margin-bottom: 8px;">
+							<summary style="cursor: pointer; color: #66c24a; font-weight: 600; font-size: 14px;">Opening Hours</summary>
+							<ul style="margin: 8px 0; padding-left: 20px; font-size: 14px;">
 								${place.openingHours.map(h => `<li>${h}</li>`).join('')}
 							</ul>
 						</details>
 					` : ''}
-					${place.website ? `<p><a href="${place.website}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Visit Website</a></p>` : ''}
-					${place.facilityMessage ? `<p class="facility-message">${place.facilityMessage}</p>` : ''}
+					${place.website ? `<p style="margin: 0 0 8px 0;"><a href="${place.website}" target="_blank" rel="noopener" style="color: #3b82f6; text-decoration: none;" onclick="event.stopPropagation()">Visit Website</a></p>` : ''}
+					${place.facilityMessage ? `<p class="facility-message" style="margin: 0; font-size: 14px; background: #f0fdf4; padding: 8px; border-radius: 6px;">${place.facilityMessage}</p>` : ''}
 				</div>
 			`;
 		});
 
+		html += `</div></details>`;
 		locationsList.innerHTML = html;
 		
 		// Add click handlers to location cards
 		locationsList.querySelectorAll('.location-card').forEach(card => {
 			card.addEventListener('click', () => {
+				const idx = Number(card.getAttribute('data-index'));
 				// Remove active class from all cards
 				locationsList.querySelectorAll('.location-card').forEach(c => c.classList.remove('active'));
 				// Add active class to clicked card
 				card.classList.add('active');
 				// Scroll card into view
 				card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+				try {
+					const marker = Number.isFinite(idx) ? placeMarkers[idx] : null;
+					if (map && marker) {
+						map.setView(marker.getLatLng(), Math.max(map.getZoom(), 14), { animate: true });
+						if (marker.getPopup()) marker.openPopup();
+					}
+				} catch (_) {}
 			});
 		});
 	}
 
+	function ensureMap() {
+		if (map) return;
+		if (!mapElement) return;
+		if (typeof window === 'undefined' || !window.L) return;
+
+		map = window.L.map(mapElement, {
+			zoomControl: true,
+			attributionControl: true
+		});
+
+		tileLayer = window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19,
+			attribution: '&copy; OpenStreetMap contributors'
+		});
+		tileLayer.addTo(map);
+
+		markersLayer = window.L.layerGroup().addTo(map);
+		map.setView([photonBias.lat, photonBias.lng], 12);
+	}
+
+	function setUserMarker(userLocation) {
+		ensureMap();
+		if (!map || !markersLayer) return;
+		if (userMarker) {
+			markersLayer.removeLayer(userMarker);
+			userMarker = null;
+		}
+		userMarker = window.L.marker([userLocation.lat, userLocation.lng], { icon: makePinIcon(USER_ICON_COLOR) });
+		userMarker.bindPopup('Your location');
+		markersLayer.addLayer(userMarker);
+	}
+
+	function clearPlaceMarkers() {
+		if (!markersLayer) return;
+		placeMarkers.forEach((m) => {
+			try {
+				markersLayer.removeLayer(m);
+			} catch (_) {}
+		});
+		placeMarkers = [];
+	}
+
 	function displayMap(places, userLocation) {
 		mapContainer.classList.remove('hidden');
-		
-		// Create markers for all locations (green) and user location (blue)
-		const bounds = {
-			minLat: userLocation.lat,
-			maxLat: userLocation.lat,
-			minLng: userLocation.lng,
-			maxLng: userLocation.lng
-		};
-		
-		// Update bounds to include all places
-		places.slice(0, 10).forEach(place => {
+
+		ensureMap();
+		if (!map || !window.L) return;
+
+		setUserMarker(userLocation);
+		clearPlaceMarkers();
+
+		const bounds = window.L.latLngBounds([[userLocation.lat, userLocation.lng]]);
+
+		places.forEach((place, idx) => {
 			const coords = place.location?.coordinates;
-			if (coords && coords.length === 2) {
-				const [lng, lat] = coords;
-				bounds.minLat = Math.min(bounds.minLat, lat);
-				bounds.maxLat = Math.max(bounds.maxLat, lat);
-				bounds.minLng = Math.min(bounds.minLng, lng);
-				bounds.maxLng = Math.max(bounds.maxLng, lng);
+			if (!coords || coords.length !== 2) return;
+			const [lng, lat] = coords;
+			const marker = window.L.marker([lat, lng], { icon: makePinIcon(PLACE_ICON_COLOR) });
+			
+			let hoursHtml = '';
+			if (place.openingHours && place.openingHours.length > 0) {
+				hoursHtml = `<br/><br/><strong style="color: #3ea63b; font-size: 13px;">Opening Hours:</strong><br/><span style="font-size: 13px; color: #555;">${place.openingHours.join('<br/>')}</span>`;
 			}
+			
+			marker.bindPopup(`<strong>${place.name || 'Location'}</strong><br/>${place.address || ''}${hoursHtml}`);
+			markersLayer.addLayer(marker);
+			placeMarkers[idx] = marker;
+			bounds.extend([lat, lng]);
 		});
-		
-		// Add padding to bounds
-		const latPadding = (bounds.maxLat - bounds.minLat) * 0.2 || 0.01;
-		const lngPadding = (bounds.maxLng - bounds.minLng) * 0.2 || 0.01;
-		
-		const bbox = `${bounds.minLng - lngPadding},${bounds.minLat - latPadding},${bounds.maxLng + lngPadding},${bounds.maxLat + latPadding}`;
-		
-		// Create map URL with user location marker (blue) and recycling locations (green)
-		let mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik`;
-		
-		// Add user location marker (blue)
-		mapUrl += `&marker=${userLocation.lat},${userLocation.lng}`;
-		
-		mapElement.innerHTML = `
-			<iframe 
-				width="100%" 
-				height="100%" 
-				frameborder="0" 
-				scrolling="no" 
-				marginheight="0" 
-				marginwidth="0" 
-				src="${mapUrl}"
-				title="Recycling locations map"
-			></iframe>
-			<div class="map-legend">
-				<div class="legend-item">
-					<span class="legend-marker user-marker"></span>
-					<span>Your Location</span>
-				</div>
-				<div class="legend-item">
-					<span class="legend-marker recycling-marker"></span>
-					<span>Recycling Locations</span>
-				</div>
-			</div>
-		`;
+
+		setTimeout(() => {
+			try {
+				map.invalidateSize();
+				map.fitBounds(bounds.pad(0.2));
+			} catch (_) {}
+		}, 0);
 	}
 })();

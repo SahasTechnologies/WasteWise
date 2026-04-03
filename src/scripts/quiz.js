@@ -291,5 +291,10 @@
 		shuffleQuestionOptions();
 		bindLogic();
 		updateProgress();
+		
+		// Only add ready class once, after a small delay to ensure DOM is settled
+		setTimeout(() => {
+			if (stage) stage.classList.add('ready');
+		}, 50);
 	});
 })();

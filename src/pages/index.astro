@@ -1,7 +1,9 @@
 ---
-import { ArrowRight } from '@lucide/astro';
+import { ArrowRight, BookOpen, Target, MapPin } from '@lucide/astro';
 import BaseLayout from '../components/BaseLayout.astro';
 import ImpactStats from '../components/ImpactStats.astro';
+import ShareCard from '../components/ShareCard.astro';
+import HomeCharts from '../components/HomeCharts.astro';
 export const prerender = true;
 ---
 
@@ -20,25 +22,472 @@ export const prerender = true;
 				<span class="headline-line">Recycling made easy, for</span>
 				<span class="headline-accent">everyone.</span>
 			</h1>
-		</div>
-	</section>
-
-	<section class="below" aria-label="Quick Recycling Search">
-		<div class="below-inner">
-			<p class="subcopy">
+			<p class="hero-subcopy">
 				Find information and guidance on recycling<br />
 				without all the hassle.
 			</p>
+		</div>
+	</section>
 
-			<div class="find-button-wrap">
-				<a class="go find-button" href="/find" aria-label="Find Recycling Locations">
-					<span>Find</span>
-					<ArrowRight class="icon" aria-hidden="true" />
+	<!-- Story Section 1: Understand the Issue -->
+	<section class="story-section">
+		<div class="story-container">
+			<div class="story-step">
+				<span class="story-number">1</span>
+				<h2 class="story-title">Understand the Issue</h2>
+				<p class="story-description">
+					Australia generates over 75 million tonnes of waste annually. See the real impact and understand 
+					how your recycling efforts make a difference.
+				</p>
+			</div>
+			
+			<ImpactStats />
+
+			<div class="data-divider"></div>
+
+			<div class="story-step">
+				<h2 class="story-title">The Data</h2>
+				<p class="story-description">
+					Understand the bigger picture of waste generation and recovery in Australia.
+				</p>
+			</div>
+
+			<HomeCharts />
+		</div>
+	</section>
+
+	<!-- Story Section 2: Learn -->
+	<section class="story-section story-section-alt">
+		<div class="story-container">
+			<div class="story-step">
+				<span class="story-number">2</span>
+				<h2 class="story-title">Learn</h2>
+				<p class="story-description">
+					Educate yourself on recycling best practices through articles and interactive quizzes. 
+					Test your knowledge and discover what you didn't know.
+				</p>
+			</div>
+
+			<div class="learn-cards">
+				<a href="/articles" class="learn-card">
+					<div class="learn-card-icon">
+						<BookOpen size={32} />
+					</div>
+					<h3 class="learn-card-title">Read Articles</h3>
+					<p class="learn-card-text">
+						Explore guides, tips, and information about recycling different materials and reducing waste.
+					</p>
+					<div class="learn-card-arrow">
+						<ArrowRight size={20} />
+					</div>
+				</a>
+
+				<a href="/quiz" class="learn-card">
+					<div class="learn-card-icon">
+						<Target size={32} />
+					</div>
+					<h3 class="learn-card-title">Take the Quiz</h3>
+					<p class="learn-card-text">
+						Test your recycling knowledge with 10 questions and see how you compare with the community.
+					</p>
+					<div class="learn-card-arrow">
+						<ArrowRight size={20} />
+					</div>
 				</a>
 			</div>
 		</div>
 	</section>
 
-	<ImpactStats />
+	<!-- Story Section 3: Take Action -->
+	<section class="story-section">
+		<div class="story-container">
+			<div class="story-step">
+				<span class="story-number">3</span>
+				<h2 class="story-title">Take Action</h2>
+				<p class="story-description">
+					Find recycling centers and drop-off locations near you, and share your thoughts on recycling barriers. 
+					Turn your knowledge into action by recycling correctly and helping improve local services.
+				</p>
+			</div>
+
+			<div class="action-cards-grid">
+				<div class="action-card">
+					<div class="action-card-content">
+						<div class="action-card-icon">
+							<MapPin size={48} />
+						</div>
+						<div class="action-card-text">
+							<h3 class="action-card-title">Find Recycling Locations</h3>
+							<p class="action-card-description">
+								Search for items and discover where to recycle them in your area. Get addresses, 
+								hours, and directions to nearby facilities.
+							</p>
+						</div>
+					</div>
+					<a href="/find" class="action-card-button">
+						<span>Find Locations</span>
+						<ArrowRight size={20} />
+					</a>
+				</div>
+
+				<div class="action-card">
+					<div class="action-card-content">
+						<div class="action-card-icon">
+							<Target size={48} />
+						</div>
+						<div class="action-card-text">
+							<h3 class="action-card-title">Share Your Voice</h3>
+							<p class="action-card-description">
+								Tell us about the biggest barriers to recycling in your area. Your feedback helps 
+								identify common challenges and improve local recycling services.
+							</p>
+						</div>
+					</div>
+					<a href="/community" class="action-card-button">
+						<span>Take the Poll</span>
+						<ArrowRight size={20} />
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Story Section 4: Share -->
+	<section class="story-section story-section-alt">
+		<div class="story-container">
+			<div class="story-step" id="share-section">
+				<span class="story-number">4</span>
+				<h2 class="story-title">Share</h2>
+				<p class="story-description">
+					Spread the word about recycling and help others make a difference. Share WasteWise with 
+					your community on social media.
+				</p>
+			</div>
+
+			<ShareCard />
+		</div>
+	</section>
 </BaseLayout>
 
+<script>
+</script>
+
+<style>
+	/* Story sections */
+	.story-section {
+		width: 100%;
+		padding: 80px 0;
+		background: var(--bg);
+		display: flex;
+		justify-content: center;
+	}
+
+	.story-section-alt {
+		background: rgba(255, 255, 255, 0.5);
+	}
+
+	.story-container {
+		width: 100%;
+		margin: 0 auto;
+		padding: 0 var(--hero-inset);
+		box-sizing: border-box;
+	}
+
+	.story-step {
+		text-align: center;
+		margin-bottom: 48px;
+	}
+
+	.story-number {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+		background: linear-gradient(180deg, var(--green-1), var(--green-2));
+		color: #ffffff;
+		font-family: var(--font-display);
+		font-size: var(--text-xl);
+		margin-bottom: 16px;
+		box-shadow: 0 8px 20px rgba(43, 161, 54, 0.3);
+	}
+
+	.story-title {
+		font-size: clamp(var(--text-2xl), 4vw, var(--text-3xl));
+		font-weight: 700;
+		color: var(--ink);
+		margin: 0 0 16px 0;
+		font-family: var(--font-body);
+	}
+
+	.story-description {
+		font-size: var(--text-md);
+		line-height: 1.618;
+		color: rgba(11, 19, 32, 0.75);
+		max-width: 700px;
+		margin: 0 auto;
+		font-weight: 400;
+	}
+
+	.data-divider {
+		height: 1px;
+		background: linear-gradient(90deg, transparent, rgba(11, 19, 32, 0.15), transparent);
+		margin: 64px 0 48px;
+	}
+
+	/* Learn cards */
+	.learn-cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 24px;
+		margin: 0 auto;
+		box-sizing: border-box;
+	}
+
+	.learn-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		padding: 32px 28px;
+		background: var(--glass);
+		border: 1px solid var(--glass-border);
+		border-radius: 18px;
+		box-shadow: 0 8px 24px rgba(11, 19, 32, 0.08);
+		text-decoration: none;
+		transition: transform 0.2s, box-shadow 0.2s;
+		overflow: hidden;
+		box-sizing: border-box;
+	}
+
+	.learn-card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 32px rgba(11, 19, 32, 0.12);
+	}
+
+	.learn-card-icon {
+		color: var(--green-2);
+		margin-bottom: 16px;
+	}
+
+	.learn-card-title {
+		font-size: var(--text-xl);
+		font-weight: 700;
+		color: var(--ink);
+		margin: 0 0 12px 0;
+		font-family: var(--font-body);
+	}
+
+	.learn-card-text {
+		font-size: var(--text-base);
+		line-height: 1.618;
+		color: rgba(11, 19, 32, 0.7);
+		margin: 0 0 16px 0;
+		font-weight: 400;
+		flex: 1;
+	}
+
+	.learn-card-arrow {
+		color: var(--green-2);
+		align-self: flex-start;
+	}
+
+	/* Action card */
+	.action-cards-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+		gap: 24px;
+		margin: 0 auto;
+		box-sizing: border-box;
+	}
+
+	.action-card {
+		padding: 40px;
+		background: var(--glass);
+		border: 1px solid var(--glass-border);
+		border-radius: 18px;
+		box-shadow: 0 8px 24px rgba(11, 19, 32, 0.08);
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		box-sizing: border-box;
+	}
+
+	.action-card-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 24px;
+		margin-bottom: 32px;
+		text-align: center;
+	}
+
+	.action-card-icon {
+		color: var(--green-2);
+		background: rgba(102, 194, 74, 0.1);
+		padding: 16px;
+		border-radius: 16px;
+	}
+
+	.action-card-title {
+		font-size: var(--text-xl);
+		font-weight: 700;
+		color: var(--ink);
+		margin: 0 0 12px 0;
+		font-family: var(--font-body);
+	}
+
+	.action-card-description {
+		font-size: var(--text-base);
+		line-height: 1.618;
+		color: rgba(11, 19, 32, 0.75);
+		margin: 0;
+		font-weight: 400;
+	}
+
+	.action-card-button {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		padding: 16px 28px;
+		background: linear-gradient(180deg, var(--green-1), var(--green-2));
+		color: #ffffff;
+		font-family: var(--font-ui);
+		font-weight: 700;
+		font-size: var(--text-md);
+		border-radius: 12px;
+		text-decoration: none;
+		box-shadow: 0 8px 20px rgba(43, 161, 54, 0.3);
+		transition: transform 0.2s, box-shadow 0.2s;
+	}
+
+	.action-card-button:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 12px 28px rgba(43, 161, 54, 0.4);
+	}
+
+	/* Share card */
+	.share-card {
+		max-width: 600px;
+		margin: 0 auto;
+		padding: 40px;
+		background: var(--glass);
+		border: 1px solid var(--glass-border);
+		border-radius: 18px;
+		box-shadow: 0 8px 24px rgba(11, 19, 32, 0.08);
+		text-align: center;
+		box-sizing: border-box;
+	}
+
+	.share-card-header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 12px;
+		margin-bottom: 16px;
+		color: var(--green-2);
+	}
+
+	.share-card-title {
+		font-size: 28px;
+		font-weight: 700;
+		color: var(--ink);
+		margin: 0;
+	}
+
+	.share-card-text {
+		font-size: 17px;
+		line-height: 1.6;
+		color: rgba(11, 19, 32, 0.75);
+		margin: 0 0 32px 0;
+		font-weight: 400;
+	}
+
+	.share-buttons {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		justify-content: center;
+	}
+
+	.share-button {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 12px 20px;
+		border: none;
+		border-radius: 10px;
+		font-family: var(--font-ui);
+		font-weight: 600;
+		font-size: 15px;
+		cursor: pointer;
+		transition: transform 0.2s, box-shadow 0.2s;
+		color: #ffffff;
+	}
+
+	.share-button:hover {
+		transform: translateY(-2px);
+	}
+
+	.share-facebook {
+		background: #1877f2;
+		box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
+	}
+
+	.share-facebook:hover {
+		box-shadow: 0 6px 16px rgba(24, 119, 242, 0.4);
+	}
+
+	.share-twitter {
+		background: #1da1f2;
+		box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);
+	}
+
+	.share-twitter:hover {
+		box-shadow: 0 6px 16px rgba(29, 161, 242, 0.4);
+	}
+
+	.share-linkedin {
+		background: #0a66c2;
+		box-shadow: 0 4px 12px rgba(10, 102, 194, 0.3);
+	}
+
+	.share-linkedin:hover {
+		box-shadow: 0 6px 16px rgba(10, 102, 194, 0.4);
+	}
+
+	@media (max-width: 768px) {
+		.story-section {
+			padding: 60px 0;
+		}
+
+		.story-container {
+			padding: 0 var(--hero-inset);
+		}
+
+		.action-cards-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.action-card-content {
+			grid-template-columns: 1fr;
+			text-align: center;
+		}
+
+		.action-card-icon {
+			margin: 0 auto;
+		}
+
+		.action-card {
+			padding: 28px 24px;
+		}
+
+		.share-card {
+			padding: 28px 24px;
+		}
+
+		.share-buttons {
+			justify-content: center;
+		}
+	}
+</style>

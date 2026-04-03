@@ -4,6 +4,20 @@ import BaseLayout from '../components/BaseLayout.astro';
 ---
 
 <BaseLayout title="Find Recycling Locations | WasteWise">
+	<Fragment slot="head">
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
+			integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+			crossorigin=""
+		/>
+		<script
+			src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"
+			integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+			crossorigin=""
+		></script>
+	</Fragment>
+
 	<section class="recyclemate-section">
 		<h1 class="simple-title">Find Recycling Locations</h1>
 		<p class="simple-subtitle">Search for items and find where to recycle them near you</p>
@@ -39,14 +53,14 @@ import BaseLayout from '../components/BaseLayout.astro';
 			</button>
 		</div>
 
-		<div id="results-container" class="results-container hidden">
+		<div id="results-container" class="results-container find-results-container hidden">
 			<div id="item-info" class="item-info"></div>
 			
-			<div class="results-layout">
-				<div id="locations-list" class="locations-list"></div>
-				<div id="map-container" class="map-container">
-					<div id="map" class="recyclemate-map"></div>
+		<div class="results-layout find-results-layout">
+				<div id="map-container" class="map-container hidden" style="width: 100%; height: 500px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0,0,0,0.1);">
+					<div id="map" class="recyclemate-map" style="width: 100%; height: 100%;"></div>
 				</div>
+                <div id="locations-list" class="locations-list" style="width: 100%; padding: 0; background: transparent; border: none; box-shadow: none;"></div>
 			</div>
 		</div>
 

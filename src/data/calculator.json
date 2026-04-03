@@ -1,0 +1,48 @@
+{
+    "context": "Australia",
+    "waste_factors": {
+        "food_waste": {
+            "co2_saved_per_kg": 1.0
+        },
+        "garden_waste": {
+            "co2_saved_per_kg": 0.7
+        },
+        "paper_cardboard": {
+            "co2_saved_per_kg": 1.2
+        },
+        "plastics": {
+            "co2_saved_per_kg": 1.5
+        },
+        "glass": {
+            "co2_saved_per_kg": 0.3
+        },
+        "metals": {
+            "co2_saved_per_kg": 1.8
+        }
+    },
+    "household_bin_composition": {
+        "food_waste": 50,
+        "garden_waste": 8,
+        "paper_cardboard": 23,
+        "plastics": 13,
+        "glass": 2,
+        "metals": 4
+    },
+    "electricity_savings": {
+        "national_average_co2_per_kwh": 0.62,
+        "nsw_act_co2_per_kwh": 0.64,
+        "queensland_co2_per_kwh": 0.67,
+        "victoria_co2_per_kwh": 0.78,
+        "south_australia_co2_per_kwh": 0.22,
+        "wa_co2_per_kwh": 0.50,
+        "tasmania_co2_per_kwh": 0.20
+    },
+    "equivalents": {
+        "co2_per_kilometre_car": 0.25,
+        "co2_per_kwh_electricity": 0.62,
+        "co2_per_phone_charge": 0.008,
+        "co2_per_hour_led_light": 0.016,
+        "co2_per_aviation_passenger_km": 0.15,
+        "co2_per_litre_petrol": 2.3
+    }
+}

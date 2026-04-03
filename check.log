@@ -1,0 +1,152 @@
+﻿[2m18:57:59[22m [34m[vite][39m Re-optimizing dependencies because vite config has changed
+[2m18:57:59[22m [34m[types][39m Generated [2m267ms[22m
+[2m18:57:59[22m [34m[check][39m Getting diagnostics for Astro files in C:\Users\sahas\Downloads\WasteWise...
+[96msrc/components/Footer.astro[0m:[93m87[0m:[93m9[0m - [93mwarning[0m[90m astro(4000): [0mThis script will be treated as if it has the `is:inline` directive because it contains an attribute. Therefore, features that require processing (e.g. using TypeScript or npm packages in the script) are unavailable.
+
+See docs for more details: https://docs.astro.build/en/guides/client-side-scripts/#script-processing.
+
+Add the `is:inline` directive explicitly to silence this hint.
+
+[7m87[0m <script define:vars={{}} src="../scripts/footer-year.js" />
+[7m  [0m [93m        ~~~~~~~~~~~[0m
+
+[96msrc/components/ImpactStats.astro[0m:[93m147[0m:[93m8[0m - [93mwarning[0m[90m ts(6385): [0m'AlertTriangle' is deprecated.
+
+[7m147[0m       <AlertTriangle size={16} style="display: inline; vertical-align: middle; margin-right: 4px;" />
+[7m   [0m [93m       ~~~~~~~~~~~~~[0m
+[96msrc/components/ImpactStats.astro[0m:[93m2[0m:[93m88[0m - [93mwarning[0m[90m ts(6385): [0m'AlertTriangle' is deprecated.
+
+[7m2[0m import { Apple, Package, Droplet, Wine, Soup, Leaf, Globe, Car, Lightbulb, Smartphone, AlertTriangle } from '@lucide/astro';
+[7m [0m [93m                                                                                       ~~~~~~~~~~~~~[0m
+
+[96msrc/components/ShareCard.astro[0m:[93m83[0m:[93m29[0m - [91merror[0m[90m ts(18046): [0m'err' is of type 'unknown'.
+
+[7m83[0m                         if (err.name !== 'AbortError') copyToClipboard();
+[7m  [0m [91m                            ~~~[0m
+
+[96msrc/components/Topbar.astro[0m:[93m5[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'active' is declared but its value is never read.
+
+[7m5[0m const {active} = Astro.props;
+[7m [0m [93m      ~~~~~~~~[0m
+[96msrc/components/Topbar.astro[0m:[93m66[0m:[93m13[0m - [91merror[0m[90m ts(18047): [0m'btn' is possibly 'null'.
+
+[7m66[0m             btn.setAttribute('aria-expanded', 'true');
+[7m  [0m [91m            ~~~[0m
+[96msrc/components/Topbar.astro[0m:[93m65[0m:[93m13[0m - [91merror[0m[90m ts(18047): [0m'overlay' is possibly 'null'.
+
+[7m65[0m             overlay.setAttribute('aria-hidden', 'false');
+[7m  [0m [91m            ~~~~~~~[0m
+[96msrc/components/Topbar.astro[0m:[93m64[0m:[93m13[0m - [91merror[0m[90m ts(18047): [0m'overlay' is possibly 'null'.
+
+[7m64[0m             overlay.classList.add('mobile-nav-open');
+[7m  [0m [91m            ~~~~~~~[0m
+[96msrc/components/Topbar.astro[0m:[93m59[0m:[93m13[0m - [91merror[0m[90m ts(18047): [0m'btn' is possibly 'null'.
+
+[7m59[0m             btn.setAttribute('aria-expanded', 'false');
+[7m  [0m [91m            ~~~[0m
+[96msrc/components/Topbar.astro[0m:[93m58[0m:[93m13[0m - [91merror[0m[90m ts(18047): [0m'overlay' is possibly 'null'.
+
+[7m58[0m             overlay.setAttribute('aria-hidden', 'true');
+[7m  [0m [91m            ~~~~~~~[0m
+[96msrc/components/Topbar.astro[0m:[93m57[0m:[93m13[0m - [91merror[0m[90m ts(18047): [0m'overlay' is possibly 'null'.
+
+[7m57[0m             overlay.classList.remove('mobile-nav-open');
+[7m  [0m [91m            ~~~~~~~[0m
+[96msrc/components/Topbar.astro[0m:[93m55[0m:[93m24[0m - [91merror[0m[90m ts(18047): [0m'overlay' is possibly 'null'.
+
+[7m55[0m         const isOpen = overlay.classList.contains('mobile-nav-open');
+[7m  [0m [91m                       ~~~~~~~[0m
+
+[96msrc/pages/about.astro[0m:[93m113[0m:[93m7[0m - [93mwarning[0m[90m ts(6385): [0m'BarChart3' is deprecated.
+
+[7m113[0m      <BarChart3 size={36} />
+[7m   [0m [93m      ~~~~~~~~~[0m
+[96msrc/pages/about.astro[0m:[93m67[0m:[93m7[0m - [93mwarning[0m[90m ts(6385): [0m'BarChart3' is deprecated.
+
+[7m67[0m      <BarChart3 size={32} />
+[7m  [0m [93m      ~~~~~~~~~[0m
+[96msrc/pages/about.astro[0m:[93m2[0m:[93m48[0m - [93mwarning[0m[90m ts(6385): [0m'BarChart3' is deprecated.
+
+[7m2[0m import { Globe, MapPin, BookOpen, Search, Map, BarChart3, Target } from '@lucide/astro';
+[7m [0m [93m                                               ~~~~~~~~~[0m
+
+[96msrc/pages/articles.astro[0m:[93m37[0m:[93m33[0m - [93mwarning[0m[90m ts(6385): [0m'frameborder' is deprecated.
+
+[7m37[0m                                 frameborder="0"
+[7m  [0m [93m                                ~~~~~~~~~~~[0m
+
+[96msrc/pages/community.astro[0m:[93m264[0m:[93m28[0m - [91merror[0m[90m ts(2345): [0mArgument of type 'HTMLElement' is not assignable to parameter of type 'HTMLFormElement'.
+  Type 'HTMLElement' is missing the following properties from type 'HTMLFormElement': acceptCharset, action, autocomplete, elements, and 15 more.
+
+[7m264[0m    const fd = new FormData(form);
+[7m   [0m [91m                           ~~~~[0m
+[96msrc/pages/community.astro[0m:[93m223[0m:[93m34[0m - [91merror[0m[90m ts(7006): [0mParameter 'r' implicitly has an 'any' type.
+
+[7m223[0m    (data.results || []).forEach((r) => {
+[7m   [0m [91m                                 ~[0m
+[96msrc/pages/community.astro[0m:[93m191[0m:[93m25[0m - [91merror[0m[90m ts(7006): [0mParameter 'msg' implicitly has an 'any' type.
+
+[7m191[0m  function setPollStatus(msg) {
+[7m   [0m [91m                        ~~~[0m
+
+[96msrc/pages/contact.astro[0m:[93m68[0m:[93m6[0m - [93mwarning[0m[90m ts(6385): [0m'CheckCircle' is deprecated.
+
+[7m68[0m     <CheckCircle size={64} />
+[7m  [0m [93m     ~~~~~~~~~~~[0m
+[96msrc/pages/contact.astro[0m:[93m3[0m:[93m10[0m - [93mwarning[0m[90m ts(6385): [0m'CheckCircle' is deprecated.
+
+[7m3[0m import { CheckCircle } from '@lucide/astro';
+[7m [0m [93m         ~~~~~~~~~~~[0m
+[96msrc/pages/contact.astro[0m:[93m98[0m:[93m9[0m - [93mwarning[0m[90m astro(4000): [0mThis script will be treated as if it has the `is:inline` directive because it contains an attribute. Therefore, features that require processing (e.g. using TypeScript or npm packages in the script) are unavailable.
+
+See docs for more details: https://docs.astro.build/en/guides/client-side-scripts/#script-processing.
+
+Add the `is:inline` directive explicitly to silence this hint.
+
+[7m98[0m <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+[7m  [0m [93m        ~~~[0m
+
+[96msrc/pages/find.astro[0m:[93m46[0m:[93m6[0m - [93mwarning[0m[90m ts(6385): [0m'Loader2' is deprecated.
+
+[7m46[0m     <Loader2 id="item-loading" class="autocomplete-loading hidden" size={20} />
+[7m  [0m [93m     ~~~~~~~[0m
+[96msrc/pages/find.astro[0m:[93m34[0m:[93m6[0m - [93mwarning[0m[90m ts(6385): [0m'Loader2' is deprecated.
+
+[7m34[0m     <Loader2 id="address-loading" class="autocomplete-loading hidden" size={20} />
+[7m  [0m [93m     ~~~~~~~[0m
+[96msrc/pages/find.astro[0m:[93m2[0m:[93m34[0m - [93mwarning[0m[90m ts(6385): [0m'Loader2' is deprecated.
+
+[7m2[0m import { Search, MapPin, Trash2, Loader2 } from '@lucide/astro';
+[7m [0m [93m                                 ~~~~~~~[0m
+[96msrc/pages/find.astro[0m:[93m2[0m:[93m26[0m - [93mwarning[0m[90m ts(6133): [0m'Trash2' is declared but its value is never read.
+
+[7m2[0m import { Search, MapPin, Trash2, Loader2 } from '@lucide/astro';
+[7m [0m [93m                         ~~~~~~[0m
+[96msrc/pages/find.astro[0m:[93m2[0m:[93m18[0m - [93mwarning[0m[90m ts(6133): [0m'MapPin' is declared but its value is never read.
+
+[7m2[0m import { Search, MapPin, Trash2, Loader2 } from '@lucide/astro';
+[7m [0m [93m                 ~~~~~~[0m
+[96msrc/pages/find.astro[0m:[93m15[0m:[93m4[0m - [93mwarning[0m[90m astro(4000): [0mThis script will be treated as if it has the `is:inline` directive because it contains an attribute. Therefore, features that require processing (e.g. using TypeScript or npm packages in the script) are unavailable.
+
+See docs for more details: https://docs.astro.build/en/guides/client-side-scripts/#script-processing.
+
+Add the `is:inline` directive explicitly to silence this hint.
+
+[7m15[0m    src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"
+[7m  [0m [93m   ~~~[0m
+
+[96msrc/scripts/quiz.js[0m:[93m107[0m:[93m52[0m - [93mwarning[0m[90m ts(6133): [0m'displayLetter' is declared but its value is never read.
+
+[7m107[0m  function onOptionSelected(qIndex, originalLetter, displayLetter, stepEl) {
+[7m   [0m [93m                                                   ~~~~~~~~~~~~~[0m
+
+[96msrc/scripts/recyclemate.js[0m:[93m18[0m:[93m6[0m - [93mwarning[0m[90m ts(6133): [0m'photonSelected' is declared but its value is never read.
+
+[7m18[0m  let photonSelected = null;
+[7m  [0m [93m     ~~~~~~~~~~~~~~[0m
+
+Result (35 files): 
+- 11 errors
+- 0 warnings
+- 19 hints
+

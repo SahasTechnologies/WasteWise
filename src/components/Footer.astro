@@ -1,21 +1,5 @@
 ---
-import { Code, Recycle } from '@lucide/astro';
-
-// Fetch the current year dynamically
-let currentYear = new Date().getFullYear();
-try {
-    const response = await fetch('https://api.datesapi.net/today');
-    if (response.ok) {
-        const data = await response.json();
-        // data.result is in format YYYY-MM-DD
-        if (data && data.result) {
-            currentYear = data.result.split('-')[0];
-        }
-    }
-} catch (error) {
-    console.error("Failed to fetch date:", error);
-}
-
+import { Recycle } from '@lucide/astro';
 ---
 
 <footer class="footer" aria-label="WasteWise Footer">
@@ -33,7 +17,10 @@ try {
                 <a href="/quiz" class="footer-link">Quiz</a>
                 <a href="/articles" class="footer-link">Articles</a>
                 <a href="/find" class="footer-link">Find</a>
+                <a href="/about" class="footer-link">About</a>
+                <a href="/community" class="footer-link">Community</a>
                 <a href="/contact" class="footer-link">Contact</a>
+                <a href="/privacy" class="footer-link">Privacy Policy</a>
             </div>
         </div>
     </div>
@@ -49,9 +36,44 @@ try {
     </div>
     
     <div class="footer-bottom">
-        <p class="copyright">&copy; {currentYear} WasteWise. All rights reserved.</p>
+        <p class="copyright">&copy; <span id="current-year">...</span> WasteWise. All rights reserved.</p>
         <div class="social-links">
-            <a href="https://github.com/SahasTechnologies/WasteWise" aria-label="GitHub"><Code class="social-icon" /></a>
+            <button class="footer-social-btn" id="footer-share-facebook" aria-label="Share on Facebook">
+                <img src="/facebook-f-brands-solid-full.svg" alt="" class="social-svg-icon" />
+            </button>
+            <button class="footer-social-btn" id="footer-share-linkedin" aria-label="Share on LinkedIn">
+                <img src="/linkedin-in-brands-solid-full.svg" alt="" class="social-svg-icon" />
+            </button>
         </div>
     </div>
 </footer>
+
+<script>
+    function initializeFooterShare() {
+        const shareUrl = window.location.origin;
+        const shareTitle = 'WasteWise - Recycling made easy for everyone';
+        const shareText = 'Check out WasteWise to learn about recycling! #Sustainability #Recycling';
+
+        document.getElementById('footer-share-facebook')?.addEventListener('click', () => {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
+        });
+
+        document.getElementById('footer-share-linkedin')?.addEventListener('click', () => {
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
+        });
+    }
+
+    initializeFooterShare();
+    document.addEventListener('astro:after-swap', initializeFooterShare);
+</script>
+
+<script>
+    function updateYear() {
+        const yearSpan = document.getElementById('current-year');
+        if (!yearSpan) return;
+        yearSpan.textContent = String(new Date().getFullYear());
+    }
+
+    updateYear();
+    document.addEventListener('astro:after-swap', updateYear);
+</script>

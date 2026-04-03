@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../components/BaseLayout.astro';
+import ShareCard from '../components/ShareCard.astro';
+---
+
+<BaseLayout title="Community | WasteWise">
+	<section class="simple-section">
+		<h1 class="header-title">Community</h1>
+		<p class="header-subtitle">See what others are doing and share your thoughts.</p>
+
+		<div class="community-stats-wrapper">
+			<div class="community-stats-bar" id="community-stats-bar">
+				<div class="community-stat">
+					<div class="community-stat-label">Quiz submissions</div>
+					<div class="community-stat-value stat-display" id="stat-quiz">
+						<span class="loading-spinner"></span>
+					</div>
+				</div>
+				<div class="community-stat">
+					<div class="community-stat-label">Poll submissions</div>
+					<div class="community-stat-value stat-display" id="stat-poll">
+						<span class="loading-spinner"></span>
+					</div>
+				</div>
+				<div class="community-stat">
+					<div class="community-stat-label">Contact messages</div>
+					<div class="community-stat-value stat-display" id="stat-contact">
+						<span class="loading-spinner"></span>
+					</div>
+				</div>
+			</div>
+			<div class="community-total">
+				Total Submissions: <span id="total-submissions">0</span>
+			</div>
+		</div>
+
+		<div class="community-card">
+			<h2 class="community-card-title">Poll: What's the biggest barrier to recycling in your area?</h2>
+
+			<form id="poll-form" class="community-poll">
+				<label class="quiz-option">
+					<input type="radio" name="barrier" value="Confusing or unclear recycling rules" class="hidden" required />
+					<span class="quiz-option-label">1</span>
+					<span class="quiz-option-text">Confusing or unclear recycling rules</span>
+				</label>
+
+				<label class="quiz-option">
+					<input type="radio" name="barrier" value="Not enough public recycling bins" class="hidden" required />
+					<span class="quiz-option-label">2</span>
+					<span class="quiz-option-text">Not enough public recycling bins</span>
+				</label>
+
+				<label class="quiz-option">
+					<input type="radio" name="barrier" value="Inconvenient or far-away drop-off locations" class="hidden" required />
+					<span class="quiz-option-label">3</span>
+					<span class="quiz-option-text">Inconvenient or far-away drop-off locations</span>
+				</label>
+
+				<label class="quiz-option">
+					<input type="radio" name="barrier" value="Lack of motivation or time" class="hidden" required />
+					<span class="quiz-option-label">4</span>
+					<span class="quiz-option-text">Lack of motivation or time</span>
+				</label>
+
+				<label class="quiz-option">
+					<input type="radio" name="barrier" value="No local recycling services" class="hidden" required />
+					<span class="quiz-option-label">5</span>
+					<span class="quiz-option-text">No local recycling services</span>
+				</label>
+
+				<label class="quiz-option">
+					<input type="radio" name="barrier" value="I'm not sure what can and can't be recycled" class="hidden" required />
+					<span class="quiz-option-label">6</span>
+					<span class="quiz-option-text">I'm not sure what can and can't be recycled</span>
+				</label>
+
+				<div class="poll-submit-row">
+					<button type="submit" class="go" id="poll-submit-btn">Submit vote</button>
+					<div id="poll-status" class="poll-status-text"></div>
+				</div>
+			</form>
+
+			<div id="poll-results" class="poll-results hidden">
+				<h3 class="poll-results-title">Results</h3>
+				<div id="poll-total" class="poll-total"></div>
+				<div id="poll-bars" class="poll-bars"></div>
+			</div>
+		</div>
+
+		<!-- Global Quiz Scores Chart -->
+		<div class="quiz-results-chart" id="quiz-results-chart">
+			<h3 class="chart-title">Global Quiz Scores</h3>
+			<div class="chart-bars" id="chart-bars-container">
+				<div class="loading-spinner-large"></div>
+			</div>
+		</div>
+
+		<div class="community-share-section">
+			<ShareCard />
+		</div>
+		
+	</section>
+</BaseLayout>
+
+<script src="../scripts/community.js"></script>
+<script src="../scripts/poll.js"></script>
