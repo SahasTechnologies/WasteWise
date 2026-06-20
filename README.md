@@ -29,3 +29,6 @@ it has nothing special (feature-wise), its just text
 ### Privacy policy
 see idk read it ig
 
+##### AI
+For most the commits in April, I used AI for the most part of the commit since I really wanted to get it done _before_ April... but I didn't get to finish sadly, and there were still a few things left to do
+
